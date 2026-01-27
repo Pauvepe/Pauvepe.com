@@ -255,10 +255,10 @@ export default function TermsPage() {
                   contactarnos en:
                 </p>
                 <a
-                  href="mailto:contacto@pauvepe.com"
+                  href="mailto:info@pauvepe.com"
                   className="inline-block mt-4 text-[var(--primary)] font-medium hover:underline"
                 >
-                  contacto@pauvepe.com
+                  info@pauvepe.com
                 </a>
               </div>
             </div>
