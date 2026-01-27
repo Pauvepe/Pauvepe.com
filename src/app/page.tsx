@@ -175,13 +175,15 @@ export default function Home() {
 
           <div className="flex justify-center">
             <div className="card-hover p-8 rounded-2xl bg-[var(--background)] border border-[var(--foreground)]/10 flex items-center justify-center">
-              <Image
-                src="/images/huellaurbana.svg"
-                alt="Huella Urbana"
-                width={200}
-                height={80}
-                className="opacity-70 hover:opacity-100 transition-opacity"
-              />
+              <Link href="https://huellaurbanabcn.com/" target="_blank" rel="noopener noreferrer">
+                <Image
+                  src="/images/huellaurbana.svg"
+                  alt="Huella Urbana"
+                  width={200}
+                  height={80}
+                  className="opacity-70 hover:opacity-100 transition-opacity cursor-pointer"
+                />
+              </Link>
             </div>
           </div>
         </div>
