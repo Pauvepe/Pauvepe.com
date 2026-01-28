@@ -36,6 +36,23 @@ export default function TermsPage() {
               </p>
             </div>
 
+          <div className="p-6 rounded-2xl bg-blue-500/10 border border-blue-500/20 mb-8">
+            <h3 className="font-bold mb-2 flex items-center gap-2">
+              <span className="material-symbols-outlined text-blue-500">
+                info
+              </span>
+              Sobre la Aplicación
+            </h3>
+            <p className="text-[var(--foreground)]/80 leading-relaxed">
+              Estos términos de servicio aplican al uso de <strong>Pauvepe Automation</strong> 
+              (la "App"), una plataforma de automatización con inteligencia artificial 
+              desarrollada por Pau Vera, disponible en pauvepe.com.
+            </p>
+          </div>
+
+
+ 
+
             <div>
               <h2 className="text-2xl font-bold font-[family-name:var(--font-display)] mb-4 flex items-center gap-2">
                 <span className="material-symbols-outlined text-[var(--primary)]">
