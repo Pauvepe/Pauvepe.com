@@ -37,6 +37,20 @@ export default function PrivacyPage() {
               </p>
             </div>
 
+           <div className="p-6 rounded-2xl bg-blue-500/10 border border-blue-500/20 mb-8">
+            <h3 className="font-bold mb-2 flex items-center gap-2">
+              <span className="material-symbols-outlined text-blue-500">
+                info
+              </span>
+              Información de la Aplicación
+            </h3>
+            <p className="text-[var(--foreground)]/80 leading-relaxed">
+              Esta política de privacidad aplica a <strong>Pauvepe Automation</strong> 
+              (la "App" o "Aplicación"), disponible en pauvepe.com y sus servicios 
+              de automatización conectados a diferentes plataformas de redes sociales.
+            </p>
+          </div>
+
             <div>
               <h2 className="text-2xl font-bold font-[family-name:var(--font-display)] mb-4 flex items-center gap-2">
                 <span className="material-symbols-outlined text-[var(--primary)]">
