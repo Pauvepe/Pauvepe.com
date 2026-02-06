@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import ServiceCard from "@/components/ServiceCard";
 import { services } from "@/lib/services";
+import PlaygroundSection from "@/components/playground/PlaygroundSection";
 
 export default function Home() {
   return (
@@ -56,6 +57,9 @@ export default function Home() {
           </span>
         </div>
       </section>
+
+      {/* Playground IA Section */}
+      <PlaygroundSection />
 
       {/* Problem/Solution Section */}
       <section className="py-20 bg-[var(--surface)]">

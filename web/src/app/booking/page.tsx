@@ -184,21 +184,19 @@ export default function BookingPage() {
             {[1, 2, 3].map((s) => (
               <div key={s} className="flex items-center gap-2">
                 <div
-                  className={`w-10 h-10 rounded-full flex items-center justify-center font-bold ${
-                    step >= s
+                  className={`w-10 h-10 rounded-full flex items-center justify-center font-bold ${step >= s
                       ? "bg-gradient-to-r from-[var(--primary)] to-[var(--secondary)] text-white"
                       : "bg-[var(--surface)] text-[var(--foreground)]/40 border border-[var(--foreground)]/10"
-                  }`}
+                    }`}
                 >
                   {s}
                 </div>
                 {s < 3 && (
                   <div
-                    className={`w-16 h-1 rounded ${
-                      step > s
+                    className={`w-16 h-1 rounded ${step > s
                         ? "bg-gradient-to-r from-[var(--primary)] to-[var(--secondary)]"
                         : "bg-[var(--foreground)]/10"
-                    }`}
+                      }`}
                   />
                 )}
               </div>
@@ -314,11 +312,10 @@ export default function BookingPage() {
                         key={date.toISOString()}
                         type="button"
                         onClick={() => handleDateSelect(date)}
-                        className={`p-3 rounded-xl border text-center transition-all ${
-                          formData.date === date.toISOString().split("T")[0]
+                        className={`p-3 rounded-xl border text-center transition-all ${formData.date === date.toISOString().split("T")[0]
                             ? "border-[var(--primary)] bg-[var(--primary)]/10 text-[var(--primary)]"
                             : "border-[var(--foreground)]/10 hover:border-[var(--primary)]/50"
-                        }`}
+                          }`}
                       >
                         <div className="text-xs text-[var(--foreground)]/50">
                           {monthNames[date.getMonth()]}
@@ -342,11 +339,10 @@ export default function BookingPage() {
                         key={time}
                         type="button"
                         onClick={() => handleTimeSelect(time)}
-                        className={`py-3 rounded-xl border text-center transition-all ${
-                          formData.time === time
+                        className={`py-3 rounded-xl border text-center transition-all ${formData.time === time
                             ? "border-[var(--primary)] bg-[var(--primary)]/10 text-[var(--primary)]"
                             : "border-[var(--foreground)]/10 hover:border-[var(--primary)]/50"
-                        }`}
+                          }`}
                       >
                         {time}
                       </button>

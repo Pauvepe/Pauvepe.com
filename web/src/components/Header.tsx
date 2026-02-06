@@ -24,23 +24,21 @@ export default function Header() {
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isScrolled ? "glass shadow-lg py-3" : "bg-transparent py-5"
-      }`}
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled ? "glass shadow-lg py-3" : "bg-transparent py-5"
+        }`}
     >
       <nav className="container mx-auto px-4 lg:px-8">
         <div className="flex items-center justify-between">
           {/* Logo */}
           <Link
             href="/"
-            className="flex items-center gap-2 group"
+            className="flex items-center group"
           >
-            <span className="material-symbols-outlined text-3xl text-[var(--primary)] group-hover:scale-110 transition-transform">
-              smart_toy
-            </span>
-            <span className="text-xl font-bold font-[family-name:var(--font-display)]">
-              <span className="gradient-text">AI</span> Automation
-            </span>
+            <img
+              src="/images/logo-horizontal-blue.svg"
+              alt="pauvepe"
+              className="h-10 w-auto group-hover:scale-105 transition-transform"
+            />
           </Link>
 
           {/* Desktop Navigation */}
@@ -49,11 +47,10 @@ export default function Header() {
               <Link
                 key={link.href}
                 href={link.href}
-                className={`font-medium transition-colors hover:text-[var(--primary)] ${
-                  pathname === link.href
+                className={`font-medium transition-colors hover:text-[var(--primary)] ${pathname === link.href
                     ? "text-[var(--primary)]"
                     : "text-[var(--foreground)]"
-                }`}
+                  }`}
               >
                 {link.label}
               </Link>
@@ -80,11 +77,10 @@ export default function Header() {
 
         {/* Mobile Menu */}
         <div
-          className={`md:hidden fixed inset-0 top-[72px] bg-[var(--background)]/95 backdrop-blur-lg transition-all duration-300 ${
-            isMenuOpen
+          className={`md:hidden fixed inset-0 top-[72px] bg-[var(--background)]/95 backdrop-blur-lg transition-all duration-300 ${isMenuOpen
               ? "opacity-100 pointer-events-auto"
               : "opacity-0 pointer-events-none"
-          }`}
+            }`}
         >
           <div className="flex flex-col items-center justify-center h-full gap-8">
             {navLinks.map((link) => (
@@ -92,11 +88,10 @@ export default function Header() {
                 key={link.href}
                 href={link.href}
                 onClick={() => setIsMenuOpen(false)}
-                className={`text-2xl font-medium transition-colors hover:text-[var(--primary)] ${
-                  pathname === link.href
+                className={`text-2xl font-medium transition-colors hover:text-[var(--primary)] ${pathname === link.href
                     ? "text-[var(--primary)]"
                     : "text-[var(--foreground)]"
-                }`}
+                  }`}
               >
                 {link.label}
               </Link>

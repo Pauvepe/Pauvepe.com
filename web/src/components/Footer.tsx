@@ -9,13 +9,12 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
           {/* Logo & Description */}
           <div className="space-y-4">
-            <Link href="/" className="flex items-center gap-2 group">
-              <span className="material-symbols-outlined text-2xl text-[var(--primary)]">
-                smart_toy
-              </span>
-              <span className="text-lg font-bold font-[family-name:var(--font-display)]">
-                <span className="gradient-text">AI</span> Automation
-              </span>
+            <Link href="/" className="flex items-center group">
+              <img
+                src="/images/logo-horizontal-blue.svg"
+                alt="pauvepe"
+                className="h-8 w-auto group-hover:scale-105 transition-transform"
+              />
             </Link>
             <p className="text-sm text-[var(--foreground)]/70 max-w-xs">
               Transformando negocios con automatización inteligente. Más ventas,
@@ -93,7 +92,7 @@ export default function Footer() {
         {/* Bottom bar */}
         <div className="pt-8 border-t border-[var(--foreground)]/10 flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-sm text-[var(--foreground)]/60">
-            &copy; {currentYear} AI Automation Expert. Todos los derechos
+            &copy; {currentYear} pauvepe. Todos los derechos
             reservados.
           </p>
           <div className="flex items-center gap-4">
