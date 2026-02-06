@@ -36,6 +36,81 @@ export default function TermsPage() {
               </p>
             </div>
 
+          <div className="p-6 rounded-2xl bg-blue-500/10 border border-blue-500/20 mb-8">
+            <h3 className="font-bold mb-2 flex items-center gap-2">
+              <span className="material-symbols-outlined text-blue-500">
+                info
+              </span>
+              Sobre la Aplicación
+            </h3>
+
+            <div>
+  <h2 className="text-2xl font-bold font-[family-name:var(--font-display)] mb-4 flex items-center gap-2">
+    <span className="material-symbols-outlined text-[var(--primary)]">
+      policy
+    </span>
+    Uso de la API de TikTok
+  </h2>
+  <div className="p-6 rounded-2xl bg-[var(--surface)] border border-[var(--foreground)]/10">
+    <p className="text-[var(--foreground)]/80 leading-relaxed mb-4">
+      Pauvepe Automation utiliza la API oficial de TikTok para proporcionar servicios de automatización. Al usar nuestra aplicación:
+    </p>
+    <ul className="space-y-3 text-[var(--foreground)]/70">
+      <li className="flex items-start gap-3">
+        <span className="material-symbols-outlined text-[var(--primary)] mt-0.5">
+          verified
+        </span>
+        <span>
+          Aceptas que accedamos a tu cuenta de TikTok con los permisos que autorices
+        </span>
+      </li>
+      <li className="flex items-start gap-3">
+        <span className="material-symbols-outlined text-[var(--primary)] mt-0.5">
+          verified
+        </span>
+        <span>
+          Eres responsable del contenido publicado automáticamente en tu nombre
+        </span>
+      </li>
+      <li className="flex items-start gap-3">
+        <span className="material-symbols-outlined text-[var(--primary)] mt-0.5">
+          verified
+        </span>
+        <span>
+          Debes cumplir con las Directrices de la Comunidad de TikTok y sus Términos de Servicio
+        </span>
+      </li>
+      <li className="flex items-start gap-3">
+        <span className="material-symbols-outlined text-[var(--primary)] mt-0.5">
+          verified
+        </span>
+        <span>
+          Puedes revocar el acceso desde la configuración de tu cuenta de TikTok en cualquier momento
+        </span>
+      </li>
+    </ul>
+    <div className="mt-4 p-4 rounded-xl bg-orange-500/10 border border-orange-500/20">
+      <p className="text-orange-600 text-sm flex items-start gap-2">
+        <span className="material-symbols-outlined mt-0.5">
+          info
+        </span>
+        <span>
+          <strong>Importante:</strong> No somos responsables si TikTok suspende o limita tu cuenta por violación de sus políticas. Es tu responsabilidad asegurar que el uso de automatización cumpla con todas las reglas de TikTok.
+        </span>
+      </p>
+    </div>
+  </div>
+</div>
+            <p className="text-[var(--foreground)]/80 leading-relaxed">
+              Estos términos de servicio aplican al uso de <strong>Pauvepe Automation</strong> 
+              (la "App"), una plataforma de automatización con inteligencia artificial 
+              desarrollada por Pau Vera, disponible en pauvepe.com.
+            </p>
+          </div>
+
+
+ 
+
             <div>
               <h2 className="text-2xl font-bold font-[family-name:var(--font-display)] mb-4 flex items-center gap-2">
                 <span className="material-symbols-outlined text-[var(--primary)]">
@@ -255,10 +330,10 @@ export default function TermsPage() {
                   contactarnos en:
                 </p>
                 <a
-                  href="mailto:contacto@pauvepe.com"
+                  href="mailto:info@pauvepe.com"
                   className="inline-block mt-4 text-[var(--primary)] font-medium hover:underline"
                 >
-                  contacto@pauvepe.com
+                  info@pauvepe.com
                 </a>
               </div>
             </div>

@@ -37,44 +37,116 @@ export default function PrivacyPage() {
               </p>
             </div>
 
-            <div>
-              <h2 className="text-2xl font-bold font-[family-name:var(--font-display)] mb-4 flex items-center gap-2">
-                <span className="material-symbols-outlined text-[var(--primary)]">
-                  database
-                </span>
-                Recopilación de Datos
-              </h2>
-              <div className="p-6 rounded-2xl bg-[var(--surface)] border border-[var(--foreground)]/10">
-                <p className="text-[var(--foreground)]/80 leading-relaxed">
-                  Solo procesamos los datos proporcionados por las plataformas
-                  conectadas (comentarios, mensajes, interacciones de usuarios)
-                  a través de nuestro servidor de automatización seguro. Los
-                  datos que recopilamos incluyen:
-                </p>
-                <ul className="mt-4 space-y-2 text-[var(--foreground)]/70">
-                  <li className="flex items-start gap-2">
-                    <span className="material-symbols-outlined text-[var(--primary)] text-lg mt-0.5">
-                      check
-                    </span>
-                    Mensajes y comentarios recibidos en las plataformas
-                    conectadas
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span className="material-symbols-outlined text-[var(--primary)] text-lg mt-0.5">
-                      check
-                    </span>
-                    Información de contacto proporcionada voluntariamente
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span className="material-symbols-outlined text-[var(--primary)] text-lg mt-0.5">
-                      check
-                    </span>
-                    Datos necesarios para procesar respuestas automatizadas
-                  </li>
-                </ul>
-              </div>
-            </div>
+           <div className="p-6 rounded-2xl bg-blue-500/10 border border-blue-500/20 mb-8">
+            <h3 className="font-bold mb-2 flex items-center gap-2">
+              <span className="material-symbols-outlined text-blue-500">
+                info
+              </span>
+              Información de la Aplicación
+            </h3>
+             <div>
+  <h2 className="text-2xl font-bold font-[family-name:var(--font-display)] mb-4 flex items-center gap-2">
+    <span className="material-symbols-outlined text-[var(--primary)]">
+      integration_instructions
+    </span>
+    Integración con TikTok
+  </h2>
+  <div className="p-6 rounded-2xl bg-[var(--surface)] border border-[var(--foreground)]/10">
+    <p className="text-[var(--foreground)]/80 leading-relaxed mb-4">
+      Pauvepe Automation se integra con TikTok para proporcionar servicios de automatización de respuestas. Cuando utilizas nuestra aplicación conectada a tu cuenta de TikTok:
+    </p>
+    <ul className="space-y-2 text-[var(--foreground)]/70">
+      <li className="flex items-start gap-2">
+        <span className="material-symbols-outlined text-[var(--primary)] text-lg mt-0.5">
+          check
+        </span>
+        Accedemos a comentarios y mensajes directos recibidos en tu cuenta de TikTok
+      </li>
+      <li className="flex items-start gap-2">
+        <span className="material-symbols-outlined text-[var(--primary)] text-lg mt-0.5">
+          check
+        </span>
+        Procesamos estos datos únicamente para generar respuestas automatizadas
+      </li>
+      <li className="flex items-start gap-2">
+        <span className="material-symbols-outlined text-[var(--primary)] text-lg mt-0.5">
+          check
+        </span>
+        Publicamos respuestas en tu nombre según la configuración que hayas establecido
+      </li>
+      <li className="flex items-start gap-2">
+        <span className="material-symbols-outlined text-[var(--primary)] text-lg mt-0.5">
+          check
+        </span>
+        No almacenamos contenido de TikTok más allá del tiempo necesario para procesar la respuesta
+      </li>
+    </ul>
+    <div className="mt-4 p-4 rounded-xl bg-blue-500/10 border border-blue-500/20">
+      <p className="text-blue-600 text-sm">
+        <strong>Importante:</strong> Cumplimos estrictamente con las políticas de uso de datos de TikTok y sus términos de servicio de API. Puedes revocar el acceso de Pauvepe Automation a tu cuenta de TikTok en cualquier momento desde la configuración de tu cuenta.
+      </p>
+    </div>
+  </div>
+</div>
+            <p className="text-[var(--foreground)]/80 leading-relaxed">
+              Esta política de privacidad aplica a <strong>Pauvepe Automation</strong> 
+              (la "App" o "Aplicación"), disponible en pauvepe.com y sus servicios 
+              de automatización conectados a diferentes plataformas de redes sociales.
+            </p>
+          </div>
 
+            <div>
+  <h2 className="text-2xl font-bold font-[family-name:var(--font-display)] mb-4 flex items-center gap-2">
+    <span className="material-symbols-outlined text-[var(--primary)]">
+      database
+    </span>
+    Recopilación de Datos
+  </h2>
+  <div className="p-6 rounded-2xl bg-[var(--surface)] border border-[var(--foreground)]/10">
+    <p className="text-[var(--foreground)]/80 leading-relaxed mb-4">
+      Pauvepe Automation recopila y procesa únicamente los datos necesarios para proporcionar servicios de automatización. Los tipos de datos que procesamos incluyen:
+    </p>
+    <ul className="mt-4 space-y-3 text-[var(--foreground)]/70">
+      <li className="flex items-start gap-2">
+        <span className="material-symbols-outlined text-[var(--primary)] text-lg mt-0.5">
+          check
+        </span>
+        <div>
+          <strong>Datos de TikTok:</strong> Comentarios, mensajes directos, nombre de usuario público, e información de perfil público necesaria para contextualizar respuestas
+        </div>
+      </li>
+      <li className="flex items-start gap-2">
+        <span className="material-symbols-outlined text-[var(--primary)] text-lg mt-0.5">
+          check
+        </span>
+        <div>
+          <strong>Datos de otras plataformas:</strong> Mensajes y comentarios de Instagram, Facebook, WhatsApp según las plataformas que conectes
+        </div>
+      </li>
+      <li className="flex items-start gap-2">
+        <span className="material-symbols-outlined text-[var(--primary)] text-lg mt-0.5">
+          check
+        </span>
+        <div>
+          <strong>Datos de configuración:</strong> Preferencias de automatización, horarios programados, y parámetros de respuesta que configures
+        </div>
+      </li>
+      <li className="flex items-start gap-2">
+        <span className="material-symbols-outlined text-[var(--primary)] text-lg mt-0.5">
+          check
+        </span>
+        <div>
+          <strong>Datos de contacto:</strong> Email de contacto para soporte y notificaciones del servicio
+        </div>
+      </li>
+    </ul>
+    <div className="mt-6 p-4 rounded-xl bg-purple-500/10 border border-purple-500/20">
+      <p className="text-purple-600 font-medium text-sm">
+        <strong>Nota:</strong> NO recopilamos información personal sensible, datos financieros, ni información no relacionada con el servicio de automatización.
+      </p>
+    </div>
+  </div>
+</div>
             <div>
               <h2 className="text-2xl font-bold font-[family-name:var(--font-display)] mb-4 flex items-center gap-2">
                 <span className="material-symbols-outlined text-[var(--primary)]">
@@ -196,10 +268,10 @@ export default function PrivacyPage() {
                   ejercer tus derechos sobre tus datos, puedes contactarnos en:
                 </p>
                 <a
-                  href="mailto:contacto@pauvepe.com"
+                  href="mailto:info@pauvepe.com"
                   className="inline-block mt-4 text-[var(--primary)] font-medium hover:underline"
                 >
-                  contacto@pauvepe.com
+                  info@pauvepe.com
                 </a>
               </div>
             </div>
