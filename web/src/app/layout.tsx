@@ -3,6 +3,7 @@ import { Space_Grotesk, Noto_Sans } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import FacebookPixel from "@/components/FacebookPixel";
 
 const spaceGrotesk = Space_Grotesk({
   variable: "--font-display",
@@ -65,6 +66,7 @@ export default function RootLayout({
       <body
         className={`${spaceGrotesk.variable} ${notoSans.variable} antialiased min-h-screen flex flex-col`}
       >
+        <FacebookPixel />
         <Header />
         <main className="flex-1">{children}</main>
         <Footer />
