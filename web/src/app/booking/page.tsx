@@ -1,7 +1,6 @@
 "use client";
 
-import { useState } from "react";
-import type { Metadata } from "next";
+import { useState, useEffect, useCallback } from "react";
 
 const reasons = [
   { value: "automation", label: "Automatización de procesos" },
@@ -58,6 +57,7 @@ export default function BookingPage() {
   const [submitStatus, setSubmitStatus] = useState<
     "idle" | "success" | "error"
   >("idle");
+  const [busySlots, setBusySlots] = useState<string[]>([]);
 
   const [formData, setFormData] = useState({
     name: "",
@@ -70,6 +70,24 @@ export default function BookingPage() {
   });
 
   const availableDates = generateDates();
+
+  const fetchAvailability = useCallback(async (date: string) => {
+    try {
+      const res = await fetch(`/api/booking/availability?date=${date}`);
+      const data = await res.json();
+      setBusySlots(data.busySlots || []);
+    } catch {
+      setBusySlots([]);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (formData.date) {
+      fetchAvailability(formData.date);
+      // Reset time when date changes
+      setFormData((prev) => ({ ...prev, time: "" }));
+    }
+  }, [formData.date, fetchAvailability]);
 
   const handleInputChange = (
     e: React.ChangeEvent<
@@ -103,19 +121,16 @@ export default function BookingPage() {
     }
 
     try {
-      const response = await fetch(
-        "https://n8nauto.pauvepe.com/webhook/booking-new",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            ...formData,
-            phone,
-          }),
-        }
-      );
+      const response = await fetch("/api/booking", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          ...formData,
+          phone,
+        }),
+      });
 
       if (response.ok) {
         setSubmitStatus("success");
@@ -334,19 +349,26 @@ export default function BookingPage() {
                     Selecciona una hora
                   </label>
                   <div className="grid grid-cols-4 gap-3">
-                    {timeSlots.map((time) => (
-                      <button
-                        key={time}
-                        type="button"
-                        onClick={() => handleTimeSelect(time)}
-                        className={`py-3 rounded-xl border text-center transition-all ${formData.time === time
-                            ? "border-[var(--primary)] bg-[var(--primary)]/10 text-[var(--primary)]"
-                            : "border-[var(--foreground)]/10 hover:border-[var(--primary)]/50"
+                    {timeSlots.map((time) => {
+                      const isBusy = busySlots.includes(time);
+                      return (
+                        <button
+                          key={time}
+                          type="button"
+                          onClick={() => !isBusy && handleTimeSelect(time)}
+                          disabled={isBusy}
+                          className={`py-3 rounded-xl border text-center transition-all ${
+                            isBusy
+                              ? "border-[var(--foreground)]/5 bg-[var(--foreground)]/5 text-[var(--foreground)]/30 cursor-not-allowed line-through"
+                              : formData.time === time
+                                ? "border-[var(--primary)] bg-[var(--primary)]/10 text-[var(--primary)]"
+                                : "border-[var(--foreground)]/10 hover:border-[var(--primary)]/50"
                           }`}
-                      >
-                        {time}
-                      </button>
-                    ))}
+                        >
+                          {time}
+                        </button>
+                      );
+                    })}
                   </div>
                 </div>
 

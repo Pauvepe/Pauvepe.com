@@ -20,6 +20,7 @@ export default function Header() {
   const navLinks = [
     { href: "/about", label: "Sobre Mí" },
     { href: "/services", label: "Servicios" },
+    { href: "/freelance", label: "Freelance" },
   ];
 
   return (
