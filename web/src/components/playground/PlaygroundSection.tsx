@@ -2,7 +2,8 @@
 
 import { useState, useEffect, useRef } from "react";
 import { Message, FileAttachment } from "@/types/chat";
-import { sendMessage, generateId } from "@/lib/api";
+import { sendMessage, generateId, fetchSessionHistory } from "@/lib/api";
+import { getSessionId } from "@/lib/chat-session";
 import ChatWindow from "./ChatWindow";
 import ChatInput from "./ChatInput";
 import BotFace from "./BotFace";
@@ -20,6 +21,27 @@ export default function PlaygroundSection() {
   const [showCallModal, setShowCallModal] = useState(false);
   const [callPhone, setCallPhone] = useState("");
   const [callStatus, setCallStatus] = useState<"idle" | "calling" | "success" | "error">("idle");
+  const sessionIdRef = useRef<string>("");
+
+  // Load previous session on mount
+  useEffect(() => {
+    const sid = getSessionId();
+    sessionIdRef.current = sid;
+    if (sid) {
+      fetchSessionHistory(sid).then((history) => {
+        if (history.length > 0) {
+          const restored: Message[] = history.map((m, i) => ({
+            id: `restored-${i}`,
+            role: m.role,
+            content: m.content,
+            timestamp: new Date(m.timestamp),
+          }));
+          setMessages(restored);
+          setBotState("happy");
+        }
+      });
+    }
+  }, []);
 
   // Auto-sleep after inactivity
   useEffect(() => {
@@ -66,6 +88,7 @@ export default function PlaygroundSection() {
         image,
         history,
         locale,
+        sessionId: sessionIdRef.current,
       });
 
       setMessages((prev) => {

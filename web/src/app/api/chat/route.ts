@@ -1,6 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
 import { chatWithAI, transcribeAudio } from "@/lib/openai-chat";
 import { Resend } from "resend";
+import {
+  loadSessionHistory,
+  saveSessionMessage,
+  cleanupOldWebSessions,
+} from "@/lib/chat-session";
 
 let _resend: Resend | null = null;
 function getResend(): Resend {
@@ -10,10 +15,26 @@ function getResend(): Resend {
   return _resend;
 }
 
+// Cleanup old sessions periodically (every ~100 requests)
+let requestCount = 0;
+
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { message, audio, image, history = [], locale = "es" } = body;
+    const {
+      message,
+      audio,
+      image,
+      history = [],
+      locale = "es",
+      sessionId,
+    } = body;
+
+    // Periodic cleanup of old web sessions
+    requestCount++;
+    if (requestCount % 100 === 0) {
+      cleanupOldWebSessions().catch(() => {});
+    }
 
     let transcription: string | undefined;
 
@@ -26,13 +47,50 @@ export async function POST(request: NextRequest) {
       }
     }
 
+    // Load session history from Supabase for context
+    let sessionHistory = "";
+    if (sessionId) {
+      try {
+        const dbHistory = await loadSessionHistory(sessionId);
+        if (dbHistory.length > 0) {
+          sessionHistory = dbHistory
+            .map((m) => {
+              const time = new Date(m.timestamp).toLocaleString("es-ES", {
+                day: "numeric",
+                month: "short",
+                hour: "2-digit",
+                minute: "2-digit",
+              });
+              const who =
+                m.role === "user" ? "VISITANTE" : "ASISTENTE";
+              return `[${time}] ${who}: ${m.content}`;
+            })
+            .join("\n");
+        }
+      } catch (e) {
+        console.error("Session history load error:", e);
+      }
+    }
+
+    // Save user message to Supabase
+    const userContent = transcription || message || "[audio/imagen]";
+    if (sessionId) {
+      saveSessionMessage(
+        sessionId,
+        "entrada",
+        userContent,
+        audio ? "audio" : image ? "imagen" : "texto"
+      ).catch(() => {});
+    }
+
     // Get AI response
     const result = await chatWithAI(
       transcription || message,
       history,
       image,
       transcription,
-      locale
+      locale,
+      sessionHistory
     );
 
     // Check if AI wants to trigger a call
@@ -70,7 +128,9 @@ export async function POST(request: NextRequest) {
               : "Lo siento, hubo un error al iniciar la llamada. Prueba el boton de llamada de abajo.";
         }
       } catch {
-        result.response = result.response.replace(/\[CALL_ME:[^\]]+\]/, "").trim();
+        result.response = result.response
+          .replace(/\[CALL_ME:[^\]]+\]/, "")
+          .trim();
       }
     }
 
@@ -91,7 +151,6 @@ export async function POST(request: NextRequest) {
             <p style="color: #999; font-size: 12px;">Enviado desde el chatbot de pauvepe.com</p>
           </div>`,
         });
-        // Clean the response to remove the action tag
         result.response = result.response
           .replace(/\[SEND_EMAIL:[^\]]+\]/, "")
           .trim();
@@ -100,8 +159,14 @@ export async function POST(request: NextRequest) {
         }
       } catch (emailError) {
         console.error("Email send error:", emailError);
-        result.response = "Lo siento, hubo un error al enviar el correo. Intentalo de nuevo.";
+        result.response =
+          "Lo siento, hubo un error al enviar el correo. Intentalo de nuevo.";
       }
+    }
+
+    // Save assistant response to Supabase
+    if (sessionId) {
+      saveSessionMessage(sessionId, "salida", result.response).catch(() => {});
     }
 
     return NextResponse.json({

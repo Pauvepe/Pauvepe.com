@@ -50,11 +50,16 @@ export default function Header() {
           <Link href="/" className="flex items-center gap-2 group">
             <img
               src="/images/pau-icon.svg"
-              alt="PAU"
-              className="h-9 w-auto group-hover:scale-105 transition-transform"
+              alt="pauvepe"
+              className="h-9 w-auto transition-transform group-hover:scale-105 group-hover:hidden"
+            />
+            <img
+              src="/images/pau-icon-animated.svg"
+              alt="pauvepe"
+              className="h-9 w-auto transition-transform hidden group-hover:block group-hover:scale-105"
             />
             <span className="text-xl font-bold font-[family-name:var(--font-display)] text-[var(--foreground)]">
-              PAU
+              pauvepe
             </span>
           </Link>
 

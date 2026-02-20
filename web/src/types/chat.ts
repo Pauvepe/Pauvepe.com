@@ -29,4 +29,5 @@ export interface ChatRequest {
   image?: string;
   history?: Array<{ role: 'user' | 'assistant'; content: string }>;
   locale?: string;
+  sessionId?: string;
 }

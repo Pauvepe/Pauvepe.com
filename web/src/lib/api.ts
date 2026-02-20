@@ -32,6 +32,18 @@ export async function sendMessage(request: ChatRequest): Promise<ChatResponse> {
   }
 }
 
+/** Fetch previous session history from the server */
+export async function fetchSessionHistory(sessionId: string): Promise<Array<{ role: 'user' | 'assistant'; content: string; timestamp: string }>> {
+  try {
+    const response = await fetch(`${API_URL}/chat/history?sessionId=${encodeURIComponent(sessionId)}`);
+    if (!response.ok) return [];
+    const data = await response.json();
+    return data.messages || [];
+  } catch {
+    return [];
+  }
+}
+
 export function fileToBase64(file: File): Promise<string> {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
