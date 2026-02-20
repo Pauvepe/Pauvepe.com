@@ -1,9 +1,18 @@
 import { createClient } from "@supabase/supabase-js";
 
-const supabaseUrl = process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL || "";
-const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "";
-
-export const supabase = createClient(supabaseUrl, supabaseKey);
+let _supabase: ReturnType<typeof createClient> | null = null;
+export function getSupabase() {
+  if (!_supabase) {
+    const url = process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL || "";
+    const key = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "";
+    _supabase = createClient(url, key);
+  }
+  return _supabase;
+}
+// Backwards compat
+export const supabase = new Proxy({} as ReturnType<typeof createClient>, {
+  get(_, prop) { return (getSupabase() as unknown as Record<string, unknown>)[prop as string]; },
+});
 
 // Types
 export interface Contact {
@@ -54,24 +63,25 @@ export async function findOrCreateContact(data: {
   channel: string;
 }): Promise<string> {
   // Try to find existing contact
-  let contact = null;
+  const sb = getSupabase();
+  let contact: Contact | null = null;
 
   if (data.phone) {
-    const { data: found } = await supabase
+    const { data: found } = await sb
       .from("contacts")
       .select("*")
       .eq("phone", data.phone)
       .single();
-    contact = found;
+    contact = found as Contact | null;
   }
 
   if (!contact && data.email) {
-    const { data: found } = await supabase
+    const { data: found } = await sb
       .from("contacts")
       .select("*")
       .eq("email", data.email)
       .single();
-    contact = found;
+    contact = found as Contact | null;
   }
 
   if (contact) {
@@ -88,24 +98,24 @@ export async function findOrCreateContact(data: {
     if (data.email && !contact.email) updates.email = data.email;
     if (data.phone && !contact.phone) updates.phone = data.phone;
 
-    await supabase.from("contacts").update(updates).eq("id", contact.id);
+    await sb.from("contacts").update(updates as never).eq("id", contact.id);
     return contact.id;
   }
 
   // Create new contact
-  const { data: newContact, error } = await supabase
+  const { data: newContact, error } = await sb
     .from("contacts")
     .insert({
       phone: data.phone || null,
       email: data.email || null,
       name: data.name || null,
       channels: [data.channel],
-    })
+    } as never)
     .select()
     .single();
 
   if (error) throw error;
-  return newContact.id;
+  return (newContact as Contact).id;
 }
 
 // Log an interaction
@@ -118,5 +128,5 @@ export async function logInteraction(data: {
   audio_url?: string;
   metadata?: Record<string, unknown>;
 }) {
-  await supabase.from("interactions").insert(data);
+  await getSupabase().from("interactions").insert(data as never);
 }

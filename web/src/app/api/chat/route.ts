@@ -2,7 +2,13 @@ import { NextRequest, NextResponse } from "next/server";
 import { chatWithAI, transcribeAudio } from "@/lib/openai-chat";
 import { Resend } from "resend";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+let _resend: Resend | null = null;
+function getResend(): Resend {
+  if (!_resend) {
+    _resend = new Resend(process.env.RESEND_API_KEY);
+  }
+  return _resend;
+}
 
 export async function POST(request: NextRequest) {
   try {
@@ -75,7 +81,7 @@ export async function POST(request: NextRequest) {
     if (emailMatch) {
       const [, to, subject, emailBody] = emailMatch;
       try {
-        await resend.emails.send({
+        await getResend().emails.send({
           from: `Pau Vera <${process.env.EMAIL_FROM || "info@pauvepe.com"}>`,
           to: to.trim(),
           subject: subject.trim(),

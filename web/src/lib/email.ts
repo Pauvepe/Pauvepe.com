@@ -1,6 +1,12 @@
 import { Resend } from "resend";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+let _resend: Resend | null = null;
+function getResend(): Resend {
+  if (!_resend) {
+    _resend = new Resend(process.env.RESEND_API_KEY);
+  }
+  return _resend;
+}
 const fromEmail = process.env.EMAIL_FROM || "info@pauvepe.com";
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || "https://pauvepe.com";
 
@@ -36,7 +42,7 @@ export async function sendBookingConfirmation(data: {
   const cancelUrl = `${BASE_URL}/booking/manage/${data.token}?action=cancel`;
   const editUrl = `${BASE_URL}/booking/manage/${data.token}?action=edit`;
 
-  await resend.emails.send({
+  await getResend().emails.send({
     from: `Pau Vera <${fromEmail}>`,
     to: data.email,
     subject: `Cita confirmada - ${dateFormatted} a las ${data.time}`,
@@ -64,7 +70,7 @@ export async function sendBookingConfirmation(data: {
   });
 
   // Notify Pau
-  await resend.emails.send({
+  await getResend().emails.send({
     from: `Booking System <${fromEmail}>`,
     to: "pauvepe05@gmail.com",
     subject: `Nueva cita: ${data.name} - ${dateFormatted} ${data.time}`,
@@ -89,7 +95,7 @@ export async function sendCancellationEmail(data: {
 }) {
   const dateFormatted = formatDate(data.date);
 
-  await resend.emails.send({
+  await getResend().emails.send({
     from: `Pau Vera <${fromEmail}>`,
     to: data.email,
     subject: `Cita cancelada - ${dateFormatted}`,
@@ -107,7 +113,7 @@ export async function sendCancellationEmail(data: {
   });
 
   // Notify Pau
-  await resend.emails.send({
+  await getResend().emails.send({
     from: `Booking System <${fromEmail}>`,
     to: "pauvepe05@gmail.com",
     subject: `Cita CANCELADA: ${data.name} - ${dateFormatted} ${data.time}`,
@@ -132,7 +138,7 @@ export async function sendEditConfirmation(data: {
   const cancelUrl = `${BASE_URL}/booking/manage/${data.token}?action=cancel`;
   const editUrl = `${BASE_URL}/booking/manage/${data.token}?action=edit`;
 
-  await resend.emails.send({
+  await getResend().emails.send({
     from: `Pau Vera <${fromEmail}>`,
     to: data.email,
     subject: `Cita actualizada - ${newFormatted} a las ${data.newTime}`,
@@ -156,7 +162,7 @@ export async function sendEditConfirmation(data: {
   });
 
   // Notify Pau
-  await resend.emails.send({
+  await getResend().emails.send({
     from: `Booking System <${fromEmail}>`,
     to: "pauvepe05@gmail.com",
     subject: `Cita EDITADA: ${data.name} - ${newFormatted} ${data.newTime}`,

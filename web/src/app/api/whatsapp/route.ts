@@ -1,8 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
 import OpenAI from "openai";
-import { supabase, findOrCreateContact, logInteraction } from "@/lib/supabase";
+import { getSupabase, findOrCreateContact, logInteraction } from "@/lib/supabase";
 
-const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+let _openai: OpenAI | null = null;
+function getOpenAI(): OpenAI {
+  if (!_openai) {
+    _openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+  }
+  return _openai;
+}
 
 const TWILIO_ACCOUNT_SID = process.env.TWILIO_ACCOUNT_SID || "";
 const TWILIO_AUTH_TOKEN = process.env.TWILIO_AUTH_TOKEN || "";
@@ -19,7 +25,7 @@ Respuestas cortas (max 3 frases). Esto es una demo de lo que Pau puede crear.
 Responde en el idioma que te hablen. Si te hablan en catalan, responde en catalan.`;
 
 async function getConversationHistory(contactId: string): Promise<Array<{ role: string; content: string }>> {
-  const { data } = await supabase
+  const { data } = await getSupabase()
     .from("interactions")
     .select("role, message")
     .eq("contact_id", contactId)
@@ -28,7 +34,7 @@ async function getConversationHistory(contactId: string): Promise<Array<{ role: 
     .limit(10);
 
   if (!data) return [];
-  return data.reverse().map((m) => ({
+  return (data as Array<{ role: string; message: string }>).reverse().map((m) => ({
     role: m.role === "user" ? "user" : "assistant",
     content: m.message || "",
   }));
@@ -95,7 +101,7 @@ export async function POST(request: NextRequest) {
       { role: "user", content: body || "He enviado una imagen" },
     ];
 
-    const completion = await openai.chat.completions.create({
+    const completion = await getOpenAI().chat.completions.create({
       model: "gpt-4o-mini",
       messages,
       max_tokens: 300,
