@@ -1,8 +1,12 @@
 import OpenAI from "openai";
 
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-});
+let _openai: OpenAI | null = null;
+function getOpenAI(): OpenAI {
+  if (!_openai) {
+    _openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+  }
+  return _openai;
+}
 
 function getSystemPrompt(locale: string): string {
   const langInstruction =
@@ -86,7 +90,7 @@ export async function chatWithAI(
     messages.push({ role: "user", content: message });
   }
 
-  const completion = await openai.chat.completions.create({
+  const completion = await getOpenAI().chat.completions.create({
     model: "gpt-4o-mini",
     messages,
     max_tokens: 500,
@@ -108,7 +112,7 @@ export async function transcribeAudio(audioBase64: string): Promise<string> {
 
   const file = new File([buffer], "audio.webm", { type: "audio/webm" });
 
-  const transcription = await openai.audio.transcriptions.create({
+  const transcription = await getOpenAI().audio.transcriptions.create({
     model: "whisper-1",
     file,
     language: "es",
