@@ -47,4 +47,12 @@ export const services = [
     badge: "Ventas Pasivas",
     color: "pink" as const,
   },
+  {
+    icon: "calculate",
+    title: "Excels y Calculadoras IA",
+    description:
+      "Calculadoras complejas para agentes de seguros: comisiones, variantes, gráficos y datos en tiempo real conectados a APIs.",
+    badge: "Decisiones Inteligentes",
+    color: "amber" as const,
+  },
 ];

@@ -1,11 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createBookingEvent } from "@/lib/google-calendar";
 import { sendBookingConfirmation } from "@/lib/email";
+import { createBooking } from "@/lib/booking-store";
 
 export async function POST(request: NextRequest) {
   try {
     const data = await request.json();
-
     const { name, email, phone, reason, message, date, time } = data;
 
     if (!name || !email || !phone || !reason || !date || !time) {
@@ -16,9 +16,9 @@ export async function POST(request: NextRequest) {
     }
 
     // Create Google Calendar event
-    let calendarLink = "";
+    let eventId = "";
     try {
-      calendarLink = await createBookingEvent({
+      const result = await createBookingEvent({
         name,
         email,
         phone,
@@ -27,33 +27,42 @@ export async function POST(request: NextRequest) {
         date,
         time,
       });
+      eventId = result.eventId;
     } catch (calError) {
       console.error("Calendar event creation failed:", calError);
-      // Continue even if calendar fails - don't block the booking
     }
 
-    // Send confirmation emails
+    // Create booking with token
+    const token = createBooking({
+      name,
+      email,
+      phone,
+      reason,
+      message: message || "",
+      date,
+      time,
+      calendarEventId: eventId,
+    });
+
+    // Send confirmation emails with cancel/edit links
     try {
-      await sendBookingConfirmation({ name, email, date, time, reason });
+      await sendBookingConfirmation({ name, email, date, time, reason, token });
     } catch (emailError) {
       console.error("Email sending failed:", emailError);
     }
 
-    // Also forward to n8n webhook (keep existing flow)
+    // Forward to n8n webhook
     try {
       await fetch("https://n8nauto.pauvepe.com/webhook/booking-new", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
+        body: JSON.stringify({ ...data, token }),
       });
     } catch {
-      // n8n webhook is best-effort
+      // best-effort
     }
 
-    return NextResponse.json({
-      success: true,
-      calendarLink,
-    });
+    return NextResponse.json({ success: true, token });
   } catch (error) {
     console.error("Booking error:", error);
     return NextResponse.json(

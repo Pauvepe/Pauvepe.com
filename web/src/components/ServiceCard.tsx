@@ -3,7 +3,7 @@ interface ServiceCardProps {
   title: string;
   description: string;
   badge: string;
-  color: "blue" | "cyan" | "purple" | "orange" | "emerald" | "pink";
+  color: "blue" | "cyan" | "purple" | "orange" | "emerald" | "pink" | "amber";
 }
 
 const colorClasses = {
@@ -42,6 +42,12 @@ const colorClasses = {
     border: "border-pink-500/20",
     text: "text-pink-500",
     badge: "bg-pink-500/20 text-pink-600",
+  },
+  amber: {
+    bg: "bg-amber-500/10",
+    border: "border-amber-500/20",
+    text: "text-amber-500",
+    badge: "bg-amber-500/20 text-amber-600",
   },
 };
 

@@ -31,12 +31,26 @@ export async function getBusySlots(dateStr: string): Promise<string[]> {
 
   for (const slot of busy) {
     if (slot.start) {
-      const hour = new Date(slot.start).toLocaleTimeString("en-GB", {
-        hour: "2-digit",
-        minute: "2-digit",
-        timeZone: "Europe/Madrid",
-      });
-      busyHours.push(hour);
+      const startTime = new Date(slot.start);
+      const endTime = slot.end ? new Date(slot.end) : new Date(startTime.getTime() + 30 * 60 * 1000);
+
+      // Mark all 30-min slots that overlap with this busy period
+      const slotStart = new Date(`${dateStr}T08:00:00+01:00`);
+      for (let i = 0; i < 20; i++) {
+        const checkTime = new Date(slotStart.getTime() + i * 30 * 60 * 1000);
+        const checkEnd = new Date(checkTime.getTime() + 30 * 60 * 1000);
+
+        if (checkTime < endTime && checkEnd > startTime) {
+          const hour = checkTime.toLocaleTimeString("en-GB", {
+            hour: "2-digit",
+            minute: "2-digit",
+            timeZone: "Europe/Madrid",
+          });
+          if (!busyHours.includes(hour)) {
+            busyHours.push(hour);
+          }
+        }
+      }
     }
   }
 
@@ -51,7 +65,7 @@ export async function createBookingEvent(data: {
   message: string;
   date: string;
   time: string;
-}): Promise<string> {
+}): Promise<{ htmlLink: string; eventId: string }> {
   const auth = getAuth();
   const calendar = google.calendar({ version: "v3", auth });
 
@@ -62,11 +76,11 @@ export async function createBookingEvent(data: {
   const res = await calendar.events.insert({
     calendarId,
     requestBody: {
-      summary: `Auditoría - ${data.name}`,
+      summary: `Auditoria - ${data.name}`,
       description: [
         `Cliente: ${data.name}`,
         `Email: ${data.email}`,
-        `Teléfono: ${data.phone}`,
+        `Telefono: ${data.phone}`,
         `Motivo: ${data.reason}`,
         data.message ? `Mensaje: ${data.message}` : "",
       ]
@@ -91,5 +105,41 @@ export async function createBookingEvent(data: {
     },
   });
 
-  return res.data.htmlLink || "";
+  return {
+    htmlLink: res.data.htmlLink || "",
+    eventId: res.data.id || "",
+  };
+}
+
+export async function deleteCalendarEvent(eventId: string): Promise<void> {
+  const auth = getAuth();
+  const calendar = google.calendar({ version: "v3", auth });
+  await calendar.events.delete({ calendarId, eventId });
+}
+
+export async function updateCalendarEvent(
+  eventId: string,
+  data: { date: string; time: string; name: string }
+): Promise<void> {
+  const auth = getAuth();
+  const calendar = google.calendar({ version: "v3", auth });
+
+  const startDateTime = `${data.date}T${data.time}:00+01:00`;
+  const endDate = new Date(startDateTime);
+  endDate.setMinutes(endDate.getMinutes() + 30);
+
+  await calendar.events.patch({
+    calendarId,
+    eventId,
+    requestBody: {
+      start: {
+        dateTime: startDateTime,
+        timeZone: "Europe/Madrid",
+      },
+      end: {
+        dateTime: endDate.toISOString(),
+        timeZone: "Europe/Madrid",
+      },
+    },
+  });
 }

@@ -28,4 +28,5 @@ export interface ChatRequest {
   audio?: string;
   image?: string;
   history?: Array<{ role: 'user' | 'assistant'; content: string }>;
+  locale?: string;
 }

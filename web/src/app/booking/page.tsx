@@ -1,23 +1,16 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
-
-const reasons = [
-  { value: "automation", label: "Automatización de procesos" },
-  { value: "consulting", label: "Consultoría de IA" },
-  { value: "implementation", label: "Implementación de chatbots" },
-  { value: "ecommerce", label: "E-commerce automatizado" },
-  { value: "other", label: "Otro" },
-];
+import { useApp } from "@/context/AppContext";
 
 const timeSlots = [
-  "09:00",
-  "10:00",
-  "11:00",
-  "12:00",
+  "09:00", "09:30",
+  "10:00", "10:30",
+  "11:00", "11:30",
+  "12:00", "12:30",
   "13:00",
-  "16:00",
-  "17:00",
+  "16:00", "16:30",
+  "17:00", "17:30",
   "18:00",
 ];
 
@@ -35,28 +28,23 @@ function generateDates() {
   return dates;
 }
 
-const dayNames = ["Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb"];
-const monthNames = [
-  "Ene",
-  "Feb",
-  "Mar",
-  "Abr",
-  "May",
-  "Jun",
-  "Jul",
-  "Ago",
-  "Sep",
-  "Oct",
-  "Nov",
-  "Dic",
-];
+const dayNamesI18n: Record<string, string[]> = {
+  es: ["Dom", "Lun", "Mar", "Mie", "Jue", "Vie", "Sab"],
+  ca: ["Diu", "Dll", "Dma", "Dmc", "Dij", "Div", "Dis"],
+  en: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
+};
+
+const monthNamesI18n: Record<string, string[]> = {
+  es: ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"],
+  ca: ["Gen", "Feb", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Oct", "Nov", "Des"],
+  en: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+};
 
 export default function BookingPage() {
+  const { t, locale } = useApp();
   const [step, setStep] = useState(1);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitStatus, setSubmitStatus] = useState<
-    "idle" | "success" | "error"
-  >("idle");
+  const [submitStatus, setSubmitStatus] = useState<"idle" | "success" | "error">("idle");
   const [busySlots, setBusySlots] = useState<string[]>([]);
 
   const [formData, setFormData] = useState({
@@ -70,6 +58,16 @@ export default function BookingPage() {
   });
 
   const availableDates = generateDates();
+  const dayNames = dayNamesI18n[locale] || dayNamesI18n.es;
+  const monthNames = monthNamesI18n[locale] || monthNamesI18n.es;
+
+  const reasons = [
+    { value: "automation", label: t("booking.reason_automation") },
+    { value: "consulting", label: t("booking.reason_consulting") },
+    { value: "chatbots", label: t("booking.reason_chatbots") },
+    { value: "ecommerce", label: t("booking.reason_ecommerce") },
+    { value: "other", label: t("booking.reason_other") },
+  ];
 
   const fetchAvailability = useCallback(async (date: string) => {
     try {
@@ -84,15 +82,12 @@ export default function BookingPage() {
   useEffect(() => {
     if (formData.date) {
       fetchAvailability(formData.date);
-      // Reset time when date changes
       setFormData((prev) => ({ ...prev, time: "" }));
     }
   }, [formData.date, fetchAvailability]);
 
   const handleInputChange = (
-    e: React.ChangeEvent<
-      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
-    >
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
   ) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
@@ -123,13 +118,8 @@ export default function BookingPage() {
     try {
       const response = await fetch("/api/booking", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          ...formData,
-          phone,
-        }),
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ...formData, phone }),
       });
 
       if (response.ok) {
@@ -144,8 +134,7 @@ export default function BookingPage() {
     }
   };
 
-  const canProceedStep1 =
-    formData.name && formData.phone && formData.email && formData.reason;
+  const canProceedStep1 = formData.name && formData.phone && formData.email && formData.reason;
   const canProceedStep2 = formData.date && formData.time;
 
   if (submitStatus === "success") {
@@ -154,22 +143,19 @@ export default function BookingPage() {
         <div className="container mx-auto px-4 lg:px-8">
           <div className="max-w-xl mx-auto text-center">
             <div className="w-20 h-20 rounded-full bg-emerald-500/20 flex items-center justify-center mx-auto mb-6">
-              <span className="material-symbols-outlined text-4xl text-emerald-500">
-                check_circle
-              </span>
+              <span className="material-symbols-outlined text-4xl text-emerald-500">check_circle</span>
             </div>
             <h1 className="text-3xl md:text-4xl font-bold font-[family-name:var(--font-display)] mb-4">
-              ¡Cita Confirmada!
+              {t("booking.success_title")}
             </h1>
             <p className="text-lg text-[var(--foreground)]/70 mb-8">
-              Recibirás un email de confirmación con los detalles de tu cita.
-              ¡Nos vemos pronto!
+              {t("booking.success_msg")}
             </p>
             <a
               href="/"
               className="inline-block px-8 py-4 bg-gradient-to-r from-[var(--primary)] to-[var(--secondary)] text-white font-semibold rounded-full hover:shadow-lg transition-all"
             >
-              Volver al Inicio
+              {t("booking.back_home")}
             </a>
           </div>
         </div>
@@ -184,14 +170,12 @@ export default function BookingPage() {
           {/* Header */}
           <div className="text-center mb-12">
             <span className="inline-block px-4 py-2 rounded-full bg-[var(--primary)]/10 text-[var(--primary)] text-sm font-medium mb-4">
-              Agenda tu Sesión
+              {t("booking.badge")}
             </span>
             <h1 className="text-3xl md:text-4xl font-bold font-[family-name:var(--font-display)] mb-4">
-              Auditoría <span className="gradient-text">Gratuita</span>
+              {t("booking.title1")} <span className="gradient-text">{t("booking.title2")}</span>
             </h1>
-            <p className="text-[var(--foreground)]/70">
-              30 minutos para analizar cómo la IA puede escalar tu negocio
-            </p>
+            <p className="text-[var(--foreground)]/70">{t("booking.subtitle")}</p>
           </div>
 
           {/* Progress Steps */}
@@ -199,19 +183,21 @@ export default function BookingPage() {
             {[1, 2, 3].map((s) => (
               <div key={s} className="flex items-center gap-2">
                 <div
-                  className={`w-10 h-10 rounded-full flex items-center justify-center font-bold ${step >= s
+                  className={`w-10 h-10 rounded-full flex items-center justify-center font-bold ${
+                    step >= s
                       ? "bg-gradient-to-r from-[var(--primary)] to-[var(--secondary)] text-white"
                       : "bg-[var(--surface)] text-[var(--foreground)]/40 border border-[var(--foreground)]/10"
-                    }`}
+                  }`}
                 >
                   {s}
                 </div>
                 {s < 3 && (
                   <div
-                    className={`w-16 h-1 rounded ${step > s
+                    className={`w-16 h-1 rounded ${
+                      step > s
                         ? "bg-gradient-to-r from-[var(--primary)] to-[var(--secondary)]"
                         : "bg-[var(--foreground)]/10"
-                      }`}
+                    }`}
                   />
                 )}
               </div>
@@ -224,9 +210,7 @@ export default function BookingPage() {
             {step === 1 && (
               <div className="space-y-6 animate-fade-in-up">
                 <div>
-                  <label className="block text-sm font-medium mb-2">
-                    Nombre Completo *
-                  </label>
+                  <label className="block text-sm font-medium mb-2">{t("booking.name")} *</label>
                   <input
                     type="text"
                     name="name"
@@ -234,14 +218,12 @@ export default function BookingPage() {
                     onChange={handleInputChange}
                     required
                     className="w-full px-4 py-3 rounded-xl border border-[var(--foreground)]/10 bg-[var(--surface)] focus:border-[var(--primary)] focus:ring-2 focus:ring-[var(--primary)]/20 outline-none transition-all"
-                    placeholder="Tu nombre"
+                    placeholder={t("booking.name")}
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium mb-2">
-                    Teléfono *
-                  </label>
+                  <label className="block text-sm font-medium mb-2">{t("booking.phone")} *</label>
                   <input
                     type="tel"
                     name="phone"
@@ -255,9 +237,7 @@ export default function BookingPage() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium mb-2">
-                    Email *
-                  </label>
+                  <label className="block text-sm font-medium mb-2">{t("booking.email")} *</label>
                   <input
                     type="email"
                     name="email"
@@ -270,9 +250,7 @@ export default function BookingPage() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium mb-2">
-                    Motivo de la cita *
-                  </label>
+                  <label className="block text-sm font-medium mb-2">{t("booking.reason")} *</label>
                   <select
                     name="reason"
                     value={formData.reason}
@@ -280,26 +258,22 @@ export default function BookingPage() {
                     required
                     className="w-full px-4 py-3 rounded-xl border border-[var(--foreground)]/10 bg-[var(--surface)] focus:border-[var(--primary)] focus:ring-2 focus:ring-[var(--primary)]/20 outline-none transition-all"
                   >
-                    <option value="">Selecciona una opción</option>
+                    <option value="">{t("booking.select_option")}</option>
                     {reasons.map((r) => (
-                      <option key={r.value} value={r.value}>
-                        {r.label}
-                      </option>
+                      <option key={r.value} value={r.value}>{r.label}</option>
                     ))}
                   </select>
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium mb-2">
-                    Mensaje (opcional)
-                  </label>
+                  <label className="block text-sm font-medium mb-2">{t("booking.message")}</label>
                   <textarea
                     name="message"
                     value={formData.message}
                     onChange={handleInputChange}
                     rows={3}
                     className="w-full px-4 py-3 rounded-xl border border-[var(--foreground)]/10 bg-[var(--surface)] focus:border-[var(--primary)] focus:ring-2 focus:ring-[var(--primary)]/20 outline-none transition-all resize-none"
-                    placeholder="Cuéntame más sobre tu negocio..."
+                    placeholder={t("booking.message_placeholder")}
                   />
                 </div>
 
@@ -309,7 +283,7 @@ export default function BookingPage() {
                   disabled={!canProceedStep1}
                   className="w-full py-4 bg-gradient-to-r from-[var(--primary)] to-[var(--secondary)] text-white font-semibold rounded-full disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-lg transition-all"
                 >
-                  Siguiente
+                  {t("booking.next")}
                 </button>
               </div>
             )}
@@ -318,37 +292,30 @@ export default function BookingPage() {
             {step === 2 && (
               <div className="space-y-8 animate-fade-in-up">
                 <div>
-                  <label className="block text-sm font-medium mb-4">
-                    Selecciona una fecha
-                  </label>
+                  <label className="block text-sm font-medium mb-4">{t("booking.select_date")}</label>
                   <div className="grid grid-cols-4 sm:grid-cols-5 gap-3">
                     {availableDates.map((date) => (
                       <button
                         key={date.toISOString()}
                         type="button"
                         onClick={() => handleDateSelect(date)}
-                        className={`p-3 rounded-xl border text-center transition-all ${formData.date === date.toISOString().split("T")[0]
+                        className={`p-3 rounded-xl border text-center transition-all ${
+                          formData.date === date.toISOString().split("T")[0]
                             ? "border-[var(--primary)] bg-[var(--primary)]/10 text-[var(--primary)]"
                             : "border-[var(--foreground)]/10 hover:border-[var(--primary)]/50"
-                          }`}
+                        }`}
                       >
-                        <div className="text-xs text-[var(--foreground)]/50">
-                          {monthNames[date.getMonth()]}
-                        </div>
+                        <div className="text-xs text-[var(--foreground)]/50">{monthNames[date.getMonth()]}</div>
                         <div className="text-xl font-bold">{date.getDate()}</div>
-                        <div className="text-xs">
-                          {dayNames[date.getDay()]}
-                        </div>
+                        <div className="text-xs">{dayNames[date.getDay()]}</div>
                       </button>
                     ))}
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium mb-4">
-                    Selecciona una hora
-                  </label>
-                  <div className="grid grid-cols-4 gap-3">
+                  <label className="block text-sm font-medium mb-4">{t("booking.select_time")}</label>
+                  <div className="grid grid-cols-4 sm:grid-cols-5 gap-3">
                     {timeSlots.map((time) => {
                       const isBusy = busySlots.includes(time);
                       return (
@@ -378,7 +345,7 @@ export default function BookingPage() {
                     onClick={() => setStep(1)}
                     className="flex-1 py-4 border-2 border-[var(--foreground)]/20 rounded-full font-semibold hover:border-[var(--primary)] transition-all"
                   >
-                    Atrás
+                    {t("booking.back")}
                   </button>
                   <button
                     type="button"
@@ -386,7 +353,7 @@ export default function BookingPage() {
                     disabled={!canProceedStep2}
                     className="flex-1 py-4 bg-gradient-to-r from-[var(--primary)] to-[var(--secondary)] text-white font-semibold rounded-full disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-lg transition-all"
                   >
-                    Siguiente
+                    {t("booking.next")}
                   </button>
                 </div>
               </div>
@@ -397,49 +364,39 @@ export default function BookingPage() {
               <div className="space-y-6 animate-fade-in-up">
                 <div className="p-6 rounded-2xl bg-[var(--surface)] border border-[var(--foreground)]/10">
                   <h3 className="font-bold mb-4 font-[family-name:var(--font-display)]">
-                    Resumen de tu cita
+                    {t("booking.summary")}
                   </h3>
                   <div className="space-y-3 text-sm">
                     <div className="flex justify-between">
-                      <span className="text-[var(--foreground)]/60">
-                        Nombre:
-                      </span>
+                      <span className="text-[var(--foreground)]/60">{t("booking.name")}:</span>
                       <span className="font-medium">{formData.name}</span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-[var(--foreground)]/60">
-                        Email:
-                      </span>
+                      <span className="text-[var(--foreground)]/60">{t("booking.email")}:</span>
                       <span className="font-medium">{formData.email}</span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-[var(--foreground)]/60">
-                        Teléfono:
-                      </span>
+                      <span className="text-[var(--foreground)]/60">{t("booking.phone")}:</span>
                       <span className="font-medium">{formData.phone}</span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-[var(--foreground)]/60">
-                        Fecha:
-                      </span>
+                      <span className="text-[var(--foreground)]/60">{t("booking.select_date")}:</span>
                       <span className="font-medium">{formData.date}</span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-[var(--foreground)]/60">
-                        Hora:
-                      </span>
+                      <span className="text-[var(--foreground)]/60">{t("booking.select_time")}:</span>
                       <span className="font-medium">{formData.time}</span>
                     </div>
                   </div>
                 </div>
 
                 <p className="text-center text-sm text-[var(--foreground)]/60">
-                  La sesión de 30 minutos es 100% gratuita y sin compromiso.
+                  {t("booking.free_note")}
                 </p>
 
                 {submitStatus === "error" && (
                   <div className="p-4 rounded-xl bg-red-500/10 border border-red-500/20 text-red-500 text-center">
-                    Hubo un error al enviar. Por favor, inténtalo de nuevo.
+                    {t("booking.error")}
                   </div>
                 )}
 
@@ -449,7 +406,7 @@ export default function BookingPage() {
                     onClick={() => setStep(2)}
                     className="flex-1 py-4 border-2 border-[var(--foreground)]/20 rounded-full font-semibold hover:border-[var(--primary)] transition-all"
                   >
-                    Atrás
+                    {t("booking.back")}
                   </button>
                   <button
                     type="submit"
@@ -459,14 +416,12 @@ export default function BookingPage() {
                     {isSubmitting ? (
                       <>
                         <span className="animate-spin">
-                          <span className="material-symbols-outlined text-xl">
-                            progress_activity
-                          </span>
+                          <span className="material-symbols-outlined text-xl">progress_activity</span>
                         </span>
-                        Enviando...
+                        {t("booking.sending")}
                       </>
                     ) : (
-                      "Confirmar Cita"
+                      t("booking.confirm")
                     )}
                   </button>
                 </div>
