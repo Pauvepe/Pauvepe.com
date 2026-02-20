@@ -15,11 +15,11 @@ function formatDate(dateStr: string): string {
 
 function emailWrapper(content: string): string {
   return `
-    <div style="font-family: 'Segoe UI', Arial, sans-serif; max-width: 600px; margin: 0 auto; background: #f5f6f8; padding: 40px 20px;">
+    <div style="font-family: 'Segoe UI', Arial, sans-serif; max-width: 600px; margin: 0 auto; background: #F5F1EC; padding: 40px 20px;">
       <div style="background: white; border-radius: 16px; padding: 40px; box-shadow: 0 2px 8px rgba(0,0,0,0.06);">
         ${content}
         <hr style="border: none; border-top: 1px solid #eee; margin: 30px 0;" />
-        <p style="color: #999; font-size: 12px; text-align: center;">pauvepe.com - Automatizacion con IA</p>
+        <p style="color: #999; font-size: 12px; text-align: center;">pauvepe.com - Tu Growth Partner Digital</p>
       </div>
     </div>`;
 }
@@ -42,14 +42,14 @@ export async function sendBookingConfirmation(data: {
     subject: `Cita confirmada - ${dateFormatted} a las ${data.time}`,
     html: emailWrapper(`
       <div style="text-align: center; margin-bottom: 30px;">
-        <div style="width: 60px; height: 60px; background: #e6f0ff; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; margin-bottom: 16px;">
+        <div style="width: 60px; height: 60px; background: #FDF5EF; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; margin-bottom: 16px;">
           <span style="font-size: 28px;">&#10003;</span>
         </div>
-        <h1 style="color: #0062ff; margin: 0; font-size: 24px;">Cita Confirmada</h1>
+        <h1 style="color: #D4714E; margin: 0; font-size: 24px;">Cita Confirmada</h1>
       </div>
       <p style="color: #333; font-size: 16px; line-height: 1.6;">Hola <strong>${data.name}</strong>,</p>
       <p style="color: #555; font-size: 15px; line-height: 1.6;">Tu auditoria gratuita ha sido confirmada:</p>
-      <div style="background: #f0f4ff; border-radius: 12px; padding: 20px; margin: 20px 0;">
+      <div style="background: #FDF5EF; border-radius: 12px; padding: 20px; margin: 20px 0;">
         <p style="margin: 8px 0; color: #333;"><strong>Fecha:</strong> ${dateFormatted}</p>
         <p style="margin: 8px 0; color: #333;"><strong>Hora:</strong> ${data.time} (hora de Espana)</p>
         <p style="margin: 8px 0; color: #333;"><strong>Duracion:</strong> 30 minutos</p>
@@ -57,7 +57,7 @@ export async function sendBookingConfirmation(data: {
       </div>
       <p style="color: #555; font-size: 15px;">Te contactare por WhatsApp o email antes de la cita para conectarnos.</p>
       <div style="text-align: center; margin-top: 30px;">
-        <a href="${editUrl}" style="display: inline-block; background: linear-gradient(135deg, #0062ff, #00c6ff); color: white; padding: 12px 30px; border-radius: 50px; text-decoration: none; font-weight: 600; margin: 5px;">Editar cita</a>
+        <a href="${editUrl}" style="display: inline-block; background: linear-gradient(135deg, #D4714E, #5A8A62); color: white; padding: 12px 30px; border-radius: 50px; text-decoration: none; font-weight: 600; margin: 5px;">Editar cita</a>
         <a href="${cancelUrl}" style="display: inline-block; background: #f5f5f5; color: #666; padding: 12px 30px; border-radius: 50px; text-decoration: none; font-weight: 600; margin: 5px;">Cancelar cita</a>
       </div>
     `),
@@ -69,7 +69,7 @@ export async function sendBookingConfirmation(data: {
     to: "pauvepe05@gmail.com",
     subject: `Nueva cita: ${data.name} - ${dateFormatted} ${data.time}`,
     html: emailWrapper(`
-      <h2 style="color: #0062ff;">Nueva cita agendada</h2>
+      <h2 style="color: #D4714E;">Nueva cita agendada</h2>
       <ul style="line-height: 2;">
         <li><strong>Nombre:</strong> ${data.name}</li>
         <li><strong>Email:</strong> ${data.email}</li>
@@ -101,7 +101,7 @@ export async function sendCancellationEmail(data: {
       <p style="color: #555; font-size: 15px;">Tu cita del <strong>${dateFormatted}</strong> a las <strong>${data.time}</strong> ha sido cancelada correctamente.</p>
       <p style="color: #555; font-size: 15px;">Si quieres reagendar, haz clic abajo:</p>
       <div style="text-align: center; margin-top: 20px;">
-        <a href="${BASE_URL}/booking" style="display: inline-block; background: linear-gradient(135deg, #0062ff, #00c6ff); color: white; padding: 12px 30px; border-radius: 50px; text-decoration: none; font-weight: 600;">Agendar nueva cita</a>
+        <a href="${BASE_URL}/booking" style="display: inline-block; background: linear-gradient(135deg, #D4714E, #5A8A62); color: white; padding: 12px 30px; border-radius: 50px; text-decoration: none; font-weight: 600;">Agendar nueva cita</a>
       </div>
     `),
   });
@@ -138,7 +138,7 @@ export async function sendEditConfirmation(data: {
     subject: `Cita actualizada - ${newFormatted} a las ${data.newTime}`,
     html: emailWrapper(`
       <div style="text-align: center; margin-bottom: 30px;">
-        <h1 style="color: #0062ff; margin: 0; font-size: 24px;">Cita Actualizada</h1>
+        <h1 style="color: #D4714E; margin: 0; font-size: 24px;">Cita Actualizada</h1>
       </div>
       <p style="color: #333; font-size: 16px;">Hola <strong>${data.name}</strong>,</p>
       <p style="color: #555; font-size: 15px;">Tu cita ha sido modificada correctamente:</p>
@@ -149,7 +149,7 @@ export async function sendEditConfirmation(data: {
         <p style="margin: 4px 0; color: #065f46;"><strong>Ahora:</strong> ${newFormatted} a las ${data.newTime}</p>
       </div>
       <div style="text-align: center; margin-top: 20px;">
-        <a href="${editUrl}" style="display: inline-block; background: linear-gradient(135deg, #0062ff, #00c6ff); color: white; padding: 12px 30px; border-radius: 50px; text-decoration: none; font-weight: 600; margin: 5px;">Editar otra vez</a>
+        <a href="${editUrl}" style="display: inline-block; background: linear-gradient(135deg, #D4714E, #5A8A62); color: white; padding: 12px 30px; border-radius: 50px; text-decoration: none; font-weight: 600; margin: 5px;">Editar otra vez</a>
         <a href="${cancelUrl}" style="display: inline-block; background: #f5f5f5; color: #666; padding: 12px 30px; border-radius: 50px; text-decoration: none; font-weight: 600; margin: 5px;">Cancelar cita</a>
       </div>
     `),

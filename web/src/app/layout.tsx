@@ -1,18 +1,18 @@
 import type { Metadata } from "next";
-import { Space_Grotesk, Noto_Sans } from "next/font/google";
+import { Bricolage_Grotesque, DM_Sans } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import FacebookPixel from "@/components/FacebookPixel";
 import { AppProvider } from "@/context/AppContext";
 
-const spaceGrotesk = Space_Grotesk({
+const bricolage = Bricolage_Grotesque({
   variable: "--font-display",
   subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700"],
+  weight: ["300", "400", "500", "600", "700", "800"],
 });
 
-const notoSans = Noto_Sans({
+const dmSans = DM_Sans({
   variable: "--font-body",
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
@@ -20,23 +20,24 @@ const notoSans = Noto_Sans({
 
 export const metadata: Metadata = {
   title: {
-    default: "Pau Vera | Automatizacion IA para Negocios",
+    default: "Pau Vera | Tu Negocio En Esteroides",
     template: "%s | Pau Vera",
   },
   description:
-    "Escala tu negocio con automatizacion de IA. Chatbots, agentes de voz, e-commerce automatizado, WhatsApp Business y mas. Auditoria gratuita.",
+    "Escalamos tu negocio con ads, chatbots 24/7, secretaria IA, landing pages, ecommerce y sistemas post-venta. Vendemos por ti online. Auditoria gratuita.",
   keywords: [
-    "automatizacion IA",
+    "growth partner digital",
+    "publicidad digital",
     "chatbots para negocios",
-    "agentes de voz IA",
-    "automatizacion marketing",
-    "e-commerce automatizado",
-    "WhatsApp Business automatizado",
+    "secretaria IA",
+    "landing pages conversion",
+    "ecommerce",
+    "Google Ads",
+    "Meta Ads",
+    "automatizacion ventas",
     "Pau Vera",
     "pauvepe",
     "Barcelona",
-    "automatizacion ventas",
-    "inteligencia artificial negocios",
   ],
   authors: [{ name: "Pau Vera" }],
   creator: "Pau Vera",
@@ -49,16 +50,16 @@ export const metadata: Metadata = {
     type: "website",
     locale: "es_ES",
     url: "https://pauvepe.com",
-    siteName: "Pau Vera - AI Automation",
-    title: "Pau Vera | Automatizacion IA para Negocios",
+    siteName: "Pau Vera - Tu Negocio En Esteroides",
+    title: "Pau Vera | Tu Negocio En Esteroides",
     description:
-      "Escala tu negocio con automatizacion de IA. Chatbots, agentes de voz, e-commerce automatizado y mas.",
+      "Escalamos tu negocio con ads, chatbots 24/7, secretaria IA, landing pages y ecommerce. Vendemos por ti online.",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Pau Vera | Automatizacion IA para Negocios",
+    title: "Pau Vera | Tu Negocio En Esteroides",
     description:
-      "Escala tu negocio con automatizacion de IA. Chatbots, agentes de voz, e-commerce automatizado y mas.",
+      "Escalamos tu negocio con ads, chatbots 24/7, secretaria IA, landing pages y ecommerce. Vendemos por ti online.",
   },
   robots: {
     index: true,
@@ -99,7 +100,7 @@ export default function RootLayout({
         />
       </head>
       <body
-        className={`${spaceGrotesk.variable} ${notoSans.variable} antialiased min-h-screen flex flex-col`}
+        className={`${bricolage.variable} ${dmSans.variable} antialiased min-h-screen flex flex-col`}
       >
         <AppProvider>
           <FacebookPixel />

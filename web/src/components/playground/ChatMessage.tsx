@@ -16,17 +16,15 @@ export default function ChatMessage({ message, isLatest = false }: ChatMessagePr
       className={`flex gap-3 animate-fade-in-up ${isUser ? 'flex-row-reverse' : 'flex-row'}`}
     >
       {/* Avatar */}
-      <div
-        className={`flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center ${
-          isUser
-            ? 'bg-gradient-to-br from-[var(--primary)] to-[var(--secondary)]'
-            : 'bg-[var(--surface)] border border-[var(--primary)]/30'
-        }`}
-      >
-        <span className={`material-symbols-outlined text-sm ${isUser ? 'text-white' : 'text-[var(--primary)]'}`}>
-          {isUser ? 'person' : 'smart_toy'}
-        </span>
-      </div>
+      {isUser ? (
+        <div className="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center bg-[var(--primary)]">
+          <span className="material-symbols-outlined text-sm text-white">person</span>
+        </div>
+      ) : (
+        <div className="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center overflow-hidden">
+          <img src="/images/pau-icon.svg" alt="PAU" className="w-7 h-7" />
+        </div>
+      )}
 
       {/* Message bubble */}
       <div

@@ -3,51 +3,27 @@ interface ServiceCardProps {
   title: string;
   description: string;
   badge: string;
-  color: "blue" | "cyan" | "purple" | "orange" | "emerald" | "pink" | "amber";
+  color: "copper" | "sage" | "earth";
 }
 
 const colorClasses = {
-  blue: {
-    bg: "bg-blue-500/10",
-    border: "border-blue-500/20",
-    text: "text-blue-500",
-    badge: "bg-blue-500/20 text-blue-600",
+  copper: {
+    bg: "bg-[#D4714E]/10",
+    border: "border-[#D4714E]/20",
+    text: "text-[#D4714E]",
+    badge: "bg-[#D4714E]/20 text-[#C0623F]",
   },
-  cyan: {
-    bg: "bg-cyan-500/10",
-    border: "border-cyan-500/20",
-    text: "text-cyan-500",
-    badge: "bg-cyan-500/20 text-cyan-600",
+  sage: {
+    bg: "bg-[#5A8A62]/10",
+    border: "border-[#5A8A62]/20",
+    text: "text-[#5A8A62]",
+    badge: "bg-[#5A8A62]/20 text-[#4A7A52]",
   },
-  purple: {
-    bg: "bg-purple-500/10",
-    border: "border-purple-500/20",
-    text: "text-purple-500",
-    badge: "bg-purple-500/20 text-purple-600",
-  },
-  orange: {
-    bg: "bg-orange-500/10",
-    border: "border-orange-500/20",
-    text: "text-orange-500",
-    badge: "bg-orange-500/20 text-orange-600",
-  },
-  emerald: {
-    bg: "bg-emerald-500/10",
-    border: "border-emerald-500/20",
-    text: "text-emerald-500",
-    badge: "bg-emerald-500/20 text-emerald-600",
-  },
-  pink: {
-    bg: "bg-pink-500/10",
-    border: "border-pink-500/20",
-    text: "text-pink-500",
-    badge: "bg-pink-500/20 text-pink-600",
-  },
-  amber: {
-    bg: "bg-amber-500/10",
-    border: "border-amber-500/20",
-    text: "text-amber-500",
-    badge: "bg-amber-500/20 text-amber-600",
+  earth: {
+    bg: "bg-[#A07850]/10",
+    border: "border-[#A07850]/20",
+    text: "text-[#A07850]",
+    badge: "bg-[#A07850]/20 text-[#8A6840]",
   },
 };
 

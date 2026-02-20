@@ -47,12 +47,15 @@ export default function Header() {
       <nav className="container mx-auto px-4 lg:px-8">
         <div className="flex items-center justify-between">
           {/* Logo */}
-          <Link href="/" className="flex items-center group">
+          <Link href="/" className="flex items-center gap-2 group">
             <img
-              src="/images/logo-horizontal-blue.svg"
-              alt="pauvepe"
-              className="h-10 w-auto group-hover:scale-105 transition-transform"
+              src="/images/pau-icon.svg"
+              alt="PAU"
+              className="h-9 w-auto group-hover:scale-105 transition-transform"
             />
+            <span className="text-xl font-bold font-[family-name:var(--font-display)] text-[var(--foreground)]">
+              PAU
+            </span>
           </Link>
 
           {/* Desktop Navigation */}
@@ -110,7 +113,7 @@ export default function Header() {
 
             <Link
               href="/booking"
-              className="btn-shine px-6 py-2.5 bg-gradient-to-r from-[var(--primary)] to-[var(--secondary)] text-white font-semibold rounded-full hover:shadow-lg hover:shadow-[var(--primary)]/30 transition-all"
+              className="btn-shine px-6 py-2.5 bg-[var(--primary)] text-white font-semibold rounded-full hover:shadow-lg hover:shadow-[var(--primary)]/30 transition-all"
             >
               {t("nav.booking")}
             </Link>
@@ -183,7 +186,7 @@ export default function Header() {
             <Link
               href="/booking"
               onClick={() => setIsMenuOpen(false)}
-              className="btn-shine px-8 py-3 bg-gradient-to-r from-[var(--primary)] to-[var(--secondary)] text-white font-semibold rounded-full text-xl"
+              className="btn-shine px-8 py-3 bg-[var(--primary)] text-white font-semibold rounded-full text-xl"
             >
               {t("nav.booking")}
             </Link>

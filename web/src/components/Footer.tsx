@@ -13,12 +13,15 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
           {/* Logo & Description */}
           <div className="space-y-4">
-            <Link href="/" className="flex items-center group">
+            <Link href="/" className="flex items-center gap-2 group">
               <img
-                src="/images/logo-horizontal-blue.svg"
-                alt="pauvepe"
+                src="/images/pau-icon.svg"
+                alt="PAU"
                 className="h-8 w-auto group-hover:scale-105 transition-transform"
               />
+              <span className="text-lg font-bold font-[family-name:var(--font-display)] text-[var(--foreground)]">
+                PAU
+              </span>
             </Link>
             <p className="text-sm text-[var(--foreground)]/70 max-w-xs">
               {t("footer.desc")}
@@ -77,7 +80,7 @@ export default function Footer() {
         {/* Bottom bar */}
         <div className="pt-8 border-t border-[var(--foreground)]/10 flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-sm text-[var(--foreground)]/60">
-            &copy; {currentYear} pauvepe. {t("footer.rights")}
+            &copy; {currentYear} Pau Vera. {t("footer.rights")}
           </p>
           <div className="flex items-center gap-4">
             <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="text-[var(--foreground)]/60 hover:text-[var(--primary)] transition-colors" aria-label="LinkedIn">

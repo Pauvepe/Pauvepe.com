@@ -338,8 +338,8 @@ Respuestas cortas y naturales. Intenta que agenden una cita gratuita en pauvepe.
           <div className="glass rounded-2xl border border-[var(--primary)]/20 overflow-hidden shadow-xl shadow-[var(--primary)]/5">
             {/* Chat header */}
             <div className="flex items-center gap-3 px-4 py-3 border-b border-[var(--foreground)]/10 bg-gradient-to-r from-[var(--primary)]/5 to-[var(--secondary)]/5">
-              <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[var(--primary)] to-[var(--secondary)] flex items-center justify-center">
-                <span className="material-symbols-outlined text-white">smart_toy</span>
+              <div className="w-10 h-10 rounded-full flex items-center justify-center overflow-hidden">
+                <img src="/images/pau-icon.svg" alt="PAU" className="w-9 h-9" />
               </div>
               <div>
                 <h3 className="font-semibold font-[family-name:var(--font-display)] text-sm">
@@ -361,7 +361,7 @@ Respuestas cortas y naturales. Intenta que agenden una cita gratuita en pauvepe.
             <button
               onClick={handleVapiCall}
               disabled={vapiLoading}
-              className="flex items-center justify-center gap-2 px-5 py-3 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 text-white font-semibold text-sm hover:shadow-lg hover:shadow-purple-500/30 transition-all disabled:opacity-70"
+              className="flex items-center justify-center gap-2 px-5 py-3 rounded-full bg-gradient-to-r from-[var(--primary)] to-[var(--accent)] text-white font-semibold text-sm hover:shadow-lg hover:shadow-[var(--primary)]/30 transition-all disabled:opacity-70"
             >
               <span className={`material-symbols-outlined text-lg ${vapiLoading ? "animate-pulse" : ""}`}>
                 {vapiLoading ? "phone_in_talk" : "call"}
@@ -400,7 +400,7 @@ Respuestas cortas y naturales. Intenta que agenden una cita gratuita en pauvepe.
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm animate-fade-in">
           <div className="bg-[var(--surface)] border border-[var(--primary)]/20 rounded-2xl p-6 w-[90%] max-w-md shadow-2xl">
             <div className="flex items-center gap-3 mb-4">
-              <div className="w-12 h-12 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center">
+              <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[var(--primary)] to-[var(--accent)] flex items-center justify-center">
                 <span className="material-symbols-outlined text-white text-2xl">call</span>
               </div>
               <div>
@@ -445,7 +445,7 @@ Respuestas cortas y naturales. Intenta que agenden una cita gratuita en pauvepe.
               <button
                 onClick={() => triggerOutboundCall(callPhone)}
                 disabled={!callPhone.trim() || callStatus === "calling" || callStatus === "success"}
-                className="flex-1 px-4 py-3 rounded-xl bg-gradient-to-r from-purple-500 to-pink-500 text-white font-semibold hover:shadow-lg hover:shadow-purple-500/30 transition-all disabled:opacity-50 flex items-center justify-center gap-2"
+                className="flex-1 px-4 py-3 rounded-xl bg-gradient-to-r from-[var(--primary)] to-[var(--accent)] text-white font-semibold hover:shadow-lg hover:shadow-[var(--primary)]/30 transition-all disabled:opacity-50 flex items-center justify-center gap-2"
               >
                 <span className={`material-symbols-outlined text-lg ${callStatus === "calling" ? "animate-pulse" : ""}`}>
                   {callStatus === "calling" ? "phone_in_talk" : "call"}

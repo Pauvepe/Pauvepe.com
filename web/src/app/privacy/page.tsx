@@ -37,9 +37,9 @@ export default function PrivacyPage() {
               </p>
             </div>
 
-           <div className="p-6 rounded-2xl bg-blue-500/10 border border-blue-500/20 mb-8">
+           <div className="p-6 rounded-2xl bg-[var(--primary)]/10 border border-[var(--primary)]/20 mb-8">
             <h3 className="font-bold mb-2 flex items-center gap-2">
-              <span className="material-symbols-outlined text-blue-500">
+              <span className="material-symbols-outlined text-[var(--primary)]">
                 info
               </span>
               Información de la Aplicación
@@ -81,7 +81,7 @@ export default function PrivacyPage() {
         No almacenamos contenido de TikTok más allá del tiempo necesario para procesar la respuesta
       </li>
     </ul>
-    <div className="mt-4 p-4 rounded-xl bg-blue-500/10 border border-blue-500/20">
+    <div className="mt-4 p-4 rounded-xl bg-[var(--primary)]/10 border border-[var(--primary)]/20">
       <p className="text-blue-600 text-sm">
         <strong>Importante:</strong> Cumplimos estrictamente con las políticas de uso de datos de TikTok y sus términos de servicio de API. Puedes revocar el acceso de Pauvepe Automation a tu cuenta de TikTok en cualquier momento desde la configuración de tu cuenta.
       </p>

@@ -36,9 +36,9 @@ export default function TermsPage() {
               </p>
             </div>
 
-          <div className="p-6 rounded-2xl bg-blue-500/10 border border-blue-500/20 mb-8">
+          <div className="p-6 rounded-2xl bg-[var(--primary)]/10 border border-[var(--primary)]/20 mb-8">
             <h3 className="font-bold mb-2 flex items-center gap-2">
-              <span className="material-symbols-outlined text-blue-500">
+              <span className="material-symbols-outlined text-[var(--primary)]">
                 info
               </span>
               Sobre la Aplicación

@@ -8,7 +8,7 @@ const blogPosts = [
     title: { es: "Como automatizar WhatsApp para tu negocio", ca: "Com automatitzar WhatsApp pel teu negoci", en: "How to automate WhatsApp for your business" },
     excerpt: { es: "Descubre como los chatbots de WhatsApp pueden triplicar tus ventas sin contratar personal.", ca: "Descobreix com els chatbots de WhatsApp poden triplicar les teves vendes.", en: "Discover how WhatsApp chatbots can triple your sales without hiring staff." },
     category: { es: "Automatizacion", ca: "Automatitzacio", en: "Automation" },
-    image: "linear-gradient(135deg, #0062ff, #00c6ff)",
+    image: "linear-gradient(135deg, #D4714E, #E89868)",
     readTime: "5 min",
   },
   {
@@ -16,7 +16,7 @@ const blogPosts = [
     title: { es: "Chatbots IA: el futuro de la atencion al cliente", ca: "Chatbots IA: el futur de latencio al client", en: "AI Chatbots: the future of customer service" },
     excerpt: { es: "Por que los negocios que no usan chatbots estan perdiendo dinero cada dia.", ca: "Per que els negocis que no utilitzen chatbots estan perdent diners cada dia.", en: "Why businesses not using chatbots are losing money every day." },
     category: { es: "Chatbots", ca: "Chatbots", en: "Chatbots" },
-    image: "linear-gradient(135deg, #7c3aed, #ec4899)",
+    image: "linear-gradient(135deg, #5A8A62, #7AAB82)",
     readTime: "7 min",
   },
   {
@@ -40,7 +40,7 @@ const blogPosts = [
     title: { es: "Facebook Ads + IA: optimizacion automatica", ca: "Facebook Ads + IA: optimitzacio automatica", en: "Facebook Ads + AI: automatic optimization" },
     excerpt: { es: "Como usar IA para que tus campanas se optimicen solas y reduzcan el coste por lead.", ca: "Com usar IA perque les teves campanyes soptimitzin soles.", en: "How to use AI to automatically optimize your campaigns and reduce cost per lead." },
     category: { es: "Ads", ca: "Ads", en: "Ads" },
-    image: "linear-gradient(135deg, #3b82f6, #1d4ed8)",
+    image: "linear-gradient(135deg, #A07850, #C4A882)",
     readTime: "8 min",
   },
 ];
