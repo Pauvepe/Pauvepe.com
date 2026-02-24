@@ -1,9 +1,12 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Política de Privacidad",
+  title: "Politica de Privacidad",
   description:
-    "Política de privacidad de AI Automation Expert - Pau Vera. Información sobre el tratamiento de datos.",
+    "Politica de privacidad de AI Automation Expert - Pau Vera. Informacion sobre el tratamiento de datos.",
+  alternates: {
+    canonical: "/privacy",
+  },
 };
 
 export default function PrivacyPage() {

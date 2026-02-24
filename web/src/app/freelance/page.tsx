@@ -6,6 +6,9 @@ export const metadata: Metadata = {
   title: "Freelance Services",
   description:
     "AI Engineer & Creative Developer. Web development, e-commerce, chatbots, voice agents, and automation. From €250.",
+  alternates: {
+    canonical: "/freelance",
+  },
 };
 
 const skills = [

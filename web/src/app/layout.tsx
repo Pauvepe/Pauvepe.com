@@ -4,6 +4,7 @@ import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import FacebookPixel from "@/components/FacebookPixel";
+import GoogleAnalytics from "@/components/GoogleAnalytics";
 import { AppProvider } from "@/context/AppContext";
 
 const bricolage = Bricolage_Grotesque({
@@ -44,7 +45,7 @@ export const metadata: Metadata = {
   publisher: "Pau Vera",
   metadataBase: new URL("https://pauvepe.com"),
   alternates: {
-    canonical: "https://pauvepe.com",
+    canonical: "/",
   },
   openGraph: {
     type: "website",
@@ -54,12 +55,21 @@ export const metadata: Metadata = {
     title: "Pau Vera | Tu Negocio En Esteroides",
     description:
       "Escalamos tu negocio con ads, chatbots 24/7, secretaria IA, landing pages y ecommerce. Vendemos por ti online.",
+    images: [
+      {
+        url: "/images/pauvera.png",
+        width: 600,
+        height: 800,
+        alt: "Pau Vera - AI Automation Expert",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "Pau Vera | Tu Negocio En Esteroides",
     description:
       "Escalamos tu negocio con ads, chatbots 24/7, secretaria IA, landing pages y ecommerce. Vendemos por ti online.",
+    images: ["/images/pauvera.png"],
   },
   robots: {
     index: true,
@@ -84,7 +94,49 @@ export default function RootLayout({
       <head>
         <link
           rel="stylesheet"
-          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0"
+          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&display=swap"
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@graph": [
+                {
+                  "@type": "Organization",
+                  name: "Pau Vera",
+                  url: "https://pauvepe.com",
+                  logo: "https://pauvepe.com/images/logo-icon.svg",
+                  description:
+                    "Escalamos tu negocio con ads, chatbots 24/7, secretaria IA, landing pages, ecommerce y automatizacion.",
+                  founder: {
+                    "@type": "Person",
+                    name: "Pau Vera",
+                    jobTitle: "AI Automation Expert",
+                    url: "https://pauvepe.com/about",
+                  },
+                  areaServed: "ES",
+                  address: {
+                    "@type": "PostalAddress",
+                    addressLocality: "Barcelona",
+                    addressCountry: "ES",
+                  },
+                  contactPoint: {
+                    "@type": "ContactPoint",
+                    telephone: "+34637682568",
+                    contactType: "sales",
+                    availableLanguage: ["Spanish", "Catalan", "English"],
+                  },
+                },
+                {
+                  "@type": "WebSite",
+                  name: "Pau Vera",
+                  url: "https://pauvepe.com",
+                  inLanguage: ["es", "ca", "en"],
+                },
+              ],
+            }),
+          }}
         />
         <script
           dangerouslySetInnerHTML={{
@@ -103,6 +155,7 @@ export default function RootLayout({
         className={`${bricolage.variable} ${dmSans.variable} antialiased min-h-screen flex flex-col`}
       >
         <AppProvider>
+          <GoogleAnalytics />
           <FacebookPixel />
           <Header />
           <main className="flex-1">{children}</main>

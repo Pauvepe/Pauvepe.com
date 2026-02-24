@@ -1,9 +1,12 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Términos de Servicio",
+  title: "Terminos de Servicio",
   description:
-    "Términos de servicio de AI Automation Expert - Pau Vera. Condiciones de uso de nuestros servicios de automatización.",
+    "Terminos de servicio de AI Automation Expert - Pau Vera. Condiciones de uso de nuestros servicios de automatizacion.",
+  alternates: {
+    canonical: "/terms",
+  },
 };
 
 export default function TermsPage() {
