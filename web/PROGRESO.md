@@ -2,9 +2,10 @@
 
 ## Estado actual: DESPLEGADO EN PRODUCCION
 - URL: https://pauvepe.com
-- Ultima actualizacion: 2026-02-15
+- Ultima actualizacion: 2026-02-25
 - Vercel project: express-js-on-vercel
 - Stack: Next.js 16.1.6 + React 19 + Tailwind 4
+- **Backup tag**: `backup-25feb2026` (git tag en el repo)
 
 ---
 
@@ -33,6 +34,11 @@
 - [x] **Sugerencias interactivas** - Grid 2x2 movil, acciones directas (correu/llamame/audio/imagen)
 - [x] **Servicio Excel/Calculadoras** - Añadido como servicio (calculadoras complejas para seguros)
 - [x] **Mobile responsive chatbot** - Botones full-width, sugerencias en grid, no se corta
+- [x] **Fix overflow-x movil** - overflow-x:hidden en html/body, quitar -mx-4 del scroll movil
+- [x] **ChatInput compacto** - Boton imagen siempre visible en movil, input mas pequeno
+- [x] **ChatWindow reducido** - 260px en movil (era 350px), evita que se corte
+- [x] **GrowthPhases scroll-lock** - Seccion sticky 300vh con 3 fases (Web→Chatbots→Ads) + garantias
+- [x] **Blog eliminado** - Quitado BlogCarousel de homepage (no habia contenido real)
 
 ### Paginas traducidas
 - [x] / (homepage)
@@ -67,7 +73,7 @@
 - Mientras tanto: boton WhatsApp apunta a wa.me/34637682568 (WhatsApp personal de Pau)
 
 ### Mejoras futuras
-- [ ] Blog real con contenido SEO y sistema de articulos
+- [ ] Blog real con contenido SEO y sistema de articulos (componente BlogCarousel.tsx existe pero quitado de page.tsx)
 - [ ] Structured data (JSON-LD) para SEO
 - [ ] sitemap.xml y robots.txt
 - [ ] Transcripcion de llamadas Vapi guardadas en Supabase
