@@ -487,10 +487,11 @@ body::after {
    ============================================ */
 .blog-scroll {
   scroll-snap-type: x mandatory;
+  scroll-padding-inline-start: 16px;
   -webkit-overflow-scrolling: touch;
 }
 
-.blog-scroll > * {
+.blog-scroll > *:not([aria-hidden]) {
   scroll-snap-align: start;
 }
 

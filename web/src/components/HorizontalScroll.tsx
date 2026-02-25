@@ -66,13 +66,11 @@ export default function HorizontalScroll({
     return (
       <div
         className={`overflow-x-auto pb-4 ${className}`}
-        style={{ overscrollBehaviorX: "contain", WebkitOverflowScrolling: "touch" }}
+        style={{ overscrollBehaviorX: "contain", WebkitOverflowScrolling: "touch", scrollSnapType: "x mandatory", scrollPaddingInlineStart: "16px" }}
       >
-        <div
-          className="flex gap-4 px-4"
-          style={{ scrollSnapType: "x mandatory" }}
-        >
+        <div className="flex gap-4 pl-4">
           {children}
+          <div className="shrink-0 w-4" aria-hidden="true" />
         </div>
       </div>
     );

@@ -98,7 +98,7 @@ export default function BlogCarousel() {
 
           <div
             ref={scrollRef}
-            className="blog-scroll flex gap-6 overflow-x-auto pb-4 -mx-4 px-4 scroll-smooth"
+            className="blog-scroll flex gap-6 overflow-x-auto pb-4 -mx-4 pl-4 scroll-smooth"
           >
             {blogPosts.map((post, idx) => (
               <article
@@ -138,6 +138,7 @@ export default function BlogCarousel() {
                 </div>
               </article>
             ))}
+            <div className="shrink-0 w-4" aria-hidden="true" />
           </div>
         </div>
       </div>
