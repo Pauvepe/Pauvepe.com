@@ -192,8 +192,6 @@ export default function OrtopediaPage() {
           </p>
           <ROICalculator
             type="ecommerce"
-            defaultTicket={150}
-            defaultClients={20}
             setupCost={1800}
           />
         </div>

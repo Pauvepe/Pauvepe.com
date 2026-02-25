@@ -175,8 +175,6 @@ export default function EcommercePage() {
           </p>
           <ROICalculator
             type="ecommerce"
-            defaultTicket={80}
-            defaultClients={25}
             setupCost={1500}
           />
         </div>

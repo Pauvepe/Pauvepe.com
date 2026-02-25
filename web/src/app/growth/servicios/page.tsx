@@ -175,8 +175,6 @@ export default function ServiciosPage() {
           </p>
           <ROICalculator
             type="servicios"
-            defaultTicket={200}
-            defaultClients={15}
             setupCost={600}
             crmMonthly={100}
             crmFreeMonths={3}

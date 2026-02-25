@@ -175,8 +175,6 @@ export default function VeterinariaPage() {
           </p>
           <ROICalculator
             type="servicios"
-            defaultTicket={233}
-            defaultClients={15}
             setupCost={600}
             crmMonthly={100}
             crmFreeMonths={3}
