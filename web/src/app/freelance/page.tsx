@@ -264,8 +264,8 @@ export default function FreelancePage() {
                     Lead AI & Web Engineer (2024-2026)
                   </p>
                   <p className="text-[var(--foreground)]/70 mb-4">
-                    Full e-commerce infrastructure for a pet store chain with 2
-                    physical locations in Barcelona + online store. 1,000+
+                    Full e-commerce infrastructure for a pet store chain with 3
+                    physical locations in Barcelona + online store. 1,200+
                     products synchronized across all channels.
                   </p>
                   <div className="flex flex-wrap gap-2">

@@ -25,18 +25,18 @@ export const services = [
   },
   {
     icon: "web",
-    title: "Landing Pages de Conversion",
+    title: "Webs y Apps a Medida",
     description:
-      "Paginas disenadas psicologicamente para convertir visitantes en clientes. Optimizadas para ventas.",
-    badge: "Alta Conversion",
+      "Desarrollo de webs, apps y landing pages de alta conversion. Next.js, React, WordPress - la tecnologia que mejor se adapte a tu negocio.",
+    badge: "Desarrollo Completo",
     color: "copper" as const,
   },
   {
     icon: "shopping_cart",
     title: "E-commerce / Tiendas Online",
     description:
-      "Tiendas online con automatizacion de carritos abandonados, upsells y atencion al cliente integrada.",
-    badge: "Ventas Online",
+      "Tiendas online profesionales como Huella Urbana BCN (3 tiendas, 1200+ productos). Automatizacion de carritos, upsells y atencion integrada.",
+    badge: "Caso Real: 1200+ Productos",
     color: "sage" as const,
   },
   {

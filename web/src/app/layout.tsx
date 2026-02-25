@@ -29,10 +29,14 @@ export const metadata: Metadata = {
     template: "%s | Pau Vera - Growth Partner Digital",
   },
   description:
-    "Escalamos tu negocio con publicidad digital (Google Ads, Meta Ads), chatbots IA 24/7, secretaria virtual con IA, landing pages de alta conversion, e-commerce automatizado y sistemas post-venta. Auditoria gratuita en Barcelona.",
+    "Creamos e-commerce, apps y webs a medida. Experiencia real: Huella Urbana BCN (3 tiendas, 1200+ productos). Chatbots IA 24/7, Google Ads, Meta Ads, automatizacion completa. Auditoria gratuita en Barcelona.",
   keywords: [
+    "crear tienda online Barcelona",
+    "desarrollo ecommerce Barcelona",
+    "crear app a medida",
+    "desarrollo web Barcelona",
+    "tienda online WooCommerce Shopify",
     "growth partner digital Barcelona",
-    "publicidad digital para negocios",
     "chatbots IA para empresas",
     "secretaria IA virtual",
     "agente de voz IA",
@@ -40,14 +44,11 @@ export const metadata: Metadata = {
     "ecommerce automatizado",
     "Google Ads Barcelona",
     "Meta Ads especialista",
-    "Facebook Ads agencia",
     "automatizacion ventas online",
     "chatbot WhatsApp business",
     "Pau Vera",
     "pauvepe",
-    "marketing digital Barcelona",
-    "CRM automatico",
-    "captacion de leads",
+    "creacion apps webs ecommerce",
   ],
   authors: [{ name: "Pau Vera" }],
   creator: "Pau Vera",
@@ -63,7 +64,7 @@ export const metadata: Metadata = {
     siteName: "Pau Vera - Growth Partner Digital Barcelona",
     title: "Pau Vera | Tu Negocio En Esteroides",
     description:
-      "Escalamos tu negocio con Google Ads, Meta Ads, chatbots IA 24/7, secretaria virtual IA, landing pages de alta conversion y e-commerce automatizado. Auditoria gratuita.",
+      "Creamos e-commerce, apps y webs a medida. Caso real: Huella Urbana BCN (3 tiendas, 1200+ productos). Chatbots IA, Google Ads, automatizacion completa.",
     images: [
       {
         url: "/images/pauvera.png",
@@ -77,7 +78,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Pau Vera | Tu Negocio En Esteroides",
     description:
-      "Escalamos tu negocio con Google Ads, Meta Ads, chatbots IA 24/7, secretaria IA, landing pages de conversion y e-commerce automatizado.",
+      "E-commerce, apps y webs a medida. Caso real: Huella Urbana BCN (3 tiendas, 1200+ productos). Chatbots IA, ads y automatizacion.",
     images: ["/images/pauvera.png"],
     creator: "@pauvepe",
   },
@@ -119,7 +120,7 @@ export default function RootLayout({
                   logo: "https://pauvepe.com/images/logo-icon.svg",
                   image: "https://pauvepe.com/images/pauvera.png",
                   description:
-                    "Escalamos tu negocio con Google Ads, Meta Ads, chatbots IA 24/7, secretaria virtual IA, landing pages de alta conversion, e-commerce automatizado y sistemas post-venta.",
+                    "Creamos e-commerce, apps y webs a medida. Caso real: Huella Urbana BCN (3 tiendas, 1200+ productos). Chatbots IA 24/7, Google Ads, Meta Ads y automatizacion completa.",
                   founder: {
                     "@type": "Person",
                     name: "Pau Vera",
@@ -145,16 +146,18 @@ export default function RootLayout({
                     availableLanguage: ["Spanish", "Catalan", "English"],
                   },
                   knowsAbout: [
+                    "E-commerce Development",
+                    "App Development",
+                    "Web Development",
                     "Artificial Intelligence",
                     "Chatbots",
                     "Voice AI Agents",
                     "Google Ads",
                     "Meta Ads",
-                    "E-commerce",
+                    "WooCommerce",
+                    "Shopify",
                     "Marketing Automation",
                     "CRM",
-                    "Landing Pages",
-                    "Web Development",
                   ],
                 },
                 {
@@ -209,8 +212,16 @@ export default function RootLayout({
                         "@type": "Offer",
                         itemOffered: {
                           "@type": "Service",
-                          name: "E-commerce Automatizado",
-                          description: "Tiendas online con automatizacion completa de ventas y atencion.",
+                          name: "E-commerce / Tiendas Online",
+                          description: "Tiendas online profesionales. Caso real: Huella Urbana BCN con 3 tiendas y 1200+ productos.",
+                        },
+                      },
+                      {
+                        "@type": "Offer",
+                        itemOffered: {
+                          "@type": "Service",
+                          name: "Desarrollo Web y Apps a Medida",
+                          description: "Webs profesionales, apps personalizadas y landing pages de alta conversion con Next.js, React y WordPress.",
                         },
                       },
                     ],

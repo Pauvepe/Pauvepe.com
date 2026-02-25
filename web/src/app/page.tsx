@@ -14,18 +14,18 @@ import BlogCarousel from "@/components/BlogCarousel";
 import { useApp } from "@/context/AppContext";
 
 const marqueeItems = [
-  "Next.js",
-  "React",
+  "E-commerce",
+  "Apps a Medida",
+  "Webs",
   "AI Chatbots",
   "Google Ads",
   "Meta Ads",
-  "WhatsApp",
-  "n8n",
-  "Supabase",
-  "Voice Agents",
-  "E-commerce",
   "Shopify",
+  "WooCommerce",
+  "Next.js",
+  "React",
   "WordPress",
+  "Voice Agents",
 ];
 
 const hsCardColors = [
@@ -247,7 +247,7 @@ export default function Home() {
       {/* ========== MARQUEE REVERSE ========== */}
       <section className="py-4 overflow-hidden border-y border-[var(--foreground)]/5 bg-[var(--surface)]">
         <Marquee
-          items={["Chatbots", "Ads", "Landing Pages", "CRM", "Voice AI", "Automation", "Analytics", "Growth"]}
+          items={["Tiendas Online", "Apps", "Webs", "Chatbots", "Ads", "CRM", "Voice AI", "Automation"]}
           speed={50}
           reverse
           separator="*"
@@ -257,30 +257,89 @@ export default function Home() {
       {/* ========== BLOG CAROUSEL ========== */}
       <BlogCarousel />
 
-      {/* ========== SOCIAL PROOF ========== */}
-      <section className="py-20 md:py-24 bg-[var(--surface)]">
+      {/* ========== PORTFOLIO: WHAT WE BUILD ========== */}
+      <section className="py-20 md:py-28 bg-[var(--surface)]">
         <div className="container mx-auto px-4 lg:px-8">
           <ScrollReveal>
-            <div className="max-w-3xl mx-auto text-center mb-12">
-              <h2 className="text-3xl md:text-4xl font-bold font-[family-name:var(--font-display)] mb-4">
-                {t("trust.title1")} <span className="gradient-text">{t("trust.title2")}</span>
+            <div className="max-w-3xl mx-auto text-center mb-16">
+              <h2 className="text-3xl md:text-5xl font-bold font-[family-name:var(--font-display)] mb-4">
+                {t("portfolio.title1")} <span className="gradient-text">{t("portfolio.title2")}</span>
               </h2>
-              <p className="text-[var(--foreground)]/60">{t("trust.subtitle")}</p>
+              <p className="text-lg text-[var(--foreground)]/60">{t("portfolio.subtitle")}</p>
             </div>
           </ScrollReveal>
 
-          <ScrollReveal direction="scale">
-            <div className="flex justify-center">
-              <div className="card-glow p-10 rounded-3xl bg-[var(--background)] border border-[var(--foreground)]/10 flex items-center justify-center">
-                <a href="https://huellaurbanabcn.com/" target="_blank" rel="noopener noreferrer" className="group">
-                  <Image
-                    src="/images/huellaurbana.svg"
-                    alt="Huella Urbana"
-                    width={200}
-                    height={80}
-                    className="opacity-60 group-hover:opacity-100 transition-all duration-500 group-hover:scale-110"
-                  />
-                </a>
+          {/* What We Build - 3 pillars */}
+          <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto mb-20">
+            {[
+              { icon: "shopping_cart", titleKey: "portfolio.build_ecom", descKey: "portfolio.build_ecom_desc", gradient: "from-[var(--primary)] to-[#E89868]" },
+              { icon: "language", titleKey: "portfolio.build_web", descKey: "portfolio.build_web_desc", gradient: "from-[var(--secondary)] to-[#7AAB82]" },
+              { icon: "phone_iphone", titleKey: "portfolio.build_app", descKey: "portfolio.build_app_desc", gradient: "from-[#A07850] to-[#C4A882]" },
+            ].map((item, i) => (
+              <ScrollReveal key={i} delay={i * 120}>
+                <div className="card-glow p-8 rounded-3xl bg-[var(--background)] border border-[var(--foreground)]/10 h-full text-center group">
+                  <div className={`w-20 h-20 rounded-2xl bg-gradient-to-br ${item.gradient} flex items-center justify-center mx-auto mb-6 shadow-lg group-hover:scale-110 group-hover:rotate-3 transition-all duration-300`}>
+                    <span className="material-symbols-outlined text-3xl text-white">{item.icon}</span>
+                  </div>
+                  <h3 className="text-xl font-bold font-[family-name:var(--font-display)] mb-3">{t(item.titleKey)}</h3>
+                  <p className="text-[var(--foreground)]/60 leading-relaxed">{t(item.descKey)}</p>
+                </div>
+              </ScrollReveal>
+            ))}
+          </div>
+
+          {/* Case Study: Huella Urbana */}
+          <ScrollReveal>
+            <div className="max-w-5xl mx-auto">
+              <div className="card-glow rounded-3xl bg-[var(--background)] border border-[var(--foreground)]/10 overflow-hidden">
+                <div className="p-8 md:p-12">
+                  <div className="flex flex-col md:flex-row items-start gap-8">
+                    <div className="flex-shrink-0">
+                      <a href="https://huellaurbanabcn.com/" target="_blank" rel="noopener noreferrer" className="block group">
+                        <div className="w-24 h-24 md:w-32 md:h-32 rounded-2xl bg-gradient-to-br from-[var(--primary)]/10 to-[var(--secondary)]/10 border border-[var(--foreground)]/10 flex items-center justify-center group-hover:scale-105 transition-all">
+                          <Image
+                            src="/images/huellaurbana.svg"
+                            alt="Huella Urbana BCN"
+                            width={100}
+                            height={40}
+                            className="opacity-70 group-hover:opacity-100 transition-opacity"
+                          />
+                        </div>
+                      </a>
+                    </div>
+                    <div className="flex-1">
+                      <div className="flex items-center gap-3 mb-2">
+                        <span className="inline-block px-3 py-1 rounded-full bg-[var(--primary)]/10 text-[var(--primary)] text-xs font-bold uppercase tracking-wider">Caso Real</span>
+                      </div>
+                      <h3 className="text-2xl md:text-3xl font-bold font-[family-name:var(--font-display)] mb-2">{t("portfolio.case_title")}</h3>
+                      <p className="text-[var(--primary)] font-medium mb-4">{t("portfolio.case_role")}</p>
+                      <p className="text-[var(--foreground)]/60 leading-relaxed mb-6">{t("portfolio.case_desc")}</p>
+
+                      {/* Stats */}
+                      <div className="grid grid-cols-3 gap-4 mb-6">
+                        {[
+                          { valueKey: "portfolio.stat1_value", labelKey: "portfolio.stat1_label" },
+                          { valueKey: "portfolio.stat2_value", labelKey: "portfolio.stat2_label" },
+                          { valueKey: "portfolio.stat3_value", labelKey: "portfolio.stat3_label" },
+                        ].map((stat, i) => (
+                          <div key={i} className="text-center p-4 rounded-xl bg-[var(--surface)] border border-[var(--foreground)]/5">
+                            <div className="text-2xl md:text-3xl font-bold gradient-text font-[family-name:var(--font-display)]">{t(stat.valueKey)}</div>
+                            <div className="text-xs text-[var(--foreground)]/50 mt-1">{t(stat.labelKey)}</div>
+                          </div>
+                        ))}
+                      </div>
+
+                      {/* Tech tags */}
+                      <div className="flex flex-wrap gap-2">
+                        {["WooCommerce", "PHP Custom", "AI Chatbots", "CRM", "WhatsApp", "Multi-store"].map((tag, i) => (
+                          <span key={i} className="px-3 py-1 rounded-full bg-[var(--primary)]/10 text-[var(--primary)] text-xs font-medium">
+                            {tag}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </ScrollReveal>

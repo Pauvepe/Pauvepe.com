@@ -11,11 +11,13 @@ export default function AboutPage() {
   const { t } = useApp();
 
   const expertise = [
-    "AI Agents",
+    "E-commerce",
+    "Apps a Medida",
+    "Desarrollo Web",
+    "AI Chatbots",
     "Automation",
     "Growth Marketing",
-    "Chatbots",
-    "E-commerce",
+    "Shopify / WooCommerce",
     "n8n",
   ];
 
