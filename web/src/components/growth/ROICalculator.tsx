@@ -140,9 +140,28 @@ export default function ROICalculator({
           <div className="p-4 rounded-xl bg-[var(--foreground)]/5">
             <p className="text-xs text-[var(--foreground)]/50 mb-1">Tu inversion total</p>
             <p className="text-lg font-bold">{totalInversion.toLocaleString("es-ES")} EUR</p>
-            <p className="text-[10px] text-[var(--foreground)]/40 mt-1">
-              {breakdownParts.join(" + ")}
-            </p>
+            <div className="mt-1 space-y-0.5">
+              <p className="text-[10px] text-[var(--foreground)]/40">
+                {setupCost} setup
+                {type === "servicios" && <span className="text-[var(--secondary)]"> (CRM + {crmFreeMonths} meses IA gratis)</span>}
+              </p>
+              <p className="text-[10px] text-[var(--foreground)]/40">{totalAds} ads ({adsMonthly}/mes x {months})</p>
+              {totalCRM > 0 && (
+                <p className="text-[10px] text-[var(--foreground)]/40">
+                  {totalCRM} IA ({crmMonthly}/mes x {paidCrmMonths} meses)
+                </p>
+              )}
+              {type === "servicios" && paidCrmMonths === 0 && (
+                <p className="text-[10px] text-[var(--secondary)] font-medium">
+                  IA incluida gratis estos {months} meses
+                </p>
+              )}
+              {type === "servicios" && (
+                <p className="text-[10px] text-[var(--foreground)]/30 mt-1">
+                  Despues: CRM gratis para siempre. IA opcional {crmMonthly} EUR/mes.
+                </p>
+              )}
+            </div>
           </div>
           <div className="p-4 rounded-xl bg-[var(--secondary)]/10">
             <p className="text-xs text-[var(--secondary)] mb-1">Ingresos estimados</p>
