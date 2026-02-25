@@ -4,88 +4,145 @@ import Image from "next/image";
 import Link from "next/link";
 import ServiceCard from "@/components/ServiceCard";
 import ScrollReveal from "@/components/ScrollReveal";
+import TextReveal from "@/components/TextReveal";
+import HorizontalScroll from "@/components/HorizontalScroll";
+import Marquee from "@/components/Marquee";
+import AnimatedCounter from "@/components/AnimatedCounter";
 import { services } from "@/lib/services";
 import PlaygroundSection from "@/components/playground/PlaygroundSection";
 import BlogCarousel from "@/components/BlogCarousel";
 import { useApp } from "@/context/AppContext";
+
+const marqueeItems = [
+  "Next.js",
+  "React",
+  "AI Chatbots",
+  "Google Ads",
+  "Meta Ads",
+  "WhatsApp",
+  "n8n",
+  "Supabase",
+  "Voice Agents",
+  "E-commerce",
+  "Shopify",
+  "WordPress",
+];
+
+const hsCardColors = [
+  { gradient: "from-[#D4714E]/20 to-[#E89868]/10", border: "border-[#D4714E]/30", accent: "text-[#D4714E]", glow: "rgba(212,113,78,0.15)" },
+  { gradient: "from-[#5A8A62]/20 to-[#7AAB82]/10", border: "border-[#5A8A62]/30", accent: "text-[#5A8A62]", glow: "rgba(90,138,98,0.15)" },
+  { gradient: "from-[#A07850]/20 to-[#C4A882]/10", border: "border-[#A07850]/30", accent: "text-[#A07850]", glow: "rgba(160,120,80,0.15)" },
+  { gradient: "from-[#E89868]/20 to-[#F2C078]/10", border: "border-[#E89868]/30", accent: "text-[#E89868]", glow: "rgba(232,152,104,0.15)" },
+  { gradient: "from-[#D4714E]/15 to-[#5A8A62]/15", border: "border-[#D4714E]/25", accent: "text-[#D4714E]", glow: "rgba(212,113,78,0.12)" },
+  { gradient: "from-[#5A8A62]/15 to-[#A07850]/15", border: "border-[#5A8A62]/25", accent: "text-[#5A8A62]", glow: "rgba(90,138,98,0.12)" },
+  { gradient: "from-[#A07850]/15 to-[#E89868]/15", border: "border-[#A07850]/25", accent: "text-[#A07850]", glow: "rgba(160,120,80,0.12)" },
+];
 
 export default function Home() {
   const { t } = useApp();
 
   return (
     <>
-      {/* Hero Section */}
+      {/* ========== HERO ========== */}
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
-        <div className="absolute inset-0 -z-10">
-          <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-[var(--primary)]/20 rounded-full blur-3xl animate-float" />
-          <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-[var(--secondary)]/20 rounded-full blur-3xl animate-float delay-200" />
+        {/* Animated background blobs */}
+        <div className="absolute inset-0 -z-10 overflow-hidden">
+          <div className="absolute top-[15%] left-[10%] w-[500px] h-[500px] bg-[var(--primary)]/15 blob animate-blob animate-float" />
+          <div className="absolute bottom-[10%] right-[10%] w-[600px] h-[600px] bg-[var(--secondary)]/12 blob animate-blob animate-float-slow delay-300" />
+          <div className="absolute top-[50%] left-[50%] -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] bg-[var(--accent)]/10 blob animate-blob delay-500" style={{ animationDuration: "12s" }} />
+          {/* Decorative ring */}
+          <div className="absolute top-[20%] right-[15%] w-60 h-60 deco-ring hidden lg:block" />
+          {/* Dots grid */}
+          <div className="absolute inset-0 bg-dots" />
         </div>
 
         <div className="container mx-auto px-4 lg:px-8 py-20">
           <div className="max-w-4xl mx-auto text-center">
-            <div className="animate-fade-in-up">
-              <span className="inline-block px-4 py-2 rounded-full bg-[var(--primary)]/10 text-[var(--primary)] text-sm font-medium mb-6">
+            <div className="animate-fade-in-down">
+              <span className="inline-block px-5 py-2.5 rounded-full bg-[var(--primary)]/10 text-[var(--primary)] text-sm font-semibold mb-8 border border-[var(--primary)]/20 animate-shimmer">
                 {t("hero.badge")}
               </span>
             </div>
 
-            <h1 className="animate-fade-in-up delay-100 text-4xl md:text-6xl lg:text-7xl font-bold font-[family-name:var(--font-display)] mb-6 leading-tight">
+            <h1 className="animate-fade-in-up delay-100 text-5xl md:text-7xl lg:text-8xl font-bold font-[family-name:var(--font-display)] mb-8 leading-[0.95] tracking-tight">
               {t("hero.title1")}{" "}
-              <span className="gradient-text">{t("hero.title2")}</span>
+              <span className="gradient-text-warm relative">
+                {t("hero.title2")}
+                <svg className="absolute -bottom-2 left-0 w-full h-3 text-[var(--primary)]/30" viewBox="0 0 200 8" preserveAspectRatio="none">
+                  <path d="M0,5 Q50,0 100,5 T200,5" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" />
+                </svg>
+              </span>
             </h1>
 
-            <p className="animate-fade-in-up delay-200 text-lg md:text-xl text-[var(--foreground)]/70 max-w-2xl mx-auto mb-10">
+            <p className="animate-fade-in-up delay-200 text-lg md:text-xl text-[var(--foreground)]/60 max-w-2xl mx-auto mb-12 leading-relaxed">
               {t("hero.subtitle")}
             </p>
 
             <div className="animate-fade-in-up delay-300 flex flex-col sm:flex-row items-center justify-center gap-4">
               <Link
                 href="/booking"
-                className="btn-shine px-8 py-4 bg-[var(--primary)] text-white font-semibold rounded-full text-lg hover:shadow-xl hover:shadow-[var(--primary)]/30 transition-all animate-pulse-glow"
+                className="btn-shine px-10 py-4 bg-[var(--primary)] text-white font-semibold rounded-full text-lg hover:shadow-xl hover:shadow-[var(--primary)]/30 transition-all animate-pulse-glow hover:scale-105"
               >
                 {t("hero.cta1")}
               </Link>
               <Link
                 href="/services"
-                className="px-8 py-4 border-2 border-[var(--primary)]/30 rounded-full font-semibold hover:border-[var(--primary)] hover:text-[var(--primary)] transition-all"
+                className="group px-10 py-4 border-2 border-[var(--foreground)]/15 rounded-full font-semibold hover:border-[var(--primary)] hover:text-[var(--primary)] transition-all flex items-center gap-2"
               >
                 {t("hero.cta2")}
+                <span className="material-symbols-outlined text-lg group-hover:translate-x-1 transition-transform">arrow_forward</span>
               </Link>
             </div>
           </div>
         </div>
 
-        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce">
-          <span className="material-symbols-outlined text-3xl text-[var(--foreground)]/40">expand_more</span>
+        {/* Scroll indicator */}
+        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 animate-bounce">
+          <span className="text-xs font-medium text-[var(--foreground)]/30 uppercase tracking-widest">Scroll</span>
+          <span className="material-symbols-outlined text-2xl text-[var(--foreground)]/30">expand_more</span>
         </div>
       </section>
 
-      {/* Playground IA Section */}
+      {/* ========== MARQUEE ========== */}
+      <section className="py-6 overflow-hidden border-y border-[var(--foreground)]/5">
+        <Marquee items={marqueeItems} speed={40} />
+      </section>
+
+      {/* ========== PLAYGROUND IA ========== */}
       <PlaygroundSection />
 
-      {/* Problem/Solution Section */}
-      <section className="py-20 bg-[var(--surface)]">
+      {/* ========== TEXT REVEAL: PROBLEM ========== */}
+      <section className="py-20 md:py-32 bg-[var(--surface)]">
         <div className="container mx-auto px-4 lg:px-8">
           <ScrollReveal>
-            <div className="max-w-3xl mx-auto text-center mb-16">
+            <div className="max-w-3xl mx-auto text-center mb-8">
               <h2 className="text-3xl md:text-4xl font-bold font-[family-name:var(--font-display)] mb-4">
                 {t("problems.title1")} <span className="gradient-text">{t("problems.title2")}</span>
               </h2>
-              <p className="text-[var(--foreground)]/70">{t("problems.subtitle")}</p>
             </div>
           </ScrollReveal>
 
+          <div className="max-w-3xl mx-auto mb-16">
+            <TextReveal
+              text={t("problems.subtitle") + ". " + t("problems.p1") + ". " + t("problems.p2") + ". " + t("problems.p3") + "."}
+              as="p"
+              className="text-xl md:text-2xl lg:text-3xl font-medium text-[var(--foreground)] leading-relaxed text-center"
+            />
+          </div>
+
           <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-            <ScrollReveal>
-              <div className="card-hover p-8 rounded-2xl bg-red-500/5 border border-red-500/20">
+            <ScrollReveal direction="left">
+              <div className="card-glow p-8 rounded-2xl bg-red-500/5 border border-red-500/20 h-full">
                 <div className="flex items-center gap-3 mb-6">
-                  <span className="material-symbols-outlined text-3xl text-red-500">warning</span>
+                  <div className="w-12 h-12 rounded-xl bg-red-500/10 flex items-center justify-center">
+                    <span className="material-symbols-outlined text-2xl text-red-500">warning</span>
+                  </div>
                   <h3 className="text-xl font-bold text-red-500 font-[family-name:var(--font-display)]">{t("problems.manual")}</h3>
                 </div>
                 <ul className="space-y-3">
                   {["p1", "p2", "p3", "p4", "p5"].map((key) => (
                     <li key={key} className="flex items-start gap-2 text-[var(--foreground)]/70">
-                      <span className="material-symbols-outlined text-red-500 text-lg mt-0.5">close</span>
+                      <span className="material-symbols-outlined text-red-500 text-lg mt-0.5 flex-shrink-0">close</span>
                       {t(`problems.${key}`)}
                     </li>
                   ))}
@@ -93,16 +150,18 @@ export default function Home() {
               </div>
             </ScrollReveal>
 
-            <ScrollReveal>
-              <div className="card-hover p-8 rounded-2xl bg-[var(--secondary)]/5 border border-[var(--secondary)]/20">
+            <ScrollReveal direction="right">
+              <div className="card-glow p-8 rounded-2xl bg-[var(--secondary)]/5 border border-[var(--secondary)]/20 h-full">
                 <div className="flex items-center gap-3 mb-6">
-                  <span className="material-symbols-outlined text-3xl text-[var(--secondary)]">rocket_launch</span>
+                  <div className="w-12 h-12 rounded-xl bg-[var(--secondary)]/10 flex items-center justify-center">
+                    <span className="material-symbols-outlined text-2xl text-[var(--secondary)]">rocket_launch</span>
+                  </div>
                   <h3 className="text-xl font-bold text-[var(--secondary)] font-[family-name:var(--font-display)]">{t("problems.auto")}</h3>
                 </div>
                 <ul className="space-y-3">
                   {["s1", "s2", "s3", "s4", "s5"].map((key) => (
                     <li key={key} className="flex items-start gap-2 text-[var(--foreground)]/70">
-                      <span className="material-symbols-outlined text-[var(--secondary)] text-lg mt-0.5">check</span>
+                      <span className="material-symbols-outlined text-[var(--secondary)] text-lg mt-0.5 flex-shrink-0">check</span>
                       {t(`problems.${key}`)}
                     </li>
                   ))}
@@ -113,94 +172,180 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Services Section */}
-      <section className="py-20">
+      {/* ========== STATS / COUNTERS ========== */}
+      <section className="py-16 md:py-20 bg-gradient-mesh">
         <div className="container mx-auto px-4 lg:px-8">
-          <ScrollReveal>
-            <div className="max-w-3xl mx-auto text-center mb-16">
-              <h2 className="text-3xl md:text-4xl font-bold font-[family-name:var(--font-display)] mb-4">
-                {t("services.title1")} <span className="gradient-text">{t("services.title2")}</span>
-              </h2>
-              <p className="text-[var(--foreground)]/70">{t("services.subtitle")}</p>
-            </div>
-          </ScrollReveal>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {services.map((service, index) => (
-              <ScrollReveal key={index}>
-                <ServiceCard {...service} />
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8 max-w-4xl mx-auto">
+            {[
+              { target: 50, suffix: "+", label: t("about.stat1") },
+              { target: 24, suffix: "/7", label: t("about.stat2") },
+              { target: 100, suffix: "%", label: t("about.stat3") },
+              { target: 0, suffix: "", label: t("about.stat4"), prefix: "" },
+            ].map((stat, i) => (
+              <ScrollReveal key={i} delay={i * 100}>
+                <div className="text-center p-6 rounded-2xl bg-[var(--surface)]/50 backdrop-blur-sm border border-[var(--foreground)]/5">
+                  <div className="text-4xl md:text-5xl font-bold gradient-text font-[family-name:var(--font-display)] mb-2">
+                    {stat.target > 0 ? (
+                      <AnimatedCounter target={stat.target} suffix={stat.suffix} prefix={stat.prefix} />
+                    ) : (
+                      `${stat.target}${stat.suffix}`
+                    )}
+                  </div>
+                  <div className="text-sm text-[var(--foreground)]/50">{stat.label}</div>
+                </div>
               </ScrollReveal>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Blog Carousel */}
+      {/* ========== SERVICES: HORIZONTAL SCROLL CAROUSEL ========== */}
+      <section className="relative">
+        {/* Section header - sticky-ish */}
+        <div className="py-16 md:py-20">
+          <div className="container mx-auto px-4 lg:px-8">
+            <ScrollReveal>
+              <div className="max-w-3xl mx-auto text-center">
+                <h2 className="text-3xl md:text-5xl font-bold font-[family-name:var(--font-display)] mb-4">
+                  {t("services.title1")} <span className="gradient-text">{t("services.title2")}</span>
+                </h2>
+                <p className="text-[var(--foreground)]/60 text-lg">{t("services.subtitle")}</p>
+                <p className="text-sm text-[var(--primary)]/60 mt-4 flex items-center justify-center gap-2">
+                  <span className="material-symbols-outlined text-base">swipe_left</span>
+                  Scroll para explorar
+                </p>
+              </div>
+            </ScrollReveal>
+          </div>
+        </div>
+
+        <HorizontalScroll>
+          {services.map((service, index) => {
+            const color = hsCardColors[index % hsCardColors.length];
+            return (
+              <div
+                key={index}
+                className={`hs-card rounded-3xl bg-gradient-to-br ${color.gradient} border ${color.border} p-8 flex flex-col justify-between backdrop-blur-sm`}
+                style={{ boxShadow: `0 20px 40px ${color.glow}` }}
+              >
+                <div>
+                  <div className={`w-16 h-16 rounded-2xl bg-[var(--surface)] flex items-center justify-center mb-6 shadow-lg ${color.accent}`}>
+                    <span className="material-symbols-outlined text-3xl">{service.icon}</span>
+                  </div>
+                  <h3 className="text-2xl font-bold font-[family-name:var(--font-display)] mb-3">{service.title}</h3>
+                  <p className="text-[var(--foreground)]/60 leading-relaxed mb-6">{service.description}</p>
+                </div>
+                <span className={`inline-block self-start px-4 py-2 rounded-full text-sm font-semibold bg-[var(--surface)]/80 ${color.accent} border ${color.border}`}>
+                  {service.badge}
+                </span>
+              </div>
+            );
+          })}
+        </HorizontalScroll>
+      </section>
+
+      {/* ========== MARQUEE REVERSE ========== */}
+      <section className="py-4 overflow-hidden border-y border-[var(--foreground)]/5 bg-[var(--surface)]">
+        <Marquee
+          items={["Chatbots", "Ads", "Landing Pages", "CRM", "Voice AI", "Automation", "Analytics", "Growth"]}
+          speed={50}
+          reverse
+          separator="*"
+        />
+      </section>
+
+      {/* ========== BLOG CAROUSEL ========== */}
       <BlogCarousel />
 
-      {/* Social Proof Section */}
-      <section className="py-20 bg-[var(--surface)]">
+      {/* ========== SOCIAL PROOF ========== */}
+      <section className="py-20 md:py-24 bg-[var(--surface)]">
         <div className="container mx-auto px-4 lg:px-8">
           <ScrollReveal>
             <div className="max-w-3xl mx-auto text-center mb-12">
               <h2 className="text-3xl md:text-4xl font-bold font-[family-name:var(--font-display)] mb-4">
                 {t("trust.title1")} <span className="gradient-text">{t("trust.title2")}</span>
               </h2>
-              <p className="text-[var(--foreground)]/70">{t("trust.subtitle")}</p>
+              <p className="text-[var(--foreground)]/60">{t("trust.subtitle")}</p>
             </div>
           </ScrollReveal>
 
-          <div className="flex justify-center">
-            <div className="card-hover p-8 rounded-2xl bg-[var(--background)] border border-[var(--foreground)]/10 flex items-center justify-center">
-              <a href="https://huellaurbanabcn.com/" target="_blank" rel="noopener noreferrer">
-                <Image
-                  src="/images/huellaurbana.svg"
-                  alt="Huella Urbana"
-                  width={200}
-                  height={80}
-                  className="opacity-70 hover:opacity-100 transition-opacity cursor-pointer"
+          <ScrollReveal direction="scale">
+            <div className="flex justify-center">
+              <div className="card-glow p-10 rounded-3xl bg-[var(--background)] border border-[var(--foreground)]/10 flex items-center justify-center">
+                <a href="https://huellaurbanabcn.com/" target="_blank" rel="noopener noreferrer" className="group">
+                  <Image
+                    src="/images/huellaurbana.svg"
+                    alt="Huella Urbana"
+                    width={200}
+                    height={80}
+                    className="opacity-60 group-hover:opacity-100 transition-all duration-500 group-hover:scale-110"
+                  />
+                </a>
+              </div>
+            </div>
+          </ScrollReveal>
+        </div>
+      </section>
+
+      {/* ========== GUARANTEE ========== */}
+      <section className="py-20 md:py-24">
+        <div className="container mx-auto px-4 lg:px-8">
+          <div className="max-w-4xl mx-auto">
+            <ScrollReveal>
+              <div className="text-center mb-12">
+                <TextReveal
+                  text={t("about.guarantee_quote")}
+                  as="h2"
+                  className="text-3xl md:text-5xl lg:text-6xl font-bold font-[family-name:var(--font-display)] leading-tight"
                 />
-              </a>
+              </div>
+            </ScrollReveal>
+
+            <div className="grid md:grid-cols-2 gap-8">
+              <ScrollReveal direction="left" delay={100}>
+                <div className="card-glow p-8 rounded-3xl bg-gradient-to-br from-[var(--primary)]/10 to-[var(--accent)]/5 border border-[var(--primary)]/20 h-full">
+                  <div className="w-14 h-14 rounded-2xl bg-[var(--primary)]/10 flex items-center justify-center mb-5">
+                    <span className="material-symbols-outlined text-3xl text-[var(--primary)]">shopping_bag</span>
+                  </div>
+                  <h3 className="text-xl font-bold font-[family-name:var(--font-display)] mb-3">{t("guarantee.ecom_title")}</h3>
+                  <p className="text-[var(--foreground)]/60 mb-5 leading-relaxed">{t("guarantee.ecom_desc")}</p>
+                  <span className="inline-block px-4 py-2 rounded-full bg-[var(--primary)]/15 text-[var(--primary)] text-sm font-semibold">{t("guarantee.ecom_badge")}</span>
+                </div>
+              </ScrollReveal>
+
+              <ScrollReveal direction="right" delay={200}>
+                <div className="card-glow p-8 rounded-3xl bg-gradient-to-br from-[var(--secondary)]/10 to-[#7AAB82]/5 border border-[var(--secondary)]/20 h-full">
+                  <div className="w-14 h-14 rounded-2xl bg-[var(--secondary)]/10 flex items-center justify-center mb-5">
+                    <span className="material-symbols-outlined text-3xl text-[var(--secondary)]">handshake</span>
+                  </div>
+                  <h3 className="text-xl font-bold font-[family-name:var(--font-display)] mb-3">{t("guarantee.service_title")}</h3>
+                  <p className="text-[var(--foreground)]/60 mb-5 leading-relaxed">{t("guarantee.service_desc")}</p>
+                  <span className="inline-block px-4 py-2 rounded-full bg-[var(--secondary)]/15 text-[var(--secondary)] text-sm font-semibold">{t("guarantee.service_badge")}</span>
+                </div>
+              </ScrollReveal>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Guarantee Section */}
-      <section className="py-20">
-        <div className="container mx-auto px-4 lg:px-8">
-          <div className="max-w-4xl mx-auto grid md:grid-cols-2 gap-8">
-            <ScrollReveal>
-              <div className="card-hover p-8 rounded-2xl bg-gradient-to-br from-[var(--primary)]/10 to-[var(--accent)]/10 border border-[var(--primary)]/20">
-                <span className="material-symbols-outlined text-4xl text-[var(--primary)] mb-4">shopping_bag</span>
-                <h3 className="text-xl font-bold font-[family-name:var(--font-display)] mb-3">{t("guarantee.ecom_title")}</h3>
-                <p className="text-[var(--foreground)]/70 mb-4">{t("guarantee.ecom_desc")}</p>
-                <span className="inline-block px-4 py-2 rounded-full bg-[var(--primary)]/20 text-[var(--primary)] text-sm font-medium">{t("guarantee.ecom_badge")}</span>
-              </div>
-            </ScrollReveal>
-            <ScrollReveal>
-              <div className="card-hover p-8 rounded-2xl bg-gradient-to-br from-[var(--secondary)]/10 to-[#7AAB82]/10 border border-[var(--secondary)]/20">
-                <span className="material-symbols-outlined text-4xl text-[var(--secondary)] mb-4">handshake</span>
-                <h3 className="text-xl font-bold font-[family-name:var(--font-display)] mb-3">{t("guarantee.service_title")}</h3>
-                <p className="text-[var(--foreground)]/70 mb-4">{t("guarantee.service_desc")}</p>
-                <span className="inline-block px-4 py-2 rounded-full bg-[var(--secondary)]/20 text-[var(--secondary)] text-sm font-medium">{t("guarantee.service_badge")}</span>
-              </div>
-            </ScrollReveal>
-          </div>
+      {/* ========== FINAL CTA ========== */}
+      <section className="relative py-24 md:py-32 bg-gradient-animated overflow-hidden">
+        {/* Decorative elements */}
+        <div className="absolute inset-0 overflow-hidden">
+          <div className="absolute -top-20 -left-20 w-64 h-64 bg-white/5 rounded-full blur-3xl animate-float" />
+          <div className="absolute -bottom-20 -right-20 w-80 h-80 bg-white/5 rounded-full blur-3xl animate-float-slow delay-300" />
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] border border-white/5 rounded-full animate-orbit" style={{ animationDuration: "40s" }} />
         </div>
-      </section>
 
-      {/* Final CTA */}
-      <section className="py-20 bg-gradient-animated">
-        <div className="container mx-auto px-4 lg:px-8">
+        <div className="container mx-auto px-4 lg:px-8 relative z-10">
           <div className="max-w-3xl mx-auto text-center text-white">
-            <h2 className="text-3xl md:text-5xl font-bold font-[family-name:var(--font-display)] mb-6">
+            <h2 className="text-4xl md:text-6xl font-bold font-[family-name:var(--font-display)] mb-8 leading-tight">
               {t("cta.title")}
             </h2>
-            <p className="text-xl mb-10 opacity-90">{t("cta.subtitle")}</p>
+            <p className="text-xl md:text-2xl mb-12 opacity-80 leading-relaxed">{t("cta.subtitle")}</p>
             <Link
               href="/booking"
-              className="inline-block px-10 py-4 bg-white text-[var(--primary)] font-bold rounded-full text-lg hover:shadow-2xl transition-all hover:scale-105"
+              className="inline-block px-12 py-5 bg-white text-[var(--primary)] font-bold rounded-full text-lg hover:shadow-2xl transition-all hover:scale-105 hover:shadow-white/20"
             >
               {t("cta.button")}
             </Link>

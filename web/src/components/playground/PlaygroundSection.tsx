@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { Message, FileAttachment } from "@/types/chat";
 import { sendMessage, generateId, fetchSessionHistory } from "@/lib/api";
 import { getSessionId } from "@/lib/chat-session";
@@ -22,6 +22,24 @@ export default function PlaygroundSection() {
   const [callPhone, setCallPhone] = useState("");
   const [callStatus, setCallStatus] = useState<"idle" | "calling" | "success" | "error">("idle");
   const sessionIdRef = useRef<string>("");
+
+  // 3D tilt effect
+  const cardRef = useRef<HTMLDivElement>(null);
+  const handleMouseMove = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
+    const card = cardRef.current;
+    if (!card) return;
+    const rect = card.getBoundingClientRect();
+    const x = (e.clientX - rect.left) / rect.width - 0.5;
+    const y = (e.clientY - rect.top) / rect.height - 0.5;
+    card.style.transform = `perspective(1200px) rotateY(${x * 8}deg) rotateX(${-y * 8}deg) scale3d(1.02, 1.02, 1.02)`;
+  }, []);
+
+  const handleMouseLeave = useCallback(() => {
+    const card = cardRef.current;
+    if (card) {
+      card.style.transform = "perspective(1200px) rotateY(0deg) rotateX(0deg) scale3d(1, 1, 1)";
+    }
+  }, []);
 
   // Load previous session on mount
   useEffect(() => {
@@ -46,7 +64,7 @@ export default function PlaygroundSection() {
   // Auto-sleep after inactivity
   useEffect(() => {
     if (botState === "happy") {
-      sleepTimerRef.current = setTimeout(() => setBotState("sleeping"), 300000); // 5 min
+      sleepTimerRef.current = setTimeout(() => setBotState("sleeping"), 300000);
     }
     return () => {
       if (sleepTimerRef.current) clearTimeout(sleepTimerRef.current);
@@ -167,7 +185,7 @@ export default function PlaygroundSection() {
     }
   };
 
-  // Suggestion handlers - interactive actions instead of sending text
+  // Suggestion handlers
   const handleCallMe = () => {
     setShowCallModal(true);
     setCallStatus("idle");
@@ -182,13 +200,10 @@ export default function PlaygroundSection() {
       timestamp: new Date(),
     };
     setMessages((prev) => [...prev, userMsg]);
-
-    // Send to AI to handle email flow
     handleSend(t("playground.action_email_prompt"), []);
   };
 
   const handleSendImage = () => {
-    // Trigger image file picker directly
     fileInputRef.current?.click();
   };
 
@@ -215,7 +230,6 @@ export default function PlaygroundSection() {
   };
 
   const handleSendAudio = () => {
-    // Add instruction message
     const botMsg: Message = {
       id: generateId(),
       role: "assistant",
@@ -240,7 +254,6 @@ export default function PlaygroundSection() {
     if (vapiLoading) return;
     setVapiLoading(true);
     try {
-      // Request microphone permission first
       await navigator.mediaDevices.getUserMedia({ audio: true });
 
       const { default: Vapi } = await import("@vapi-ai/web");
@@ -311,43 +324,45 @@ Respuestas cortas y naturales. Intenta que agenden una cita gratuita en pauvepe.
   };
 
   return (
-    <section className="py-20 bg-[var(--surface)]">
-      <div className="container mx-auto px-4 lg:px-8">
+    <section className="py-20 md:py-28 bg-[var(--surface)] relative overflow-hidden">
+      {/* Decorative background */}
+      <div className="absolute inset-0 bg-gradient-mesh opacity-50" />
+
+      <div className="container mx-auto px-4 lg:px-8 relative z-10">
         {/* Header */}
         <div className="max-w-3xl mx-auto text-center mb-8 animate-fade-in-up">
-          <span className="inline-block px-4 py-2 rounded-full bg-[var(--primary)]/10 text-[var(--primary)] text-sm font-medium mb-4">
+          <span className="inline-block px-5 py-2.5 rounded-full bg-[var(--primary)]/10 text-[var(--primary)] text-sm font-semibold mb-4 border border-[var(--primary)]/20">
             {t("playground.badge")}
           </span>
-          <h2 className="text-3xl md:text-4xl font-bold font-[family-name:var(--font-display)] mb-4">
+          <h2 className="text-3xl md:text-5xl font-bold font-[family-name:var(--font-display)] mb-4">
             {t("playground.title1")} <span className="gradient-text">{t("playground.title2")}</span>
           </h2>
-          <p className="text-[var(--foreground)]/70">{t("playground.subtitle")}</p>
+          <p className="text-[var(--foreground)]/60 text-lg">{t("playground.subtitle")}</p>
         </div>
 
         {/* Bot face + suggestions */}
         <div className="max-w-2xl mx-auto mb-6 flex flex-col items-center gap-4">
           <BotFace state={botState} />
-          <p className="text-sm text-[var(--foreground)]/50 text-center">
+          <p className="text-sm text-[var(--foreground)]/40 text-center">
             {t("playground.try")}
           </p>
-          {/* Suggestions - responsive grid for mobile */}
           <div className="grid grid-cols-2 sm:flex sm:flex-wrap gap-2 justify-center w-full sm:w-auto px-2 sm:px-0">
             {suggestions.map((s, i) => (
               <button
                 key={i}
                 onClick={s.action}
                 disabled={isLoading}
-                className="flex items-center justify-center gap-1.5 px-3 py-2 rounded-full bg-[var(--primary)]/5 border border-[var(--primary)]/20 text-xs text-[var(--primary)] hover:bg-[var(--primary)]/10 transition-colors disabled:opacity-50 whitespace-nowrap"
+                className="flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-full bg-[var(--primary)]/5 border border-[var(--primary)]/20 text-xs font-medium text-[var(--primary)] hover:bg-[var(--primary)]/10 hover:border-[var(--primary)]/40 transition-all disabled:opacity-50 whitespace-nowrap"
               >
                 <span className="material-symbols-outlined text-sm">{s.icon}</span>
                 {s.label}
               </button>
             ))}
           </div>
-          <p className="text-xs text-[var(--foreground)]/40">{t("playground.suggest5")}</p>
+          <p className="text-xs text-[var(--foreground)]/30">{t("playground.suggest5")}</p>
         </div>
 
-        {/* Hidden file input for image suggestion */}
+        {/* Hidden file input */}
         <input
           ref={fileInputRef}
           type="file"
@@ -356,35 +371,44 @@ Respuestas cortas y naturales. Intenta que agenden una cita gratuita en pauvepe.
           className="hidden"
         />
 
-        {/* Chat + Action buttons */}
+        {/* 3D Chat Card */}
         <div className="max-w-2xl mx-auto animate-fade-in-up delay-200">
-          <div className="glass rounded-2xl border border-[var(--primary)]/20 overflow-hidden shadow-xl shadow-[var(--primary)]/5">
+          <div
+            ref={cardRef}
+            onMouseMove={handleMouseMove}
+            onMouseLeave={handleMouseLeave}
+            className="glass rounded-3xl border border-[var(--primary)]/20 overflow-hidden shadow-2xl shadow-[var(--primary)]/10 transition-transform duration-300 ease-out will-change-transform"
+            style={{ transformStyle: "preserve-3d" }}
+          >
+            {/* Shine overlay for 3D effect */}
+            <div className="tilt-3d-shine absolute inset-0 rounded-3xl pointer-events-none z-10 opacity-0" style={{ background: "linear-gradient(135deg, rgba(255,255,255,0.12) 0%, transparent 50%, transparent 100%)" }} />
+
             {/* Chat header */}
-            <div className="flex items-center gap-3 px-4 py-3 border-b border-[var(--foreground)]/10 bg-gradient-to-r from-[var(--primary)]/5 to-[var(--secondary)]/5">
-              <div className="w-10 h-10 rounded-full flex items-center justify-center overflow-hidden">
+            <div className="flex items-center gap-3 px-5 py-4 border-b border-[var(--foreground)]/10 bg-gradient-to-r from-[var(--primary)]/5 to-[var(--secondary)]/5">
+              <div className="w-10 h-10 rounded-full flex items-center justify-center overflow-hidden ring-2 ring-[var(--primary)]/20">
                 <img src="/images/pau-icon.svg" alt="PAU" className="w-9 h-9" />
               </div>
               <div>
                 <h3 className="font-semibold font-[family-name:var(--font-display)] text-sm">
                   {t("playground.assistant")}
                 </h3>
-                <p className="text-xs text-[var(--foreground)]/60">
+                <p className="text-xs text-[var(--foreground)]/50">
                   {isLoading ? t("playground.typing") : t("playground.online")}
                 </p>
               </div>
-              <div className={`ml-auto w-2 h-2 rounded-full ${isLoading ? "bg-yellow-500 animate-pulse" : "bg-emerald-500"}`} />
+              <div className={`ml-auto w-2.5 h-2.5 rounded-full ${isLoading ? "bg-yellow-500 animate-pulse" : "bg-emerald-500"} ring-4 ${isLoading ? "ring-yellow-500/20" : "ring-emerald-500/20"}`} />
             </div>
 
             <ChatWindow messages={messages} />
             <ChatInput onSend={handleSend} disabled={isLoading} />
           </div>
 
-          {/* Action buttons row - responsive */}
-          <div className="flex flex-col sm:flex-row gap-3 justify-center mt-6">
+          {/* Action buttons */}
+          <div className="flex flex-col sm:flex-row gap-3 justify-center mt-8">
             <button
               onClick={handleVapiCall}
               disabled={vapiLoading}
-              className="flex items-center justify-center gap-2 px-5 py-3 rounded-full bg-gradient-to-r from-[var(--primary)] to-[var(--accent)] text-white font-semibold text-sm hover:shadow-lg hover:shadow-[var(--primary)]/30 transition-all disabled:opacity-70"
+              className="flex items-center justify-center gap-2 px-6 py-3.5 rounded-full bg-gradient-to-r from-[var(--primary)] to-[var(--accent)] text-white font-semibold text-sm hover:shadow-lg hover:shadow-[var(--primary)]/30 transition-all hover:scale-105 disabled:opacity-70"
             >
               <span className={`material-symbols-outlined text-lg ${vapiLoading ? "animate-pulse" : ""}`}>
                 {vapiLoading ? "phone_in_talk" : "call"}
@@ -402,7 +426,7 @@ Respuestas cortas y naturales. Intenta que agenden una cita gratuita en pauvepe.
               )}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center justify-center gap-2 px-5 py-3 rounded-full bg-[#25D366] text-white font-semibold text-sm hover:shadow-lg hover:shadow-[#25D366]/30 transition-all"
+              className="flex items-center justify-center gap-2 px-6 py-3.5 rounded-full bg-[#25D366] text-white font-semibold text-sm hover:shadow-lg hover:shadow-[#25D366]/30 transition-all hover:scale-105"
             >
               <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
                 <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
@@ -411,8 +435,7 @@ Respuestas cortas y naturales. Intenta que agenden una cita gratuita en pauvepe.
             </a>
           </div>
 
-          {/* Disclaimer */}
-          <p className="text-center text-xs text-[var(--foreground)]/40 mt-4">
+          <p className="text-center text-xs text-[var(--foreground)]/30 mt-4">
             {t("playground.disclaimer")}
           </p>
         </div>
@@ -421,16 +444,16 @@ Respuestas cortas y naturales. Intenta que agenden una cita gratuita en pauvepe.
       {/* Call Me Modal */}
       {showCallModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm animate-fade-in">
-          <div className="bg-[var(--surface)] border border-[var(--primary)]/20 rounded-2xl p-6 w-[90%] max-w-md shadow-2xl">
-            <div className="flex items-center gap-3 mb-4">
-              <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[var(--primary)] to-[var(--accent)] flex items-center justify-center">
+          <div className="bg-[var(--surface)] border border-[var(--primary)]/20 rounded-3xl p-8 w-[90%] max-w-md shadow-2xl animate-scale-in">
+            <div className="flex items-center gap-3 mb-6">
+              <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[var(--primary)] to-[var(--accent)] flex items-center justify-center">
                 <span className="material-symbols-outlined text-white text-2xl">call</span>
               </div>
               <div>
                 <h3 className="text-lg font-bold font-[family-name:var(--font-display)]">
                   {t("playground.callme_title")}
                 </h3>
-                <p className="text-sm text-[var(--foreground)]/60">
+                <p className="text-sm text-[var(--foreground)]/50">
                   {t("playground.callme_desc")}
                 </p>
               </div>
@@ -441,7 +464,7 @@ Respuestas cortas y naturales. Intenta que agenden una cita gratuita en pauvepe.
               value={callPhone}
               onChange={(e) => setCallPhone(e.target.value)}
               placeholder={t("playground.callme_placeholder")}
-              className="w-full px-4 py-3 rounded-xl border border-[var(--foreground)]/20 bg-[var(--background)] text-[var(--foreground)] text-lg mb-4 focus:outline-none focus:border-[var(--primary)] transition-colors"
+              className="w-full px-5 py-4 rounded-2xl border border-[var(--foreground)]/15 bg-[var(--background)] text-[var(--foreground)] text-lg mb-5 focus:outline-none focus:border-[var(--primary)] focus:ring-2 focus:ring-[var(--primary)]/20 transition-all"
               autoFocus
               disabled={callStatus === "calling" || callStatus === "success"}
             />
@@ -460,7 +483,7 @@ Respuestas cortas y naturales. Intenta que agenden una cita gratuita en pauvepe.
                   setCallStatus("idle");
                   setCallPhone("");
                 }}
-                className="flex-1 px-4 py-3 rounded-xl border border-[var(--foreground)]/20 text-[var(--foreground)]/70 hover:bg-[var(--foreground)]/5 transition-colors font-medium"
+                className="flex-1 px-4 py-3.5 rounded-2xl border border-[var(--foreground)]/15 text-[var(--foreground)]/60 hover:bg-[var(--foreground)]/5 transition-colors font-medium"
                 disabled={callStatus === "calling"}
               >
                 {t("playground.callme_cancel")}
@@ -468,7 +491,7 @@ Respuestas cortas y naturales. Intenta que agenden una cita gratuita en pauvepe.
               <button
                 onClick={() => triggerOutboundCall(callPhone)}
                 disabled={!callPhone.trim() || callStatus === "calling" || callStatus === "success"}
-                className="flex-1 px-4 py-3 rounded-xl bg-gradient-to-r from-[var(--primary)] to-[var(--accent)] text-white font-semibold hover:shadow-lg hover:shadow-[var(--primary)]/30 transition-all disabled:opacity-50 flex items-center justify-center gap-2"
+                className="flex-1 px-4 py-3.5 rounded-2xl bg-gradient-to-r from-[var(--primary)] to-[var(--accent)] text-white font-semibold hover:shadow-lg hover:shadow-[var(--primary)]/30 transition-all disabled:opacity-50 flex items-center justify-center gap-2"
               >
                 <span className={`material-symbols-outlined text-lg ${callStatus === "calling" ? "animate-pulse" : ""}`}>
                   {callStatus === "calling" ? "phone_in_talk" : "call"}
