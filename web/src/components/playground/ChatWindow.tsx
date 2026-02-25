@@ -20,7 +20,7 @@ export default function ChatWindow({ messages }: ChatWindowProps) {
   return (
     <div
       ref={scrollRef}
-      className="h-[350px] md:h-[400px] overflow-y-auto p-4 space-y-4 scroll-smooth"
+      className="h-[260px] sm:h-[320px] md:h-[400px] overflow-y-auto p-3 sm:p-4 space-y-3 sm:space-y-4 scroll-smooth"
     >
       {messages.length === 0 ? (
         <div className="h-full flex flex-col items-center justify-center text-center text-[var(--foreground)]/50">

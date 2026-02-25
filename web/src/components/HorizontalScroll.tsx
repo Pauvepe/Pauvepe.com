@@ -61,13 +61,16 @@ export default function HorizontalScroll({
     };
   }, [isMobile]);
 
-  // Mobile: normal horizontal scroll
+  // Mobile: normal horizontal scroll (no -mx to prevent page overflow)
   if (isMobile) {
     return (
-      <div className={`overflow-x-auto pb-4 -mx-4 ${className}`}>
+      <div
+        className={`overflow-x-auto pb-4 ${className}`}
+        style={{ overscrollBehaviorX: "contain", WebkitOverflowScrolling: "touch" }}
+      >
         <div
-          className="flex gap-5 px-4"
-          style={{ scrollSnapType: "x mandatory", WebkitOverflowScrolling: "touch" }}
+          className="flex gap-4 px-4"
+          style={{ scrollSnapType: "x mandatory" }}
         >
           {children}
         </div>

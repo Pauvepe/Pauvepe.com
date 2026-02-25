@@ -11,6 +11,7 @@ import AnimatedCounter from "@/components/AnimatedCounter";
 import { services } from "@/lib/services";
 import PlaygroundSection from "@/components/playground/PlaygroundSection";
 import BlogCarousel from "@/components/BlogCarousel";
+import GrowthPhases from "@/components/GrowthPhases";
 import { useApp } from "@/context/AppContext";
 
 const marqueeItems = [
@@ -112,7 +113,7 @@ export default function Home() {
       <PlaygroundSection />
 
       {/* ========== TEXT REVEAL: PROBLEM ========== */}
-      <section className="py-20 md:py-32 bg-[var(--surface)]">
+      <section className="py-12 md:py-20 bg-[var(--surface)]">
         <div className="container mx-auto px-4 lg:px-8">
           <ScrollReveal>
             <div className="max-w-3xl mx-auto text-center mb-8">
@@ -386,6 +387,9 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      {/* ========== GROWTH PHASES: SCROLL-LOCK ========== */}
+      <GrowthPhases />
 
       {/* ========== FINAL CTA ========== */}
       <section className="relative py-24 md:py-32 bg-gradient-animated overflow-hidden">
