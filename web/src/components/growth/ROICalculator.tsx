@@ -7,22 +7,26 @@ interface ROICalculatorProps {
   defaultTicket?: number;
   defaultClients?: number;
   setupCost?: number;
+  crmMonthly?: number;
+  crmFreeMonths?: number;
 }
 
 export default function ROICalculator({
   type,
   defaultTicket = 200,
   defaultClients = 15,
-  setupCost = 900,
+  setupCost = 600,
+  crmMonthly = 100,
+  crmFreeMonths = 3,
 }: ROICalculatorProps) {
   const [months, setMonths] = useState<3 | 6 | 9>(3);
   const [adsMonthly, setAdsMonthly] = useState(300);
   const [ticketMedio, setTicketMedio] = useState(defaultTicket);
   const [clientesNuevos, setClientesNuevos] = useState(defaultClients);
 
-  const crmMonthly = 149;
+  const paidCrmMonths = Math.max(0, months - crmFreeMonths);
   const totalAds = adsMonthly * months;
-  const totalCRM = crmMonthly * months;
+  const totalCRM = crmMonthly * paidCrmMonths;
   const totalInversion = setupCost + totalAds + totalCRM;
 
   const ingresosMensuales = ticketMedio * clientesNuevos;
@@ -30,11 +34,12 @@ export default function ROICalculator({
   const beneficioNeto = ingresosTotal - totalInversion;
   const roi = totalInversion > 0 ? ((ingresosTotal / totalInversion) * 100).toFixed(0) : "0";
 
-  // Worst case: ads don't work, refund
-  const peorCaso = type === "ecommerce"
-    ? Math.max(0, setupCost - totalAds)
-    : Math.max(0, setupCost - totalAds);
   const maxRefund = Math.min(totalAds, setupCost);
+  const peorCaso = Math.max(0, setupCost - totalAds);
+
+  // Build breakdown string
+  const breakdownParts = [`${setupCost} setup`, `${totalAds} ads`];
+  if (totalCRM > 0) breakdownParts.push(`${totalCRM} IA`);
 
   return (
     <div className="bg-[var(--surface)] rounded-2xl border border-[var(--foreground)]/10 overflow-hidden">
@@ -65,6 +70,9 @@ export default function ROICalculator({
                 }`}
               >
                 {m} meses
+                {m <= crmFreeMonths && type === "servicios" && (
+                  <span className="block text-[10px] opacity-75">IA gratis</span>
+                )}
               </button>
             ))}
           </div>
@@ -133,7 +141,7 @@ export default function ROICalculator({
             <p className="text-xs text-[var(--foreground)]/50 mb-1">Tu inversion total</p>
             <p className="text-lg font-bold">{totalInversion.toLocaleString("es-ES")} EUR</p>
             <p className="text-[10px] text-[var(--foreground)]/40 mt-1">
-              {setupCost} setup + {totalAds} ads + {totalCRM} CRM
+              {breakdownParts.join(" + ")}
             </p>
           </div>
           <div className="p-4 rounded-xl bg-[var(--secondary)]/10">

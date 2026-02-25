@@ -177,7 +177,9 @@ export default function VeterinariaPage() {
             type="servicios"
             defaultTicket={233}
             defaultClients={15}
-            setupCost={900}
+            setupCost={600}
+            crmMonthly={100}
+            crmFreeMonths={3}
           />
         </div>
       </section>

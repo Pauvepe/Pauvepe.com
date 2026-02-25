@@ -177,7 +177,9 @@ export default function ServiciosPage() {
             type="servicios"
             defaultTicket={200}
             defaultClients={15}
-            setupCost={900}
+            setupCost={600}
+            crmMonthly={100}
+            crmFreeMonths={3}
           />
         </div>
       </section>
@@ -192,19 +194,28 @@ export default function ServiciosPage() {
             <div className="p-5 rounded-2xl bg-[var(--surface)] border border-[var(--foreground)]/10">
               <div className="flex justify-between items-center">
                 <div>
-                  <h4 className="font-semibold font-[family-name:var(--font-display)]">Setup inicial</h4>
-                  <p className="text-xs text-[var(--foreground)]/50">CRM + chatbots + integraciones + config todo</p>
+                  <h4 className="font-semibold font-[family-name:var(--font-display)]">Setup + 3 meses de CRM con IA gratis</h4>
+                  <p className="text-xs text-[var(--foreground)]/50">CRM + chatbots + integraciones + email marketing + 3 meses de IA incluidos</p>
                 </div>
-                <p className="text-xl font-bold text-[var(--primary)]">900 EUR</p>
+                <p className="text-xl font-bold text-[var(--primary)]">600 EUR</p>
               </div>
             </div>
             <div className="p-5 rounded-2xl bg-[var(--surface)] border border-[var(--foreground)]/10">
               <div className="flex justify-between items-center">
                 <div>
-                  <h4 className="font-semibold font-[family-name:var(--font-display)]">CRM + IA + Marketing mensual</h4>
-                  <p className="text-xs text-[var(--foreground)]/50">Chatbots, email, contenido, reportes, soporte</p>
+                  <h4 className="font-semibold font-[family-name:var(--font-display)]">CRM basico despues de 3 meses</h4>
+                  <p className="text-xs text-[var(--foreground)]/50">Contactos, historial, etiquetas. Tuyo para siempre.</p>
                 </div>
-                <p className="text-xl font-bold text-[var(--primary)]">149 EUR/mes</p>
+                <p className="text-xl font-bold text-[var(--secondary)]">GRATIS</p>
+              </div>
+            </div>
+            <div className="p-5 rounded-2xl bg-[var(--surface)] border border-[var(--foreground)]/10">
+              <div className="flex justify-between items-center">
+                <div>
+                  <h4 className="font-semibold font-[family-name:var(--font-display)]">IA + marketing automatico (opcional)</h4>
+                  <p className="text-xs text-[var(--foreground)]/50">Chatbots IA, email con IA, ideas de contenido, reportes</p>
+                </div>
+                <p className="text-xl font-bold text-[var(--primary)]">100 EUR/mes</p>
               </div>
             </div>
             <div className="p-5 rounded-2xl bg-[var(--surface)] border border-[var(--foreground)]/10">
