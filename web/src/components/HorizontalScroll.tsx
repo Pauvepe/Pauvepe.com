@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, ReactNode } from "react";
+import { useEffect, useRef, useState, ReactNode } from "react";
 
 interface HorizontalScrollProps {
   children: ReactNode;
@@ -13,9 +13,18 @@ export default function HorizontalScroll({
 }: HorizontalScrollProps) {
   const sectionRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
-  const stickyRef = useRef<HTMLDivElement>(null);
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
+
+  useEffect(() => {
+    if (isMobile) return; // On mobile, use normal scroll
+
     const section = sectionRef.current;
     const track = trackRef.current;
     if (!section || !track) return;
@@ -23,8 +32,8 @@ export default function HorizontalScroll({
     const updateHeight = () => {
       const trackWidth = track.scrollWidth;
       const vw = window.innerWidth;
-      const scrollNeeded = trackWidth - vw + 100;
-      section.style.height = `${Math.max(scrollNeeded + window.innerHeight, window.innerHeight * 2)}px`;
+      const scrollNeeded = Math.max(trackWidth - vw, 0);
+      section.style.height = `${scrollNeeded + window.innerHeight}px`;
     };
 
     updateHeight();
@@ -37,7 +46,7 @@ export default function HorizontalScroll({
       const progress = Math.max(0, Math.min(1, -rect.top / sectionHeight));
       const trackWidth = track.scrollWidth;
       const vw = window.innerWidth;
-      const maxTranslate = trackWidth - vw + 100;
+      const maxTranslate = Math.max(trackWidth - vw, 0);
 
       track.style.transform = `translateX(${-progress * maxTranslate}px)`;
     };
@@ -50,17 +59,29 @@ export default function HorizontalScroll({
       window.removeEventListener("scroll", handleScroll);
       window.removeEventListener("resize", updateHeight);
     };
-  }, []);
+  }, [isMobile]);
 
+  // Mobile: normal horizontal scroll
+  if (isMobile) {
+    return (
+      <div className={`overflow-x-auto pb-4 -mx-4 ${className}`}>
+        <div
+          className="flex gap-5 px-4"
+          style={{ scrollSnapType: "x mandatory", WebkitOverflowScrolling: "touch" }}
+        >
+          {children}
+        </div>
+      </div>
+    );
+  }
+
+  // Desktop: pinned horizontal scroll
   return (
     <div ref={sectionRef} className={`relative ${className}`}>
-      <div
-        ref={stickyRef}
-        className="sticky top-0 h-screen overflow-hidden flex items-center"
-      >
+      <div className="sticky top-0 h-screen overflow-hidden flex items-center">
         <div
           ref={trackRef}
-          className="flex gap-6 md:gap-8 pl-8 pr-[30vw] will-change-transform"
+          className="flex gap-8 px-[max(2rem,calc((100vw-1200px)/2+2rem))] will-change-transform"
         >
           {children}
         </div>

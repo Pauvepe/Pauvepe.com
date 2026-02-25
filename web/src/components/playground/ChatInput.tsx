@@ -129,31 +129,31 @@ export default function ChatInput({ onSend, disabled = false }: ChatInputProps) 
       )}
 
       {/* Input row */}
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-1.5 sm:gap-2">
         {/* Record button */}
         <button
           onClick={isRecording ? stopRecording : startRecording}
           disabled={disabled}
-          className={`p-3 rounded-full transition-all ${
+          className={`flex-shrink-0 p-2.5 sm:p-3 rounded-full transition-all ${
             isRecording
               ? 'bg-red-500 text-white animate-recording'
               : 'bg-[var(--surface)] hover:bg-[var(--primary)]/10 text-[var(--foreground)]'
           } disabled:opacity-50 disabled:cursor-not-allowed`}
           aria-label={isRecording ? 'Detener grabación' : 'Grabar audio'}
         >
-          <span className="material-symbols-outlined text-xl">
+          <span className="material-symbols-outlined text-lg sm:text-xl">
             {isRecording ? 'stop' : 'mic'}
           </span>
         </button>
 
-        {/* Image button */}
+        {/* Image button - hide on very small screens */}
         <button
           onClick={() => fileInputRef.current?.click()}
           disabled={disabled}
-          className="p-3 rounded-full bg-[var(--surface)] hover:bg-[var(--primary)]/10 text-[var(--foreground)] transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+          className="hidden sm:flex flex-shrink-0 p-2.5 sm:p-3 rounded-full bg-[var(--surface)] hover:bg-[var(--primary)]/10 text-[var(--foreground)] transition-all disabled:opacity-50 disabled:cursor-not-allowed"
           aria-label="Adjuntar imagen"
         >
-          <span className="material-symbols-outlined text-xl">image</span>
+          <span className="material-symbols-outlined text-lg sm:text-xl">image</span>
         </button>
         <input
           ref={fileInputRef}
@@ -171,17 +171,17 @@ export default function ChatInput({ onSend, disabled = false }: ChatInputProps) 
           onKeyDown={handleKeyDown}
           disabled={disabled}
           placeholder="Escribe un mensaje..."
-          className="flex-1 px-4 py-3 rounded-full bg-[var(--surface)] border border-[var(--foreground)]/10 focus:border-[var(--primary)] focus:outline-none transition-colors disabled:opacity-50"
+          className="flex-1 min-w-0 px-3 sm:px-4 py-2.5 sm:py-3 rounded-full bg-[var(--surface)] border border-[var(--foreground)]/10 focus:border-[var(--primary)] focus:outline-none transition-colors disabled:opacity-50 text-sm sm:text-base"
         />
 
         {/* Send button */}
         <button
           onClick={handleSubmit}
           disabled={disabled || (!message.trim() && attachments.length === 0)}
-          className="p-3 rounded-full bg-gradient-to-r from-[var(--primary)] to-[var(--secondary)] text-white hover:shadow-lg hover:shadow-[var(--primary)]/30 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+          className="flex-shrink-0 p-2.5 sm:p-3 rounded-full bg-gradient-to-r from-[var(--primary)] to-[var(--secondary)] text-white hover:shadow-lg hover:shadow-[var(--primary)]/30 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
           aria-label="Enviar mensaje"
         >
-          <span className="material-symbols-outlined text-xl">send</span>
+          <span className="material-symbols-outlined text-lg sm:text-xl">send</span>
         </button>
       </div>
     </div>
