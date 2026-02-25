@@ -10,7 +10,6 @@ import Marquee from "@/components/Marquee";
 import AnimatedCounter from "@/components/AnimatedCounter";
 import { services } from "@/lib/services";
 import PlaygroundSection from "@/components/playground/PlaygroundSection";
-import BlogCarousel from "@/components/BlogCarousel";
 import GrowthPhases from "@/components/GrowthPhases";
 import { useApp } from "@/context/AppContext";
 
@@ -254,9 +253,6 @@ export default function Home() {
           separator="*"
         />
       </section>
-
-      {/* ========== BLOG CAROUSEL ========== */}
-      <BlogCarousel />
 
       {/* ========== PORTFOLIO: WHAT WE BUILD ========== */}
       <section className="py-20 md:py-28 bg-[var(--surface)]">
