@@ -20,6 +20,10 @@ const dmSans = DM_Sans({
 });
 
 export const metadata: Metadata = {
+  icons: {
+    icon: "/images/pau-icon.svg",
+    apple: "/images/pau-icon.svg",
+  },
   title: {
     default: "Pau Vera | Tu Negocio En Esteroides",
     template: "%s | Pau Vera",
