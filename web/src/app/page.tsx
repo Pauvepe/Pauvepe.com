@@ -12,6 +12,7 @@ import { services } from "@/lib/services";
 import PlaygroundSection from "@/components/playground/PlaygroundSection";
 import GrowthPhases from "@/components/GrowthPhases";
 import PhoneMockup from "@/components/PhoneMockup";
+import HuellaProductScreen from "@/components/HuellaProductScreen";
 import { useApp } from "@/context/AppContext";
 
 const marqueeItems = [
@@ -344,7 +345,9 @@ export default function Home() {
 
           {/* Phone Mockup - Huella Urbana preview */}
           <ScrollReveal direction="scale">
-            <PhoneMockup className="mt-12" />
+            <PhoneMockup className="mt-12">
+              <HuellaProductScreen />
+            </PhoneMockup>
           </ScrollReveal>
         </div>
       </section>
