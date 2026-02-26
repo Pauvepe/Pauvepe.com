@@ -11,48 +11,12 @@ export default function PhoneMockup({ children, className = "" }: PhoneMockupPro
   const phoneRef = useRef<HTMLDivElement>(null);
   const screenRef = useRef<HTMLDivElement>(null);
   const [showHint, setShowHint] = useState(true);
-  const isMouseScrolling = useRef(false);
 
   // Hide scroll hint once user scrolls
   const handleScroll = useCallback(() => {
     if (screenRef.current && screenRef.current.scrollTop > 30) {
       setShowHint(false);
     }
-  }, []);
-
-  // Prevent text selection when mouse-scrolling inside the phone screen
-  useEffect(() => {
-    const screen = screenRef.current;
-    if (!screen) return;
-
-    const preventDragSelect = (e: MouseEvent) => {
-      // If mouse is down and moving inside the screen, prevent default selection
-      if (isMouseScrolling.current) {
-        e.preventDefault();
-      }
-    };
-
-    const handleMouseDown = (e: MouseEvent) => {
-      // Only set scrolling flag if clicking directly on the scroll area (not buttons)
-      const target = e.target as HTMLElement;
-      if (target.tagName !== "BUTTON" && !target.closest("button")) {
-        isMouseScrolling.current = true;
-      }
-    };
-
-    const handleMouseUp = () => {
-      isMouseScrolling.current = false;
-    };
-
-    screen.addEventListener("mousedown", handleMouseDown);
-    screen.addEventListener("mousemove", preventDragSelect);
-    window.addEventListener("mouseup", handleMouseUp);
-
-    return () => {
-      screen.removeEventListener("mousedown", handleMouseDown);
-      screen.removeEventListener("mousemove", preventDragSelect);
-      window.removeEventListener("mouseup", handleMouseUp);
-    };
   }, []);
 
   useEffect(() => {
@@ -112,18 +76,11 @@ export default function PhoneMockup({ children, className = "" }: PhoneMockupPro
             </div>
           </div>
 
-          {/* Screen area - scrollable */}
+          {/* Screen area - scrollable (CSS handles user-select: none) */}
           <div
             ref={screenRef}
             className="phone-mockup-screen"
             onScroll={handleScroll}
-            onMouseDown={(e) => {
-              // Prevent text selection on mouse drag inside phone screen
-              const target = e.target as HTMLElement;
-              if (target.tagName !== "BUTTON" && !target.closest("button")) {
-                e.preventDefault();
-              }
-            }}
           >
             {children || (
               <div className="phone-mockup-placeholder">
