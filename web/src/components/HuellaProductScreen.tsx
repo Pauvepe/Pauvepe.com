@@ -273,20 +273,18 @@ export default function HuellaProductScreen() {
         <p className="hu-qty-title">Compra mas, ahorra mas</p>
         <div className="hu-qty-grid">
           {qtyDiscounts.map((opt, i) => (
-            <div
+            <button
               key={opt.n}
+              type="button"
               className={`hu-qty-option ${selectedQtyTier === i ? "active" : ""}`}
-              onClick={(e) => { e.stopPropagation(); e.preventDefault(); handleSelectQtyTier(i); }}
-              onPointerDown={(e) => { e.stopPropagation(); }}
-              role="button"
-              tabIndex={0}
+              onClick={() => handleSelectQtyTier(i)}
             >
-              <div className="hu-qty-label">
+              <span className="hu-qty-label">
                 x{opt.n}
                 {opt.save && <span className="hu-qty-save">{opt.save}</span>}
-              </div>
-              <div className="hu-qty-unit">{formatPrice(basePrice * opt.pct)} € /ud.</div>
-            </div>
+              </span>
+              <span className="hu-qty-unit">{formatPrice(basePrice * opt.pct)} € /ud.</span>
+            </button>
           ))}
         </div>
 

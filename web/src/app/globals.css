@@ -1418,6 +1418,16 @@ body:has(.growth-landing) a[aria-label="Contactar por WhatsApp"] {
   padding: 6px 8px;
   text-align: center;
   transition: border-color 0.2s, background 0.2s, transform 0.15s;
+  /* Reset button defaults */
+  background: #fff;
+  font-family: inherit;
+  font-size: inherit;
+  color: inherit;
+  line-height: inherit;
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  display: block;
 }
 
 .hu-qty-option:active {
