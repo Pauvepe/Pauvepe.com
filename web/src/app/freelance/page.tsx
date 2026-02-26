@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import type { Metadata } from "next";
+import PhoneMockup from "@/components/PhoneMockup";
 
 export const metadata: Metadata = {
   title: "Freelance Services",
@@ -288,6 +289,9 @@ export default function FreelancePage() {
                 </div>
               </div>
             </div>
+
+            {/* Phone Mockup - Huella Urbana preview */}
+            <PhoneMockup className="mt-12" />
           </div>
         </div>
       </section>

@@ -11,6 +11,7 @@ import AnimatedCounter from "@/components/AnimatedCounter";
 import { services } from "@/lib/services";
 import PlaygroundSection from "@/components/playground/PlaygroundSection";
 import GrowthPhases from "@/components/GrowthPhases";
+import PhoneMockup from "@/components/PhoneMockup";
 import { useApp } from "@/context/AppContext";
 
 const marqueeItems = [
@@ -339,6 +340,11 @@ export default function Home() {
                 </div>
               </div>
             </div>
+          </ScrollReveal>
+
+          {/* Phone Mockup - Huella Urbana preview */}
+          <ScrollReveal direction="scale">
+            <PhoneMockup className="mt-12" />
           </ScrollReveal>
         </div>
       </section>
