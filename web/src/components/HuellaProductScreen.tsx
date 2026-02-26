@@ -1,6 +1,28 @@
 "use client";
 
+import { useState } from "react";
+
+const productImages = [
+  "https://huellaurbanabcn.com/wp-content/uploads/2026/02/dibaq-sense-cochinillo-segovia-perro-lata-577989-c75uI8.jpg",
+  "https://huellaurbanabcn.com/wp-content/uploads/2026/02/dibaq-sense-cochinillo-segovia-informacion-nutricional-878633-c75uI8.jpg",
+];
+
+const variants = [
+  { id: "6x380", name: "6 x 380g", discount: "-10%", oldPrice: "21,00", newPrice: "18,90" },
+  { id: "12x380", name: "12 x 380g", discount: "-15%", oldPrice: "42,00", newPrice: "35,70" },
+  { id: "380", name: "380 g", discount: null, oldPrice: null, newPrice: "3,50" },
+];
+
 export default function HuellaProductScreen() {
+  const [currentImg, setCurrentImg] = useState(0);
+  const [selectedVariant, setSelectedVariant] = useState(0);
+  const [qty, setQty] = useState(1);
+
+  const v = variants[selectedVariant];
+  const discountBadge = variants.reduce((best, vr) =>
+    vr.discount && (!best || parseInt(vr.discount) < parseInt(best)) ? vr.discount : best
+  , variants[0].discount);
+
   return (
     <div className="hu-product">
       {/* ===== HEADER ===== */}
@@ -13,17 +35,18 @@ export default function HuellaProductScreen() {
           <span>Buscar</span>
         </div>
         <div className="hu-header-logo">
-          {/* Simplified HU logo */}
-          <svg viewBox="0 0 80 50" width="52" height="32">
-            <text x="50%" y="60%" textAnchor="middle" fontSize="9" fontWeight="900" fill="#1a1a1a" fontFamily="sans-serif">HUELLA</text>
-            <text x="50%" y="90%" textAnchor="middle" fontSize="9" fontWeight="900" fill="#1a1a1a" fontFamily="sans-serif">URBANA</text>
-          </svg>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="https://huellaurbanabcn.com/wp-content/uploads/2025/05/Recurso-14.svg"
+            alt="Huella Urbana"
+            style={{ height: 28, width: "auto" }}
+          />
         </div>
         <div className="hu-header-right">
-          <span className="hu-header-price">€28,44</span>
+          <span className="hu-header-price">{`€${v.newPrice}`}</span>
           <div className="hu-header-cart">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
-            <span className="hu-cart-badge">1</span>
+            <span className="hu-cart-badge">{qty}</span>
           </div>
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
         </div>
@@ -32,41 +55,53 @@ export default function HuellaProductScreen() {
       {/* ===== BREADCRUMBS ===== */}
       <div className="hu-breadcrumbs">
         <span>PERRO</span>
-        <span className="hu-bc-sep">›</span>
+        <span className="hu-bc-sep">&rsaquo;</span>
         <span>ALIMENTACION</span>
-        <span className="hu-bc-sep">›</span>
+        <span className="hu-bc-sep">&rsaquo;</span>
         <span>COMIDA HUMEDA</span>
       </div>
 
-      {/* ===== PRODUCT IMAGE ===== */}
+      {/* ===== PRODUCT IMAGE CAROUSEL ===== */}
       <div className="hu-product-gallery">
-        <div className="hu-discount-badge">-15% DTO</div>
+        {discountBadge && <div className="hu-discount-badge">{discountBadge} DTO</div>}
         <div className="hu-product-img-wrap">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            src="https://huellaurbanabcn.com/wp-content/uploads/2026/02/dibaq-sense-cochinillo-segovia-perro-lata-577989-c75uI8.jpg"
+            src={productImages[currentImg]}
             alt="Dibaq Sense Cochinillo"
             className="hu-product-img"
           />
           <div className="hu-grain-free-tag">GRAIN<br/>FREE</div>
         </div>
         <div className="hu-gallery-arrows">
-          <span className="hu-arrow">←</span>
-          <span className="hu-arrow">→</span>
+          <span
+            className="hu-arrow"
+            onClick={() => setCurrentImg((p) => (p - 1 + productImages.length) % productImages.length)}
+          >
+            &larr;
+          </span>
+          <span
+            className="hu-arrow"
+            onClick={() => setCurrentImg((p) => (p + 1) % productImages.length)}
+          >
+            &rarr;
+          </span>
         </div>
         <div className="hu-gallery-thumbs">
-          <div className="hu-thumb active">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="https://huellaurbanabcn.com/wp-content/uploads/2026/02/dibaq-sense-cochinillo-segovia-perro-lata-577989-c75uI8.jpg" alt="" />
-          </div>
-          <div className="hu-thumb">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="https://huellaurbanabcn.com/wp-content/uploads/2026/02/dibaq-sense-cochinillo-segovia-informacion-nutricional-878633-c75uI8.jpg" alt="" />
-          </div>
+          {productImages.map((src, i) => (
+            <div
+              key={i}
+              className={`hu-thumb ${currentImg === i ? "active" : ""}`}
+              onClick={() => setCurrentImg(i)}
+            >
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={src} alt="" />
+            </div>
+          ))}
         </div>
       </div>
 
-      {/* ===== PRODUCT TITLE ===== */}
+      {/* ===== PRODUCT INFO ===== */}
       <div className="hu-product-info">
         <h1 className="hu-product-title">
           Dibaq Sense Cochinillo de Segovia con Manzana y Zanahoria
@@ -79,7 +114,7 @@ export default function HuellaProductScreen() {
         </button>
 
         {/* Price */}
-        <div className="hu-price">€18,90</div>
+        <div className="hu-price">{`€${v.newPrice}`}</div>
 
         {/* Short description */}
         <div className="hu-short-desc">
@@ -90,64 +125,61 @@ export default function HuellaProductScreen() {
         {/* Separator */}
         <hr className="hu-separator" />
 
-        {/* Size variants */}
+        {/* Size variants - clickable */}
         <div className="hu-variants">
-          <div className="hu-variant">
-            <div className="hu-variant-discount">-10%</div>
-            <div className="hu-variant-name">6 x 380g</div>
-            <div className="hu-variant-prices">
-              <span className="hu-old-price">€21,00</span>
-              <span className="hu-new-price">€18,90</span>
+          {variants.map((vr, i) => (
+            <div
+              key={vr.id}
+              className={`hu-variant ${!vr.discount ? "single" : ""} ${selectedVariant === i ? "selected" : ""}`}
+              onClick={() => { setSelectedVariant(i); setQty(1); }}
+            >
+              {vr.discount && <div className="hu-variant-discount">{vr.discount}</div>}
+              <div className="hu-variant-name">{vr.name}</div>
+              {vr.oldPrice ? (
+                <div className="hu-variant-prices">
+                  <span className="hu-old-price">{`€${vr.oldPrice}`}</span>
+                  <span className="hu-new-price">{`€${vr.newPrice}`}</span>
+                </div>
+              ) : (
+                <div className="hu-new-price">{`€${vr.newPrice}`}</div>
+              )}
             </div>
-          </div>
-          <div className="hu-variant">
-            <div className="hu-variant-discount">-15%</div>
-            <div className="hu-variant-name">12 x 380g</div>
-            <div className="hu-variant-prices">
-              <span className="hu-old-price">€42,00</span>
-              <span className="hu-new-price">€35,70</span>
-            </div>
-          </div>
-          <div className="hu-variant single">
-            <div className="hu-variant-name">380 g</div>
-            <div className="hu-new-price">€3,50</div>
-          </div>
+          ))}
         </div>
         <span className="hu-clear-link">Limpiar</span>
 
         {/* Price display */}
         <div className="hu-price-display">
-          <span className="hu-price-main">€18,90</span>
-          <span className="hu-price-old">€21,00</span>
+          <span className="hu-price-main">{`€${v.newPrice}`}</span>
+          {v.oldPrice && <span className="hu-price-old">{`€${v.oldPrice}`}</span>}
         </div>
 
         {/* Quantity discounts */}
         <p className="hu-qty-title">Compra 2 unidades, no te quedes sin</p>
         <div className="hu-qty-grid">
-          <div className="hu-qty-option active">
-            <div className="hu-qty-label">x1</div>
-            <div className="hu-qty-unit">18,89 € /ud.</div>
-          </div>
-          <div className="hu-qty-option">
-            <div className="hu-qty-label">x2 <span className="hu-qty-save">0,37 €</span></div>
-            <div className="hu-qty-unit">18,52 € /ud.</div>
-          </div>
-          <div className="hu-qty-option">
-            <div className="hu-qty-label">x3 <span className="hu-qty-save">0,56 €</span></div>
-            <div className="hu-qty-unit">18,33 € /ud.</div>
-          </div>
-          <div className="hu-qty-option">
-            <div className="hu-qty-label">x5 <span className="hu-qty-save">0,94 €</span></div>
-            <div className="hu-qty-unit">17,95 € /ud.</div>
-          </div>
+          {[
+            { n: 1, unit: `${v.newPrice} € /ud.`, save: null },
+            { n: 2, unit: `${(parseFloat(v.newPrice.replace(",", ".")) * 0.98).toFixed(2).replace(".", ",")} € /ud.`, save: "0,37 €" },
+            { n: 3, unit: `${(parseFloat(v.newPrice.replace(",", ".")) * 0.97).toFixed(2).replace(".", ",")} € /ud.`, save: "0,56 €" },
+            { n: 5, unit: `${(parseFloat(v.newPrice.replace(",", ".")) * 0.95).toFixed(2).replace(".", ",")} € /ud.`, save: "0,94 €" },
+          ].map((opt) => (
+            <div
+              key={opt.n}
+              className={`hu-qty-option ${qty === opt.n ? "active" : ""}`}
+              onClick={() => setQty(opt.n)}
+            >
+              <div className="hu-qty-label">x{opt.n} {opt.save && <span className="hu-qty-save">{opt.save}</span>}</div>
+              <div className="hu-qty-unit">{opt.unit}</div>
+            </div>
+          ))}
         </div>
 
         {/* Add to cart */}
         <div className="hu-add-to-cart">
           <div className="hu-qty-selector">
-            <button>−</button>
-            <span>1</span>
-            <button>+</button>
+            <button onClick={() => setQty((q) => Math.max(1, q - 1))}>−</button>
+            <span>{qty}</span>
+            <button onClick={() => setQty((q) => q + 1)}>+</button>
           </div>
           <button className="hu-cart-btn">Anadir al carrito</button>
         </div>
@@ -239,7 +271,7 @@ export default function HuellaProductScreen() {
           </table>
         </div>
 
-        {/* Ficha Técnica card */}
+        {/* Ficha Tecnica card */}
         <div className="hu-ficha-card">
           <div className="hu-ficha-header">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#22c55e" strokeWidth="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>

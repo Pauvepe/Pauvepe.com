@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
 
 interface PhoneMockupProps {
   children?: React.ReactNode;
@@ -9,6 +9,15 @@ interface PhoneMockupProps {
 
 export default function PhoneMockup({ children, className = "" }: PhoneMockupProps) {
   const phoneRef = useRef<HTMLDivElement>(null);
+  const screenRef = useRef<HTMLDivElement>(null);
+  const [showHint, setShowHint] = useState(true);
+
+  // Hide scroll hint once user scrolls
+  const handleScroll = useCallback(() => {
+    if (screenRef.current && screenRef.current.scrollTop > 30) {
+      setShowHint(false);
+    }
+  }, []);
 
   useEffect(() => {
     const el = phoneRef.current;
@@ -68,10 +77,13 @@ export default function PhoneMockup({ children, className = "" }: PhoneMockupPro
           </div>
 
           {/* Screen area - scrollable */}
-          <div className="phone-mockup-screen">
+          <div
+            ref={screenRef}
+            className="phone-mockup-screen"
+            onScroll={handleScroll}
+          >
             {children || (
               <div className="phone-mockup-placeholder">
-                {/* Placeholder content to show it's scrollable */}
                 <div className="phone-mockup-ph-header">
                   <div className="phone-mockup-ph-logo" />
                   <div className="phone-mockup-ph-nav">
@@ -109,6 +121,16 @@ export default function PhoneMockup({ children, className = "" }: PhoneMockupPro
               </div>
             )}
           </div>
+
+          {/* Scroll hint */}
+          {showHint && (
+            <div className="hu-scroll-hint">
+              <span className="hu-scroll-hint-text">Scroll</span>
+              <svg className="hu-scroll-hint-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <polyline points="6 9 12 15 18 9" />
+              </svg>
+            </div>
+          )}
 
           {/* Home indicator */}
           <div className="phone-mockup-home" />

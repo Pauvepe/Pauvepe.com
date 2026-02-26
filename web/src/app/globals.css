@@ -702,6 +702,54 @@ body:has(.growth-landing) a[aria-label="Contactar por WhatsApp"] {
   scrollbar-color: rgba(212,113,78,0.3) transparent;
 }
 
+/* Scroll hint overlay - fades out on scroll */
+.phone-mockup-frame::after {
+  content: "";
+  position: absolute;
+  bottom: 32px;
+  left: 12px;
+  right: 12px;
+  height: 60px;
+  background: linear-gradient(to bottom, transparent, rgba(255,255,255,0.95));
+  border-radius: 0 0 28px 28px;
+  pointer-events: none;
+  z-index: 5;
+  transition: opacity 0.4s;
+}
+
+.phone-mockup-frame .hu-scroll-hint {
+  position: absolute;
+  bottom: 36px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 6;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  pointer-events: none;
+  animation: scrollHintBounce 2s ease-in-out infinite;
+}
+
+.hu-scroll-hint-text {
+  font-size: 8px;
+  font-weight: 600;
+  color: #888;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.hu-scroll-hint-arrow {
+  width: 16px;
+  height: 16px;
+  color: #8cc63f;
+}
+
+@keyframes scrollHintBounce {
+  0%, 100% { transform: translateX(-50%) translateY(0); opacity: 1; }
+  50% { transform: translateX(-50%) translateY(4px); opacity: 0.6; }
+}
+
 @media (min-width: 768px) {
   .phone-mockup-screen {
     border-radius: 32px;
@@ -889,6 +937,8 @@ body:has(.growth-landing) a[aria-label="Contactar por WhatsApp"] {
   color: #1a1a1a;
   background: #fff;
   min-height: 100%;
+  user-select: none;
+  -webkit-user-select: none;
 }
 
 /* Header */
@@ -1049,7 +1099,22 @@ body:has(.growth-landing) a[aria-label="Contactar por WhatsApp"] {
 
 .hu-arrow {
   font-size: 14px;
-  color: #ccc;
+  color: #999;
+  cursor: pointer;
+  pointer-events: auto;
+  background: rgba(255,255,255,0.85);
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.15);
+  transition: background 0.2s;
+}
+
+.hu-arrow:active {
+  background: rgba(255,255,255,1);
 }
 
 .hu-gallery-thumbs {
@@ -1067,6 +1132,8 @@ body:has(.growth-landing) a[aria-label="Contactar por WhatsApp"] {
   overflow: hidden;
   padding: 2px;
   background: #fff;
+  cursor: pointer;
+  transition: border-color 0.2s;
 }
 
 .hu-thumb.active {
@@ -1147,6 +1214,17 @@ body:has(.growth-landing) a[aria-label="Contactar por WhatsApp"] {
   padding: 8px 10px;
   min-width: 80px;
   background: #fff;
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.2s;
+}
+
+.hu-variant.selected {
+  border-color: #8cc63f;
+  background: rgba(140, 198, 63, 0.06);
+}
+
+.hu-variant:active {
+  transform: scale(0.97);
 }
 
 .hu-variant-discount {
