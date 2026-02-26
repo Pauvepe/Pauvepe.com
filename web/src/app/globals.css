@@ -418,6 +418,15 @@ body::after {
   transform: translateX(60px);
 }
 
+@media (max-width: 767px) {
+  .scroll-reveal[data-direction="left"] {
+    transform: translateX(-16px);
+  }
+  .scroll-reveal[data-direction="right"] {
+    transform: translateX(16px);
+  }
+}
+
 .scroll-reveal[data-direction="scale"] {
   transform: scale(0.85);
 }

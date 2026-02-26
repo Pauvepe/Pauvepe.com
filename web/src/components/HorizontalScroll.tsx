@@ -13,7 +13,7 @@ export default function HorizontalScroll({
 }: HorizontalScrollProps) {
   const sectionRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
-  const [isMobile, setIsMobile] = useState(false);
+  const [isMobile, setIsMobile] = useState(true); // mobile-first to avoid SSR blank space
 
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth < 768);
