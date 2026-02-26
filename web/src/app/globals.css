@@ -602,6 +602,7 @@ body:has(.growth-landing) a[aria-label="Contactar por WhatsApp"] {
   filter: blur(40px);
   border-radius: 50%;
   z-index: -1;
+  pointer-events: none;
   animation: phoneShadowPulse 8s ease-in-out infinite;
 }
 
@@ -631,6 +632,8 @@ body:has(.growth-landing) a[aria-label="Contactar por WhatsApp"] {
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  /* Flatten 3D inside frame so content never goes behind frame/glow */
+  transform-style: flat;
 }
 
 [data-theme="light"] .phone-mockup-frame {
