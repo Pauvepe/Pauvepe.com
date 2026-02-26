@@ -160,15 +160,19 @@ export default function HuellaProductScreen() {
         <div className="hu-gallery-arrows">
           <button
             className="hu-arrow"
-            onClick={(e) => { e.stopPropagation(); changeImage((currentImg - 1 + productImages.length) % productImages.length); }}
+            onClick={(e) => { e.stopPropagation(); e.preventDefault(); changeImage((currentImg - 1 + productImages.length) % productImages.length); }}
+            onPointerDown={(e) => { e.stopPropagation(); }}
             type="button"
+            aria-label="Imagen anterior"
           >
             &#8249;
           </button>
           <button
             className="hu-arrow"
-            onClick={(e) => { e.stopPropagation(); changeImage((currentImg + 1) % productImages.length); }}
+            onClick={(e) => { e.stopPropagation(); e.preventDefault(); changeImage((currentImg + 1) % productImages.length); }}
+            onPointerDown={(e) => { e.stopPropagation(); }}
             type="button"
+            aria-label="Imagen siguiente"
           >
             &#8250;
           </button>
@@ -272,7 +276,10 @@ export default function HuellaProductScreen() {
             <div
               key={opt.n}
               className={`hu-qty-option ${selectedQtyTier === i ? "active" : ""}`}
-              onClick={() => handleSelectQtyTier(i)}
+              onClick={(e) => { e.stopPropagation(); e.preventDefault(); handleSelectQtyTier(i); }}
+              onPointerDown={(e) => { e.stopPropagation(); }}
+              role="button"
+              tabIndex={0}
             >
               <div className="hu-qty-label">
                 x{opt.n}

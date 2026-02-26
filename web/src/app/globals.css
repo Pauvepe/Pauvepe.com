@@ -1114,19 +1114,24 @@ body:has(.growth-landing) a[aria-label="Contactar por WhatsApp"] {
   justify-content: space-between;
   position: absolute;
   top: 50%;
-  left: 14px;
-  right: 14px;
+  left: 10px;
+  right: 10px;
   transform: translateY(-50%);
-  z-index: 5;
+  z-index: 10;
+  pointer-events: none;
+}
+
+.hu-gallery-arrows .hu-arrow {
+  pointer-events: auto !important;
 }
 
 .hu-arrow {
-  font-size: 14px;
+  font-size: 16px;
   color: #666;
   cursor: pointer;
-  background: rgba(255,255,255,0.92);
-  width: 26px;
-  height: 26px;
+  background: rgba(255,255,255,0.95);
+  width: 30px;
+  height: 30px;
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -1137,6 +1142,9 @@ body:has(.growth-landing) a[aria-label="Contactar por WhatsApp"] {
   padding: 0;
   line-height: 1;
   animation: huClickableHint 2.5s ease-in-out infinite;
+  z-index: 10 !important;
+  pointer-events: auto !important;
+  touch-action: manipulation;
 }
 
 .hu-arrow:hover {
@@ -1773,7 +1781,7 @@ body:has(.growth-landing) a[aria-label="Contactar por WhatsApp"] {
   50% { box-shadow: 0 0 0 3px rgba(140, 198, 63, 0); }
 }
 
-/* Cursor pointer on all clickable elements */
+/* Cursor pointer + reliable touch on all clickable elements */
 .hu-thumb,
 .hu-variant,
 .hu-qty-option,
@@ -1784,6 +1792,17 @@ body:has(.growth-landing) a[aria-label="Contactar por WhatsApp"] {
 .hu-clear-link,
 .hu-arrow {
   cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: rgba(140, 198, 63, 0.15);
+}
+
+/* Ensure interactive elements are always clickable through 3D transforms */
+.hu-arrow,
+.hu-qty-option,
+.hu-variant {
+  pointer-events: auto !important;
+  position: relative;
+  z-index: 1;
 }
 
 /* Pulse hint on interactive elements */
