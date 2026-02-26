@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, useCallback } from "react";
 
 const productImages = [
   "https://huellaurbanabcn.com/wp-content/uploads/2026/02/dibaq-sense-cochinillo-segovia-perro-lata-577989-c75uI8.jpg",
@@ -13,15 +13,94 @@ const variants = [
   { id: "380", name: "380 g", discount: null, oldPrice: null, newPrice: "3,50" },
 ];
 
+const qtyDiscounts = [
+  { n: 1, pct: 1, save: null },
+  { n: 2, pct: 0.98, save: "2%" },
+  { n: 3, pct: 0.97, save: "3%" },
+  { n: 5, pct: 0.95, save: "5%" },
+];
+
+function parsePrice(s: string) {
+  return parseFloat(s.replace(",", "."));
+}
+
+function formatPrice(n: number) {
+  return n.toFixed(2).replace(".", ",");
+}
+
 export default function HuellaProductScreen() {
   const [currentImg, setCurrentImg] = useState(0);
   const [selectedVariant, setSelectedVariant] = useState(0);
+  const [selectedQtyTier, setSelectedQtyTier] = useState(0);
   const [qty, setQty] = useState(1);
+  const [fading, setFading] = useState(false);
+
+  const touchStartX = useRef(0);
+  const touchStartY = useRef(0);
+  const isDragging = useRef(false);
+
+  const changeImage = useCallback((next: number) => {
+    setFading(true);
+    setTimeout(() => {
+      setCurrentImg(next);
+      setFading(false);
+    }, 150);
+  }, []);
+
+  const handleTouchStart = useCallback((e: React.TouchEvent) => {
+    touchStartX.current = e.touches[0].clientX;
+    touchStartY.current = e.touches[0].clientY;
+    isDragging.current = false;
+  }, []);
+
+  const handleTouchMove = useCallback(() => {
+    isDragging.current = true;
+  }, []);
+
+  const handleTouchEnd = useCallback((e: React.TouchEvent) => {
+    const dx = e.changedTouches[0].clientX - touchStartX.current;
+    const dy = e.changedTouches[0].clientY - touchStartY.current;
+    if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy)) {
+      if (dx < 0) {
+        changeImage((currentImg + 1) % productImages.length);
+      } else {
+        changeImage((currentImg - 1 + productImages.length) % productImages.length);
+      }
+    }
+  }, [currentImg, changeImage]);
 
   const v = variants[selectedVariant];
+  const basePrice = parsePrice(v.newPrice);
+  const tier = qtyDiscounts[selectedQtyTier];
+  const unitPrice = basePrice * tier.pct;
+  const totalPrice = unitPrice * qty;
+  const savedAmount = qty > 1 ? (basePrice * qty) - totalPrice : 0;
+
   const discountBadge = variants.reduce((best, vr) =>
     vr.discount && (!best || parseInt(vr.discount) < parseInt(best)) ? vr.discount : best
   , variants[0].discount);
+
+  // Sync qty with tier selection
+  const handleSelectQtyTier = useCallback((tierIndex: number) => {
+    setSelectedQtyTier(tierIndex);
+    setQty(qtyDiscounts[tierIndex].n);
+  }, []);
+
+  const handleSelectVariant = useCallback((i: number) => {
+    setSelectedVariant(i);
+    setSelectedQtyTier(0);
+    setQty(1);
+  }, []);
+
+  const handleQtyChange = useCallback((newQty: number) => {
+    const q = Math.max(1, newQty);
+    setQty(q);
+    // Auto-match to nearest tier
+    const matchTier = qtyDiscounts.reduce((best, t, i) =>
+      t.n <= q ? i : best
+    , 0);
+    setSelectedQtyTier(matchTier);
+  }, []);
 
   return (
     <div className="hu-product">
@@ -43,7 +122,7 @@ export default function HuellaProductScreen() {
           />
         </div>
         <div className="hu-header-right">
-          <span className="hu-header-price">{`€${v.newPrice}`}</span>
+          <span className="hu-header-price">{`€${formatPrice(totalPrice)}`}</span>
           <div className="hu-header-cart">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
             <span className="hu-cart-badge">{qty}</span>
@@ -64,26 +143,31 @@ export default function HuellaProductScreen() {
       {/* ===== PRODUCT IMAGE CAROUSEL ===== */}
       <div className="hu-product-gallery">
         {discountBadge && <div className="hu-discount-badge">{discountBadge} DTO</div>}
-        <div className="hu-product-img-wrap">
+        <div
+          className="hu-product-img-wrap"
+          onTouchStart={handleTouchStart}
+          onTouchMove={handleTouchMove}
+          onTouchEnd={handleTouchEnd}
+        >
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={productImages[currentImg]}
             alt="Dibaq Sense Cochinillo"
-            className="hu-product-img"
+            className={`hu-product-img ${fading ? "hu-img-fade-out" : "hu-img-fade-in"}`}
           />
           <div className="hu-grain-free-tag">GRAIN<br/>FREE</div>
         </div>
         <div className="hu-gallery-arrows">
           <button
             className="hu-arrow"
-            onClick={(e) => { e.stopPropagation(); setCurrentImg((p) => (p - 1 + productImages.length) % productImages.length); }}
+            onClick={(e) => { e.stopPropagation(); changeImage((currentImg - 1 + productImages.length) % productImages.length); }}
             type="button"
           >
             &#8249;
           </button>
           <button
             className="hu-arrow"
-            onClick={(e) => { e.stopPropagation(); setCurrentImg((p) => (p + 1) % productImages.length); }}
+            onClick={(e) => { e.stopPropagation(); changeImage((currentImg + 1) % productImages.length); }}
             type="button"
           >
             &#8250;
@@ -94,11 +178,20 @@ export default function HuellaProductScreen() {
             <div
               key={i}
               className={`hu-thumb ${currentImg === i ? "active" : ""}`}
-              onClick={() => setCurrentImg(i)}
+              onClick={() => changeImage(i)}
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src={src} alt="" />
             </div>
+          ))}
+        </div>
+        <div className="hu-gallery-dots">
+          {productImages.map((_, i) => (
+            <span
+              key={i}
+              className={`hu-dot ${currentImg === i ? "active" : ""}`}
+              onClick={() => changeImage(i)}
+            />
           ))}
         </div>
       </div>
@@ -116,7 +209,7 @@ export default function HuellaProductScreen() {
         </button>
 
         {/* Price */}
-        <div className="hu-price">{`€${v.newPrice}`}</div>
+        <div className="hu-price">{`€${formatPrice(totalPrice)}`}</div>
 
         {/* Short description */}
         <div className="hu-short-desc">
@@ -133,7 +226,7 @@ export default function HuellaProductScreen() {
             <div
               key={vr.id}
               className={`hu-variant ${!vr.discount ? "single" : ""} ${selectedVariant === i ? "selected" : ""}`}
-              onClick={() => { setSelectedVariant(i); setQty(1); }}
+              onClick={() => handleSelectVariant(i)}
             >
               {vr.discount && <div className="hu-variant-discount">{vr.discount}</div>}
               <div className="hu-variant-name">{vr.name}</div>
@@ -152,26 +245,40 @@ export default function HuellaProductScreen() {
 
         {/* Price display */}
         <div className="hu-price-display">
-          <span className="hu-price-main">{`€${v.newPrice}`}</span>
-          {v.oldPrice && <span className="hu-price-old">{`€${v.oldPrice}`}</span>}
+          <span className="hu-price-main">{`€${formatPrice(unitPrice)}`}</span>
+          {(v.oldPrice || selectedQtyTier > 0) && (
+            <span className="hu-price-old">{`€${v.oldPrice || v.newPrice}`}</span>
+          )}
+          {selectedQtyTier > 0 && (
+            <span className="hu-price-discount-tag">{tier.save} dto</span>
+          )}
         </div>
 
+        {/* Total line */}
+        {qty > 1 && (
+          <div className="hu-total-line">
+            <span>{qty} ud. × €{formatPrice(unitPrice)} = </span>
+            <strong>€{formatPrice(totalPrice)}</strong>
+            {savedAmount > 0.01 && (
+              <span className="hu-total-saved">Ahorras €{formatPrice(savedAmount)}</span>
+            )}
+          </div>
+        )}
+
         {/* Quantity discounts */}
-        <p className="hu-qty-title">Compra 2 unidades, no te quedes sin</p>
+        <p className="hu-qty-title">Compra mas, ahorra mas</p>
         <div className="hu-qty-grid">
-          {[
-            { n: 1, unit: `${v.newPrice} € /ud.`, save: null },
-            { n: 2, unit: `${(parseFloat(v.newPrice.replace(",", ".")) * 0.98).toFixed(2).replace(".", ",")} € /ud.`, save: "0,37 €" },
-            { n: 3, unit: `${(parseFloat(v.newPrice.replace(",", ".")) * 0.97).toFixed(2).replace(".", ",")} € /ud.`, save: "0,56 €" },
-            { n: 5, unit: `${(parseFloat(v.newPrice.replace(",", ".")) * 0.95).toFixed(2).replace(".", ",")} € /ud.`, save: "0,94 €" },
-          ].map((opt) => (
+          {qtyDiscounts.map((opt, i) => (
             <div
               key={opt.n}
-              className={`hu-qty-option ${qty === opt.n ? "active" : ""}`}
-              onClick={() => setQty(opt.n)}
+              className={`hu-qty-option ${selectedQtyTier === i ? "active" : ""}`}
+              onClick={() => handleSelectQtyTier(i)}
             >
-              <div className="hu-qty-label">x{opt.n} {opt.save && <span className="hu-qty-save">{opt.save}</span>}</div>
-              <div className="hu-qty-unit">{opt.unit}</div>
+              <div className="hu-qty-label">
+                x{opt.n}
+                {opt.save && <span className="hu-qty-save">{opt.save}</span>}
+              </div>
+              <div className="hu-qty-unit">{formatPrice(basePrice * opt.pct)} € /ud.</div>
             </div>
           ))}
         </div>
@@ -179,9 +286,9 @@ export default function HuellaProductScreen() {
         {/* Add to cart */}
         <div className="hu-add-to-cart">
           <div className="hu-qty-selector">
-            <button onClick={() => setQty((q) => Math.max(1, q - 1))}>−</button>
+            <button onClick={() => handleQtyChange(qty - 1)}>−</button>
             <span>{qty}</span>
-            <button onClick={() => setQty((q) => q + 1)}>+</button>
+            <button onClick={() => handleQtyChange(qty + 1)}>+</button>
           </div>
           <button className="hu-cart-btn">Anadir al carrito</button>
         </div>
