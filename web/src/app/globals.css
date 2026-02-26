@@ -587,6 +587,8 @@ body:has(.growth-landing) a[aria-label="Contactar por WhatsApp"] {
   transform-style: preserve-3d;
   transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1);
   will-change: transform;
+  /* Let clicks pass through to screen children */
+  pointer-events: none;
 }
 
 /* Ambient glow */
