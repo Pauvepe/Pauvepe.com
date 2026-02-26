@@ -1094,27 +1094,37 @@ body:has(.growth-landing) a[aria-label="Contactar por WhatsApp"] {
   left: 14px;
   right: 14px;
   transform: translateY(-50%);
-  pointer-events: none;
+  z-index: 5;
 }
 
 .hu-arrow {
   font-size: 14px;
-  color: #999;
+  color: #666;
   cursor: pointer;
-  pointer-events: auto;
-  background: rgba(255,255,255,0.85);
-  width: 22px;
-  height: 22px;
+  background: rgba(255,255,255,0.92);
+  width: 26px;
+  height: 26px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.15);
-  transition: background 0.2s;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.18);
+  transition: all 0.2s;
+  border: none;
+  padding: 0;
+  line-height: 1;
+  animation: huClickableHint 2.5s ease-in-out infinite;
+}
+
+.hu-arrow:hover {
+  background: #fff;
+  transform: scale(1.1);
+  box-shadow: 0 2px 12px rgba(0,0,0,0.25);
 }
 
 .hu-arrow:active {
-  background: rgba(255,255,255,1);
+  transform: scale(0.92);
+  background: #f0f0f0;
 }
 
 .hu-gallery-thumbs {
@@ -1657,4 +1667,68 @@ body:has(.growth-landing) a[aria-label="Contactar por WhatsApp"] {
 
 .hu-punto-item strong {
   color: #1a1a1a;
+}
+
+/* ===== Clickable hint animation (ripple/pulse) ===== */
+@keyframes huClickableHint {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(140, 198, 63, 0.4); }
+  50% { box-shadow: 0 0 0 5px rgba(140, 198, 63, 0); }
+}
+
+@keyframes huClickableHintSubtle {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(140, 198, 63, 0.25); }
+  50% { box-shadow: 0 0 0 3px rgba(140, 198, 63, 0); }
+}
+
+/* Cursor pointer on all clickable elements */
+.hu-thumb,
+.hu-variant,
+.hu-qty-option,
+.hu-qty-selector button,
+.hu-cart-btn,
+.hu-whatsapp-btn,
+.hu-tab,
+.hu-clear-link,
+.hu-arrow {
+  cursor: pointer;
+}
+
+/* Pulse hint on interactive elements */
+.hu-variant {
+  animation: huClickableHintSubtle 2.5s ease-in-out infinite;
+}
+
+.hu-variant.selected {
+  animation: none;
+  box-shadow: 0 0 0 2px rgba(140, 198, 63, 0.3);
+}
+
+.hu-qty-option {
+  cursor: pointer;
+  animation: huClickableHintSubtle 2.5s ease-in-out infinite;
+  animation-delay: 0.5s;
+}
+
+.hu-qty-option.active {
+  animation: none;
+  box-shadow: 0 0 0 2px rgba(140, 198, 63, 0.3);
+}
+
+.hu-thumb {
+  animation: huClickableHintSubtle 2.5s ease-in-out infinite;
+  animation-delay: 1s;
+}
+
+.hu-thumb.active {
+  animation: none;
+}
+
+.hu-cart-btn {
+  animation: huClickableHint 2.5s ease-in-out infinite;
+  animation-delay: 0.3s;
+}
+
+.hu-whatsapp-btn {
+  animation: huClickableHintSubtle 2.5s ease-in-out infinite;
+  animation-delay: 0.8s;
 }

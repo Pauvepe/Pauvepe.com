@@ -74,18 +74,20 @@ export default function HuellaProductScreen() {
           <div className="hu-grain-free-tag">GRAIN<br/>FREE</div>
         </div>
         <div className="hu-gallery-arrows">
-          <span
+          <button
             className="hu-arrow"
-            onClick={() => setCurrentImg((p) => (p - 1 + productImages.length) % productImages.length)}
+            onClick={(e) => { e.stopPropagation(); setCurrentImg((p) => (p - 1 + productImages.length) % productImages.length); }}
+            type="button"
           >
-            &larr;
-          </span>
-          <span
+            &#8249;
+          </button>
+          <button
             className="hu-arrow"
-            onClick={() => setCurrentImg((p) => (p + 1) % productImages.length)}
+            onClick={(e) => { e.stopPropagation(); setCurrentImg((p) => (p + 1) % productImages.length); }}
+            type="button"
           >
-            &rarr;
-          </span>
+            &#8250;
+          </button>
         </div>
         <div className="hu-gallery-thumbs">
           {productImages.map((src, i) => (
