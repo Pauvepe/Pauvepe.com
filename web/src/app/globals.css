@@ -632,8 +632,9 @@ body:has(.growth-landing) a[aria-label="Contactar por WhatsApp"] {
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  /* Flatten 3D inside frame so content never goes behind frame/glow */
   transform-style: flat;
+  /* Let clicks pass through frame to children (screen) */
+  pointer-events: none;
 }
 
 [data-theme="light"] .phone-mockup-frame {
@@ -700,6 +701,8 @@ body:has(.growth-landing) a[aria-label="Contactar por WhatsApp"] {
   overflow-x: hidden;
   background: var(--background);
   position: relative;
+  /* Re-enable pointer events (parent frame has none) */
+  pointer-events: auto;
   /* Custom tiny scrollbar */
   scrollbar-width: thin;
   scrollbar-color: rgba(212,113,78,0.3) transparent;
