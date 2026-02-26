@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState, ReactNode } from "react";
+import { useEffect, useRef, ReactNode } from "react";
 
 interface HorizontalScrollProps {
   children: ReactNode;
@@ -13,18 +13,8 @@ export default function HorizontalScroll({
 }: HorizontalScrollProps) {
   const sectionRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
-  const [isMobile, setIsMobile] = useState(true); // mobile-first to avoid SSR blank space
 
   useEffect(() => {
-    const checkMobile = () => setIsMobile(window.innerWidth < 768);
-    checkMobile();
-    window.addEventListener("resize", checkMobile);
-    return () => window.removeEventListener("resize", checkMobile);
-  }, []);
-
-  useEffect(() => {
-    if (isMobile) return; // On mobile, use normal scroll
-
     const section = sectionRef.current;
     const track = trackRef.current;
     if (!section || !track) return;
@@ -59,30 +49,14 @@ export default function HorizontalScroll({
       window.removeEventListener("scroll", handleScroll);
       window.removeEventListener("resize", updateHeight);
     };
-  }, [isMobile]);
+  }, []);
 
-  // Mobile: normal horizontal scroll (no -mx to prevent page overflow)
-  if (isMobile) {
-    return (
-      <div
-        className={`overflow-x-auto pb-4 ${className}`}
-        style={{ overscrollBehaviorX: "contain", WebkitOverflowScrolling: "touch", scrollSnapType: "x mandatory", scrollPaddingInlineStart: "16px" }}
-      >
-        <div className="flex gap-4 pl-4">
-          {children}
-          <div className="shrink-0 w-4" aria-hidden="true" />
-        </div>
-      </div>
-    );
-  }
-
-  // Desktop: pinned horizontal scroll
   return (
     <div ref={sectionRef} className={`relative ${className}`}>
       <div className="sticky top-0 h-screen overflow-hidden flex items-center">
         <div
           ref={trackRef}
-          className="flex gap-8 px-[max(2rem,calc((100vw-1200px)/2+2rem))] will-change-transform"
+          className="flex gap-4 md:gap-8 px-4 md:px-[max(2rem,calc((100vw-1200px)/2+2rem))] will-change-transform"
         >
           {children}
         </div>
