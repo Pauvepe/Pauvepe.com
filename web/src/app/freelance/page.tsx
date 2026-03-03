@@ -1,17 +1,10 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
-import type { Metadata } from "next";
+import { useApp } from "@/context/AppContext";
 import PhoneMockup from "@/components/PhoneMockup";
 import HuellaProductScreen from "@/components/HuellaProductScreen";
-
-export const metadata: Metadata = {
-  title: "Freelance Services",
-  description:
-    "AI Engineer & Creative Developer. Web development, e-commerce, chatbots, voice agents, and automation. From €250.",
-  alternates: {
-    canonical: "/freelance",
-  },
-};
 
 const skills = [
   "Next.js",
@@ -32,58 +25,63 @@ const skills = [
   "Google Cloud",
 ];
 
-const freelanceServices = [
-  {
-    icon: "web",
-    title: "Websites & Landing Pages",
-    description:
-      "High-converting websites built with Next.js, React, or WordPress. Fast, responsive, SEO-optimized.",
-    price: "From €300",
-    timeline: "3-7 days",
-  },
-  {
-    icon: "shopping_cart",
-    title: "E-commerce",
-    description:
-      "Full online stores with WooCommerce, Shopify, or custom solutions. Payment integration, inventory sync, automated marketing.",
-    price: "From €500",
-    timeline: "5-14 days",
-  },
-  {
-    icon: "smart_toy",
-    title: "AI Chatbots",
-    description:
-      "Intelligent chatbots for WhatsApp, Telegram, or your website. Trained on your business data, 24/7 customer support.",
-    price: "From €350",
-    timeline: "3-5 days",
-  },
-  {
-    icon: "call",
-    title: "Voice Agents",
-    description:
-      "AI-powered voice agents that make and receive calls. Appointment scheduling, lead qualification, customer service.",
-    price: "From €400",
-    timeline: "3-7 days",
-  },
-  {
-    icon: "settings_suggest",
-    title: "Automation & Integrations",
-    description:
-      "Connect anything to anything. n8n/Make workflows, API integrations, CRM automation, email sequences.",
-    price: "From €250",
-    timeline: "1-5 days",
-  },
-  {
-    icon: "campaign",
-    title: "Facebook & Google Ads",
-    description:
-      "Campaign setup, pixel configuration, audience targeting, analytics dashboards, and reporting.",
-    price: "From €300",
-    timeline: "2-5 days",
-  },
-];
-
 export default function FreelancePage() {
+  const { t } = useApp();
+
+  const freelanceServices = [
+    {
+      icon: "web",
+      titleKey: "freelance.svc1_title",
+      descKey: "freelance.svc1_desc",
+      priceKey: "freelance.svc1_price",
+      timeKey: "freelance.svc1_time",
+    },
+    {
+      icon: "shopping_cart",
+      titleKey: "freelance.svc2_title",
+      descKey: "freelance.svc2_desc",
+      priceKey: "freelance.svc2_price",
+      timeKey: "freelance.svc2_time",
+    },
+    {
+      icon: "smart_toy",
+      titleKey: "freelance.svc3_title",
+      descKey: "freelance.svc3_desc",
+      priceKey: "freelance.svc3_price",
+      timeKey: "freelance.svc3_time",
+    },
+    {
+      icon: "call",
+      titleKey: "freelance.svc4_title",
+      descKey: "freelance.svc4_desc",
+      priceKey: "freelance.svc4_price",
+      timeKey: "freelance.svc4_time",
+    },
+    {
+      icon: "settings_suggest",
+      titleKey: "freelance.svc5_title",
+      descKey: "freelance.svc5_desc",
+      priceKey: "freelance.svc5_price",
+      timeKey: "freelance.svc5_time",
+    },
+    {
+      icon: "campaign",
+      titleKey: "freelance.svc6_title",
+      descKey: "freelance.svc6_desc",
+      priceKey: "freelance.svc6_price",
+      timeKey: "freelance.svc6_time",
+    },
+  ];
+
+  const caseTags = [
+    "WooCommerce",
+    "Custom PHP Plugins",
+    "AI Chatbots",
+    "CRM Automation",
+    "WhatsApp Commerce",
+    "Multi-store Sync",
+  ];
+
   return (
     <>
       {/* Hero Section */}
@@ -123,34 +121,32 @@ export default function FreelancePage() {
             <div className="order-1 lg:order-2 space-y-6">
               <div className="animate-fade-in-up">
                 <span className="inline-block px-4 py-2 rounded-full bg-emerald-500/10 text-emerald-500 text-sm font-medium mb-4">
-                  Available for Hire
+                  {t("freelance.available")}
                 </span>
                 <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold font-[family-name:var(--font-display)] mb-4 leading-tight">
-                  I Build & <span className="gradient-text">Automate</span>
+                  {t("freelance.title1")} <span className="gradient-text">{t("freelance.title2")}</span>
                 </h1>
                 <p className="text-lg text-[var(--foreground)]/70">
-                  Full-stack developer specialized in AI automation. I turn your
-                  business ideas into working products — fast. Websites,
-                  e-commerce, chatbots, voice agents, and custom integrations.
+                  {t("freelance.subtitle")}
                 </p>
               </div>
 
               {/* Quick Stats */}
               <div className="animate-fade-in-up delay-100 grid grid-cols-3 gap-4">
                 {[
-                  { value: "2+", label: "Years Experience" },
-                  { value: "1K+", label: "Products Managed" },
-                  { value: "24/7", label: "AI Agents Built" },
+                  { valueKey: "freelance.stat1_value", labelKey: "freelance.stat1_label" },
+                  { valueKey: "freelance.stat2_value", labelKey: "freelance.stat2_label" },
+                  { valueKey: "freelance.stat3_value", labelKey: "freelance.stat3_label" },
                 ].map((stat, i) => (
                   <div
                     key={i}
                     className="text-center p-3 rounded-xl bg-[var(--surface)] border border-[var(--foreground)]/10"
                   >
                     <div className="text-2xl font-bold gradient-text font-[family-name:var(--font-display)]">
-                      {stat.value}
+                      {t(stat.valueKey)}
                     </div>
                     <div className="text-xs text-[var(--foreground)]/60">
-                      {stat.label}
+                      {t(stat.labelKey)}
                     </div>
                   </div>
                 ))}
@@ -162,7 +158,7 @@ export default function FreelancePage() {
                   href="/booking"
                   className="btn-shine px-6 py-3 bg-gradient-to-r from-[var(--primary)] to-[var(--secondary)] text-white font-semibold rounded-full hover:shadow-lg transition-all"
                 >
-                  Book a Free Call
+                  {t("freelance.cta_call")}
                 </Link>
                 <a
                   href="mailto:info@pauvepe.com"
@@ -180,7 +176,7 @@ export default function FreelancePage() {
       <section className="py-16 bg-[var(--surface)]">
         <div className="container mx-auto px-4 lg:px-8">
           <h2 className="text-center text-sm font-medium text-[var(--foreground)]/50 mb-6 uppercase tracking-wider">
-            Tech Stack
+            {t("freelance.tech_stack")}
           </h2>
           <div className="flex flex-wrap justify-center gap-2 max-w-3xl mx-auto">
             {skills.map((skill, i) => (
@@ -200,11 +196,10 @@ export default function FreelancePage() {
         <div className="container mx-auto px-4 lg:px-8">
           <div className="max-w-3xl mx-auto text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold font-[family-name:var(--font-display)] mb-4">
-              What I <span className="gradient-text">Build</span>
+              {t("freelance.what_title1")} <span className="gradient-text">{t("freelance.what_title2")}</span>
             </h2>
             <p className="text-[var(--foreground)]/70">
-              Short-term projects, delivered fast. No long contracts, no
-              overhead.
+              {t("freelance.what_subtitle")}
             </p>
           </div>
 
@@ -218,17 +213,17 @@ export default function FreelancePage() {
                   {service.icon}
                 </span>
                 <h3 className="text-lg font-bold font-[family-name:var(--font-display)] mb-2">
-                  {service.title}
+                  {t(service.titleKey)}
                 </h3>
                 <p className="text-sm text-[var(--foreground)]/70 mb-4">
-                  {service.description}
+                  {t(service.descKey)}
                 </p>
                 <div className="flex items-center justify-between text-sm">
                   <span className="font-semibold text-[var(--primary)]">
-                    {service.price}
+                    {t(service.priceKey)}
                   </span>
                   <span className="text-[var(--foreground)]/50">
-                    {service.timeline}
+                    {t(service.timeKey)}
                   </span>
                 </div>
               </div>
@@ -242,7 +237,7 @@ export default function FreelancePage() {
         <div className="container mx-auto px-4 lg:px-8">
           <div className="max-w-3xl mx-auto text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold font-[family-name:var(--font-display)] mb-4">
-              Real <span className="gradient-text">Results</span>
+              {t("freelance.results_title1")} <span className="gradient-text">{t("freelance.results_title2")}</span>
             </h2>
           </div>
 
@@ -263,22 +258,13 @@ export default function FreelancePage() {
                     Huella Urbana BCN
                   </h3>
                   <p className="text-sm text-[var(--primary)] mb-3">
-                    Lead AI & Web Engineer (2024-2026)
+                    {t("freelance.case_role")}
                   </p>
                   <p className="text-[var(--foreground)]/70 mb-4">
-                    Full e-commerce infrastructure for a pet store chain with 3
-                    physical locations in Barcelona + online store. 1,200+
-                    products synchronized across all channels.
+                    {t("freelance.case_desc")}
                   </p>
                   <div className="flex flex-wrap gap-2">
-                    {[
-                      "WooCommerce",
-                      "Custom PHP Plugins",
-                      "AI Chatbots",
-                      "CRM Automation",
-                      "WhatsApp Commerce",
-                      "Multi-store Sync",
-                    ].map((tag, i) => (
+                    {caseTags.map((tag, i) => (
                       <span
                         key={i}
                         className="px-3 py-1 rounded-full bg-[var(--primary)]/10 text-[var(--primary)] text-xs font-medium"
@@ -308,14 +294,13 @@ export default function FreelancePage() {
                 verified
               </span>
               <h2 className="text-2xl md:text-3xl font-bold font-[family-name:var(--font-display)] mb-4">
-                Risk-Free Guarantee
+                {t("freelance.guarantee_title")}
               </h2>
               <p className="text-lg text-[var(--foreground)]/70 mb-2">
-                Not happy with the result? You don&apos;t pay. Simple as that.
+                {t("freelance.guarantee_p1")}
               </p>
               <p className="text-sm text-[var(--foreground)]/50">
-                I believe in my work. If it doesn&apos;t meet your expectations,
-                there&apos;s no charge.
+                {t("freelance.guarantee_p2")}
               </p>
             </div>
           </div>
@@ -327,18 +312,17 @@ export default function FreelancePage() {
         <div className="container mx-auto px-4 lg:px-8">
           <div className="max-w-3xl mx-auto text-center text-white">
             <h2 className="text-3xl md:text-5xl font-bold font-[family-name:var(--font-display)] mb-6">
-              Let&apos;s Build Something
+              {t("freelance.final_title")}
             </h2>
             <p className="text-xl mb-8 opacity-90">
-              Tell me what you need. I&apos;ll tell you how fast I can deliver
-              it.
+              {t("freelance.final_subtitle")}
             </p>
             <div className="flex flex-wrap justify-center gap-4">
               <Link
                 href="/booking"
                 className="px-10 py-4 bg-white text-[var(--primary)] font-bold rounded-full text-lg hover:shadow-2xl transition-all hover:scale-105"
               >
-                Book a Free Call
+                {t("freelance.cta_call")}
               </Link>
               <a
                 href="https://wa.me/34637682568"
@@ -346,7 +330,7 @@ export default function FreelancePage() {
                 rel="noopener noreferrer"
                 className="px-10 py-4 border-2 border-white text-white font-bold rounded-full text-lg hover:bg-white/10 transition-all"
               >
-                WhatsApp Me
+                {t("freelance.whatsapp")}
               </a>
             </div>
           </div>

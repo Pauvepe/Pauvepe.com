@@ -50,7 +50,7 @@ export default function AboutPage() {
 
                 <div className="relative rounded-3xl overflow-hidden border-4 border-[var(--surface)] shadow-2xl">
                   <Image
-                    src="/images/pauvera.png"
+                    src="/images/pau-sobre-mi.jpg"
                     alt="Pau Vera - AI Automation Expert"
                     width={600}
                     height={800}

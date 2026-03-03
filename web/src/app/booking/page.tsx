@@ -14,31 +14,55 @@ const timeSlots = [
   "18:00",
 ];
 
-function generateDates() {
-  const dates = [];
-  const today = new Date();
-  for (let i = 1; i <= 14; i++) {
-    const date = new Date(today);
-    date.setDate(today.getDate() + i);
-    const day = date.getDay();
-    if (day !== 0 && day !== 6) {
-      dates.push(date);
-    }
+const dayNamesShort: Record<string, string[]> = {
+  es: ["Lun", "Mar", "Mie", "Jue", "Vie", "Sab", "Dom"],
+  ca: ["Dll", "Dma", "Dmc", "Dij", "Div", "Dis", "Diu"],
+  en: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+};
+
+const monthNamesFull: Record<string, string[]> = {
+  es: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"],
+  ca: ["Gener", "Febrer", "Marc", "Abril", "Maig", "Juny", "Juliol", "Agost", "Setembre", "Octubre", "Novembre", "Desembre"],
+  en: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
+};
+
+function getCalendarDays(year: number, month: number): (Date | null)[] {
+  const firstDay = new Date(year, month, 1);
+  const lastDay = new Date(year, month + 1, 0);
+  let startDow = firstDay.getDay() - 1;
+  if (startDow < 0) startDow = 6;
+
+  const days: (Date | null)[] = [];
+  for (let i = 0; i < startDow; i++) {
+    days.push(null);
   }
-  return dates;
+  for (let d = 1; d <= lastDay.getDate(); d++) {
+    days.push(new Date(year, month, d));
+  }
+  return days;
 }
 
-const dayNamesI18n: Record<string, string[]> = {
-  es: ["Dom", "Lun", "Mar", "Mie", "Jue", "Vie", "Sab"],
-  ca: ["Diu", "Dll", "Dma", "Dmc", "Dij", "Div", "Dis"],
-  en: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
-};
+function isSameDay(a: Date, b: Date) {
+  return a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth() && a.getDate() === b.getDate();
+}
 
-const monthNamesI18n: Record<string, string[]> = {
-  es: ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"],
-  ca: ["Gen", "Feb", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Oct", "Nov", "Des"],
-  en: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-};
+function isWeekend(date: Date) {
+  const day = date.getDay();
+  return day === 0 || day === 6;
+}
+
+function isPastOrToday(date: Date) {
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const d = new Date(date);
+  d.setHours(0, 0, 0, 0);
+  return d <= today;
+}
+
+function isToday(date: Date) {
+  const today = new Date();
+  return date.getFullYear() === today.getFullYear() && date.getMonth() === today.getMonth() && date.getDate() === today.getDate();
+}
 
 export default function BookingPage() {
   const { t, locale } = useApp();
@@ -46,6 +70,11 @@ export default function BookingPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<"idle" | "success" | "error">("idle");
   const [busySlots, setBusySlots] = useState<string[]>([]);
+  const [loadingSlots, setLoadingSlots] = useState(false);
+
+  const today = new Date();
+  const [calMonth, setCalMonth] = useState(today.getMonth());
+  const [calYear, setCalYear] = useState(today.getFullYear());
 
   const [formData, setFormData] = useState({
     name: "",
@@ -57,9 +86,11 @@ export default function BookingPage() {
     time: "",
   });
 
-  const availableDates = generateDates();
-  const dayNames = dayNamesI18n[locale] || dayNamesI18n.es;
-  const monthNames = monthNamesI18n[locale] || monthNamesI18n.es;
+  const dayNames = dayNamesShort[locale] || dayNamesShort.es;
+  const monthNames = monthNamesFull[locale] || monthNamesFull.es;
+  const calendarDays = getCalendarDays(calYear, calMonth);
+
+  const maxDate = new Date(today.getFullYear(), today.getMonth() + 2, today.getDate());
 
   const reasons = [
     { value: "automation", label: t("booking.reason_automation") },
@@ -70,12 +101,15 @@ export default function BookingPage() {
   ];
 
   const fetchAvailability = useCallback(async (date: string) => {
+    setLoadingSlots(true);
     try {
       const res = await fetch(`/api/booking/availability?date=${date}`);
       const data = await res.json();
       setBusySlots(data.busySlots || []);
     } catch {
       setBusySlots([]);
+    } finally {
+      setLoadingSlots(false);
     }
   }, []);
 
@@ -102,6 +136,29 @@ export default function BookingPage() {
 
   const handleTimeSelect = (time: string) => {
     setFormData((prev) => ({ ...prev, time }));
+  };
+
+  const canGoPrev = calYear > today.getFullYear() || calMonth > today.getMonth();
+  const canGoNext = new Date(calYear, calMonth + 1, 1) <= maxDate;
+
+  const goToPrevMonth = () => {
+    if (!canGoPrev) return;
+    if (calMonth === 0) {
+      setCalMonth(11);
+      setCalYear(calYear - 1);
+    } else {
+      setCalMonth(calMonth - 1);
+    }
+  };
+
+  const goToNextMonth = () => {
+    if (!canGoNext) return;
+    if (calMonth === 11) {
+      setCalMonth(0);
+      setCalYear(calYear + 1);
+    } else {
+      setCalMonth(calMonth + 1);
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -136,6 +193,11 @@ export default function BookingPage() {
 
   const canProceedStep1 = formData.name && formData.phone && formData.email && formData.reason;
   const canProceedStep2 = formData.date && formData.time;
+
+  const selectedDateObj = formData.date ? new Date(formData.date + "T12:00:00") : null;
+  const selectedDateFormatted = selectedDateObj
+    ? `${selectedDateObj.getDate()} ${monthNames[selectedDateObj.getMonth()]} ${selectedDateObj.getFullYear()}`
+    : "";
 
   if (submitStatus === "success") {
     return (
@@ -288,55 +350,143 @@ export default function BookingPage() {
               </div>
             )}
 
-            {/* Step 2: Date & Time */}
+            {/* Step 2: Date & Time with Interactive Calendar */}
             {step === 2 && (
               <div className="space-y-8 animate-fade-in-up">
+                {/* Calendar */}
                 <div>
                   <label className="block text-sm font-medium mb-4">{t("booking.select_date")}</label>
-                  <div className="grid grid-cols-4 sm:grid-cols-5 gap-3">
-                    {availableDates.map((date) => (
+                  <div className="rounded-2xl border border-[var(--foreground)]/10 bg-[var(--surface)] overflow-hidden">
+                    {/* Month navigation */}
+                    <div className="flex items-center justify-between px-6 py-4 border-b border-[var(--foreground)]/10">
                       <button
-                        key={date.toISOString()}
                         type="button"
-                        onClick={() => handleDateSelect(date)}
-                        className={`p-3 rounded-xl border text-center transition-all ${
-                          formData.date === date.toISOString().split("T")[0]
-                            ? "border-[var(--primary)] bg-[var(--primary)]/10 text-[var(--primary)]"
-                            : "border-[var(--foreground)]/10 hover:border-[var(--primary)]/50"
-                        }`}
+                        onClick={goToPrevMonth}
+                        disabled={!canGoPrev}
+                        className="w-10 h-10 rounded-full flex items-center justify-center hover:bg-[var(--foreground)]/5 transition-colors disabled:opacity-20 disabled:cursor-not-allowed"
                       >
-                        <div className="text-xs text-[var(--foreground)]/50">{monthNames[date.getMonth()]}</div>
-                        <div className="text-xl font-bold">{date.getDate()}</div>
-                        <div className="text-xs">{dayNames[date.getDay()]}</div>
+                        <span className="material-symbols-outlined">chevron_left</span>
                       </button>
-                    ))}
-                  </div>
-                </div>
+                      <h3 className="text-lg font-bold font-[family-name:var(--font-display)]">
+                        {monthNames[calMonth]} {calYear}
+                      </h3>
+                      <button
+                        type="button"
+                        onClick={goToNextMonth}
+                        disabled={!canGoNext}
+                        className="w-10 h-10 rounded-full flex items-center justify-center hover:bg-[var(--foreground)]/5 transition-colors disabled:opacity-20 disabled:cursor-not-allowed"
+                      >
+                        <span className="material-symbols-outlined">chevron_right</span>
+                      </button>
+                    </div>
 
-                <div>
-                  <label className="block text-sm font-medium mb-4">{t("booking.select_time")}</label>
-                  <div className="grid grid-cols-4 sm:grid-cols-5 gap-3">
-                    {timeSlots.map((time) => {
-                      const isBusy = busySlots.includes(time);
-                      return (
-                        <button
-                          key={time}
-                          type="button"
-                          onClick={() => !isBusy && handleTimeSelect(time)}
-                          disabled={isBusy}
-                          className={`py-3 rounded-xl border text-center transition-all ${
-                            isBusy
-                              ? "border-[var(--foreground)]/5 bg-[var(--foreground)]/5 text-[var(--foreground)]/30 cursor-not-allowed line-through"
-                              : formData.time === time
-                                ? "border-[var(--primary)] bg-[var(--primary)]/10 text-[var(--primary)]"
-                                : "border-[var(--foreground)]/10 hover:border-[var(--primary)]/50"
+                    {/* Day headers */}
+                    <div className="grid grid-cols-7 px-4 pt-3 pb-1">
+                      {dayNames.map((name, i) => (
+                        <div
+                          key={name}
+                          className={`text-center text-xs font-medium py-2 ${
+                            i >= 5 ? "text-[var(--foreground)]/30" : "text-[var(--foreground)]/50"
                           }`}
                         >
-                          {time}
-                        </button>
-                      );
-                    })}
+                          {name}
+                        </div>
+                      ))}
+                    </div>
+
+                    {/* Calendar grid */}
+                    <div className="grid grid-cols-7 px-4 pb-4 gap-y-1">
+                      {calendarDays.map((day, index) => {
+                        if (!day) {
+                          return <div key={`empty-${index}`} className="aspect-square" />;
+                        }
+
+                        const disabled = isPastOrToday(day) || isWeekend(day) || day > maxDate;
+                        const selected = selectedDateObj && isSameDay(day, selectedDateObj);
+                        const todayMark = isToday(day);
+                        const weekend = isWeekend(day);
+
+                        return (
+                          <button
+                            key={day.toISOString()}
+                            type="button"
+                            onClick={() => !disabled && handleDateSelect(day)}
+                            disabled={disabled}
+                            className={`
+                              aspect-square rounded-xl flex items-center justify-center text-sm font-medium transition-all relative
+                              ${selected
+                                ? "bg-gradient-to-br from-[var(--primary)] to-[var(--secondary)] text-white shadow-lg scale-105"
+                                : disabled
+                                  ? weekend
+                                    ? "text-[var(--foreground)]/15 cursor-not-allowed"
+                                    : "text-[var(--foreground)]/25 cursor-not-allowed"
+                                  : "hover:bg-[var(--primary)]/10 hover:text-[var(--primary)] cursor-pointer text-[var(--foreground)]"
+                              }
+                            `}
+                          >
+                            {day.getDate()}
+                            {todayMark && !selected && (
+                              <span className="absolute bottom-1 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-[var(--primary)]" />
+                            )}
+                          </button>
+                        );
+                      })}
+                    </div>
                   </div>
+
+                  {/* Selected date indicator */}
+                  {formData.date && (
+                    <div className="mt-3 flex items-center gap-2 text-sm text-[var(--primary)] font-medium">
+                      <span className="material-symbols-outlined text-lg">event</span>
+                      {selectedDateFormatted}
+                    </div>
+                  )}
+                </div>
+
+                {/* Time slots */}
+                <div>
+                  <label className="block text-sm font-medium mb-4">{t("booking.select_time")}</label>
+                  {!formData.date ? (
+                    <div className="text-center py-8 text-[var(--foreground)]/40 text-sm">
+                      <span className="material-symbols-outlined text-3xl mb-2 block">calendar_today</span>
+                      {t("booking.select_date_first")}
+                    </div>
+                  ) : loadingSlots ? (
+                    <div className="text-center py-8">
+                      <span className="material-symbols-outlined text-3xl animate-spin text-[var(--primary)]">progress_activity</span>
+                    </div>
+                  ) : (
+                    <div className="grid grid-cols-4 sm:grid-cols-5 gap-3">
+                      {timeSlots.map((time) => {
+                        const isBusy = busySlots.includes(time);
+                        return (
+                          <button
+                            key={time}
+                            type="button"
+                            onClick={() => !isBusy && handleTimeSelect(time)}
+                            disabled={isBusy}
+                            className={`py-3 rounded-xl border text-center transition-all ${
+                              isBusy
+                                ? "border-[var(--foreground)]/5 bg-[var(--foreground)]/5 text-[var(--foreground)]/30 cursor-not-allowed line-through"
+                                : formData.time === time
+                                  ? "border-[var(--primary)] bg-[var(--primary)]/10 text-[var(--primary)] font-semibold"
+                                  : "border-[var(--foreground)]/10 hover:border-[var(--primary)]/50"
+                            }`}
+                          >
+                            {time}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  )}
+
+                  {/* Busy legend */}
+                  {formData.date && !loadingSlots && busySlots.length > 0 && (
+                    <div className="mt-3 flex items-center gap-2 text-xs text-[var(--foreground)]/40">
+                      <span className="inline-block w-3 h-3 rounded bg-[var(--foreground)]/5 border border-[var(--foreground)]/10" />
+                      {t("booking.busy_slot")}
+                    </div>
+                  )}
                 </div>
 
                 <div className="flex gap-4">
@@ -381,7 +531,7 @@ export default function BookingPage() {
                     </div>
                     <div className="flex justify-between">
                       <span className="text-[var(--foreground)]/60">{t("booking.select_date")}:</span>
-                      <span className="font-medium">{formData.date}</span>
+                      <span className="font-medium">{selectedDateFormatted}</span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-[var(--foreground)]/60">{t("booking.select_time")}:</span>
