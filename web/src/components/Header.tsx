@@ -32,6 +32,9 @@ export default function Header() {
     return () => document.removeEventListener("mousedown", handleClick);
   }, []);
 
+  // Hide header on wizard pages
+  if (pathname.startsWith("/conectar")) return null;
+
   const navLinks = [
     { href: "/about", label: t("nav.about") },
     { href: "/services", label: t("nav.services") },

@@ -74,6 +74,11 @@ export default function VeterinariaPage() {
       {/* Hero */}
       <section className="relative min-h-[85vh] flex items-center justify-center overflow-hidden pt-20">
         <div className="absolute inset-0 -z-10">
+          <div
+            className="absolute inset-0 bg-cover bg-center"
+            style={{ backgroundImage: "url('/images/generated/growth-veterinaria-hero.png')" }}
+          />
+          <div className="absolute inset-0 bg-[var(--background)]/75 backdrop-blur-[2px]" />
           <div className="absolute top-1/4 left-1/4 w-80 h-80 bg-[var(--primary)]/15 rounded-full blur-3xl animate-float" />
           <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-[var(--secondary)]/15 rounded-full blur-3xl animate-float delay-200" />
         </div>

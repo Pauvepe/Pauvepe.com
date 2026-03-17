@@ -1,11 +1,15 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useApp } from "@/context/AppContext";
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
+  const pathname = usePathname();
   const { t } = useApp();
+
+  if (pathname.startsWith("/conectar")) return null;
 
   return (
     <footer className="bg-[var(--surface)] border-t border-[var(--foreground)]/10 relative overflow-hidden">

@@ -271,17 +271,28 @@ export default function Home() {
           {/* What We Build - 3 pillars */}
           <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto mb-20">
             {[
-              { icon: "shopping_cart", titleKey: "portfolio.build_ecom", descKey: "portfolio.build_ecom_desc", gradient: "from-[var(--primary)] to-[#E89868]" },
-              { icon: "language", titleKey: "portfolio.build_web", descKey: "portfolio.build_web_desc", gradient: "from-[var(--secondary)] to-[#7AAB82]" },
-              { icon: "phone_iphone", titleKey: "portfolio.build_app", descKey: "portfolio.build_app_desc", gradient: "from-[#A07850] to-[#C4A882]" },
+              { icon: "shopping_cart", titleKey: "portfolio.build_ecom", descKey: "portfolio.build_ecom_desc", gradient: "from-[var(--primary)] to-[#E89868]", image: "/images/generated/portfolio-ecommerce.png" },
+              { icon: "language", titleKey: "portfolio.build_web", descKey: "portfolio.build_web_desc", gradient: "from-[var(--secondary)] to-[#7AAB82]", image: "/images/generated/portfolio-web.png" },
+              { icon: "phone_iphone", titleKey: "portfolio.build_app", descKey: "portfolio.build_app_desc", gradient: "from-[#A07850] to-[#C4A882]", image: "/images/generated/portfolio-app.png" },
             ].map((item, i) => (
               <ScrollReveal key={i} delay={i * 120}>
-                <div className="card-glow p-8 rounded-3xl bg-[var(--background)] border border-[var(--foreground)]/10 h-full text-center group">
-                  <div className={`w-20 h-20 rounded-2xl bg-gradient-to-br ${item.gradient} flex items-center justify-center mx-auto mb-6 shadow-lg group-hover:scale-110 group-hover:rotate-3 transition-all duration-300`}>
-                    <span className="material-symbols-outlined text-3xl text-white">{item.icon}</span>
+                <div className="card-glow rounded-3xl bg-[var(--background)] border border-[var(--foreground)]/10 h-full text-center group overflow-hidden">
+                  <div className="relative h-44 overflow-hidden">
+                    <Image
+                      src={item.image}
+                      alt={item.titleKey}
+                      fill
+                      className="object-cover group-hover:scale-105 transition-transform duration-500"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-[var(--background)] via-[var(--background)]/20 to-transparent" />
+                    <div className={`absolute bottom-4 left-1/2 -translate-x-1/2 w-14 h-14 rounded-2xl bg-gradient-to-br ${item.gradient} flex items-center justify-center shadow-lg`}>
+                      <span className="material-symbols-outlined text-2xl text-white">{item.icon}</span>
+                    </div>
                   </div>
-                  <h3 className="text-xl font-bold font-[family-name:var(--font-display)] mb-3">{t(item.titleKey)}</h3>
-                  <p className="text-[var(--foreground)]/60 leading-relaxed">{t(item.descKey)}</p>
+                  <div className="p-6 pt-2">
+                    <h3 className="text-xl font-bold font-[family-name:var(--font-display)] mb-3">{t(item.titleKey)}</h3>
+                    <p className="text-[var(--foreground)]/60 leading-relaxed">{t(item.descKey)}</p>
+                  </div>
                 </div>
               </ScrollReveal>
             ))}
