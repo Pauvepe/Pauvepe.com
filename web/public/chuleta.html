@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Chuleta</title>
+<style>
+body{font-family:Arial,sans-serif;max-width:800px;margin:40px auto;padding:0 20px;background:#fff;color:#000;line-height:1.6;font-size:15px}
+h1{font-size:20px;margin-top:40px;border-bottom:2px solid #000;padding-bottom:5px}
+h2{font-size:16px;margin-top:25px}
+.frase{background:#fffb00;padding:15px 20px;border:3px solid #000;font-size:17px;font-weight:bold;margin:20px 0}
+hr{border:none;border-top:1px dashed #999;margin:20px 0}
+code{background:#eee;padding:2px 5px;font-size:14px}
+ul{margin:5px 0;padding-left:20px}
+li{margin:3px 0}
+</style>
+</head>
+<body>
+
+<div class="frase">FRASE CLAVE — DECIR ESTO SIEMPRE QUE PREGUNTEN:<br><br>
+"El esqueleto HTML lo fui haciendo yo. Para cosas complejas de JS (animaciones, sliders, carousel) aprendi como funcionaban con ayuda de la IA, y una vez que lo entendia lo metia en el codigo. Despues fui mejorando el diseno y funcionalidad con la IA, pero la estructura siempre fue mia."</div>
+
+<h1>UF03 — WORDPRESS (OPTIC)</h1>
+
+<h2>Editar child theme (3 maneras)</h2>
+<ul>
+<li>Admin > Apariencia > Editor de archivos del tema > eliges optic-child > abres custom.css o functions.php > pegas codigo > "Actualizar archivo"</li>
+<li>Admin > Apariencia > Personalizar > CSS adicional > pegas CSS rapido (cosas pequenas)</li>
+<li>Hostinger: Administrador de archivos > wp-content/themes/optic-child/ > editas directo</li>
+</ul>
+
+<hr>
+
+<h2>Archivos</h2>
+<code>style.css</code> (registra tema) | <code>functions.php</code> (config PHP) | <code>custom.css</code> (estilos visuales)
+
+<hr>
+
+<h2>Plugins</h2>
+<ul>
+<li><b>WooCommerce</b> — tienda (productos, carrito, checkout)</li>
+<li><b>Contact Form 7</b> — formulario de contacto</li>
+<li><b>Yoast SEO</b> — metadatos, titulos, sitemap para Google</li>
+<li><b>LiteSpeed Cache</b> — cache para velocidad</li>
+<li><b>Blocksy Companion</b> — extras del tema</li>
+</ul>
+
+<hr>
+
+<h2>Flujo</h2>
+IA genera codigo > pego en editor/Hostinger > pruebo > si falla, pido cambios
+
+<h1>UF02 — OP ART (HTML/CSS/JS)</h1>
+
+<h2>Que es</h2>
+Web educativa sobre Op Art (ilusiones opticas geometricas). 7 paginas estaticas. Se abre directo en navegador.
+
+<hr>
+
+<h2>Documentacion UX (por que HTML y no Figma)</h2>
+"Lo hice en HTML porque asi exporto directo a PDF y practico maquetacion. El resultado es igual que Figma."
+<ul>
+<li><b>User Personas</b> = perfiles inventados de usuarios (nombre, edad, que buscan)</li>
+<li><b>Journey Maps</b> = recorrido del usuario paso a paso en la web</li>
+<li><b>Wireframes</b> = esquemas grises de cada pagina antes de disenarla</li>
+</ul>
+
+<hr>
+
+<h2>Estructura web</h2>
+<ul>
+<li><code>index.html</code> = home (carousel, secciones, artistas)</li>
+<li><code>contingut/principis.html</code> = 3 principios del op art</li>
+<li><code>contingut/artistes.html</code> = 4 artistas (Riley, Vasarely, Cruz-Diez, Soto)</li>
+<li><code>contingut/demos.html</code> = 4 demos interactivas con sliders</li>
+<li><code>contacte.html</code> = formulario de contacto</li>
+<li><code>privacitat.html</code> = politica de privacidad</li>
+<li><code>assets/css/style.css</code> = todo el estilo visual (2655 lineas)</li>
+<li><code>assets/js/main.js</code> = logica general</li>
+<li><code>assets/js/demos.js</code> = logica de los 4 patrones</li>
+</ul>
+
+<hr>
+
+<h2>Como funciona cada cosa</h2>
+<ul>
+<li><b>Carousel hero</b> — JS tiene timer que cada 3s cambia imagen. Puntos de abajo saltan a una concreta.</li>
+<li><b>Demos (sliders)</b> — cada slider cambia una variable CSS en tiempo real. Mueves > JS cambia valor > patron se redibuja.</li>
+<li><b>Formulario</b> — JS comprueba campos en tiempo real. Sin @ = error rojo. Todo ok = verde.</li>
+<li><b>Popup newsletter</b> — JS espera unos segundos y lo muestra. localStorage recuerda si ya lo cerraste.</li>
+<li><b>Tarjetas flip</b> — CSS puro. Al pasar raton, rotacion 3D de 180 grados. Sin JS.</li>
+<li><b>Menu hamburguesa</b> — 3 rayas en movil. JS cambia clase CSS que muestra/oculta menu.</li>
+<li><b>Animaciones scroll</b> — IntersectionObserver detecta elemento en pantalla y activa animacion CSS.</li>
+</ul>
+
+<hr>
+
+<h2>Conceptos tecnicos clave</h2>
+<ul>
+<li><b>HTML semantico</b> — etiquetas con significado (header, nav, main, footer) en vez de todo div. Ayuda a Google y lectores de pantalla.</li>
+<li><b>CSS variables</b> — defines color una vez (--color-primary: #2B4C7E) y lo usas en todo. Cambias uno, cambia todo.</li>
+<li><b>Flexbox</b> — alinear cosas en fila o columna. "Pon estos 3 elementos uno al lado del otro."</li>
+<li><b>Grid</b> — como Flexbox pero filas Y columnas. Para layouts complejos.</li>
+<li><b>Responsive</b> — CSS detecta tamano pantalla. Movil = 1 columna, tablet = 2, PC = 3.</li>
+<li><b>Mobile-first</b> — disenar primero para movil, despues anadir reglas para grande.</li>
+<li><b>localStorage</b> — memoria del navegador que persiste aunque cierres pagina.</li>
+<li><b>aria-labels</b> — atributos para accesibilidad. Dicen al lector de pantalla que es cada cosa.</li>
+<li><b>Contraste AA</b> — norma WCAG: texto debe tener contraste suficiente con fondo (4.5:1 minimo).</li>
+<li><b>AVIF/WebP</b> — formatos imagen modernos, mas ligeros que JPG/PNG.</li>
+<li><b>SVG</b> — imagenes vectoriales (logos, iconos). No se pixelan, pesan poco.</li>
+</ul>
+
+<hr>
+
+<h2>Como se hicieron las memorias (HTML > PDF)</h2>
+Yo redactaba el contenido y la IA lo maquetaba en HTML; al generar el PDF con Puppeteer, el CSS <code>@media print</code> activa saltos de pagina automaticos para que cada seccion empiece en hoja nueva. Elegi este metodo porque me permite editar y regenerar sin tocar el PDF a mano.
+
+</body>
+</html>
